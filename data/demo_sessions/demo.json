@@ -1,0 +1,312 @@
+{
+ "conversation_id": "demo-alice-bob",
+ "speakers": [
+  "Alice",
+  "Bob"
+ ],
+ "sessions": [
+  {
+   "ts": "2023-02-01T19:00:00",
+   "turns": [
+    {
+     "speaker": "Bob",
+     "text": "How's life in the city?"
+    },
+    {
+     "speaker": "Alice",
+     "text": "I live in Chicago now and work at Lumen Health as a designer."
+    },
+    {
+     "speaker": "Bob",
+     "text": "Still running?"
+    },
+    {
+     "speaker": "Alice",
+     "text": "Yes, I run every morning with my brother Sam."
+    }
+   ]
+  },
+  {
+   "ts": "2023-06-20T19:00:00",
+   "turns": [
+    {
+     "speaker": "Alice",
+     "text": "I'm in Denver this week for a conference."
+    },
+    {
+     "speaker": "Bob",
+     "text": "Fun! Any news?"
+    },
+    {
+     "speaker": "Alice",
+     "text": "I left Lumen Health and joined Brightwave in May."
+    }
+   ]
+  },
+  {
+   "ts": "2023-11-05T19:00:00",
+   "turns": [
+    {
+     "speaker": "Bob",
+     "text": "Still running with Sam?"
+    },
+    {
+     "speaker": "Alice",
+     "text": "I don't run anymore, my knee gave out. Also we moved to Milwaukee last month."
+    },
+    {
+     "speaker": "Bob",
+     "text": "Big changes!"
+    },
+    {
+     "speaker": "Alice",
+     "text": "Back in 2019 I lived in Detroit, so the Midwest feels like home."
+    }
+   ]
+  }
+ ],
+ "scripted": {
+  "extraction": [
+   {
+    "session": 1,
+    "turn_index": 2,
+    "subject": "Alice",
+    "fact_text": "Alice lives in Chicago.",
+    "attribute_key": "residence",
+    "polarity": "POS",
+    "mode": "EXPLICIT",
+    "is_event": false,
+    "entities_mentioned": [
+     {
+      "name": "Chicago",
+      "entity_type": "PLACE",
+      "relation": null
+     }
+    ],
+    "time": {
+     "kind": "NONE",
+     "value": null,
+     "offset": null,
+     "unit": null,
+     "tense": "CURRENT"
+    },
+    "is_correction": false,
+    "quote": "I live in Chicago now"
+   },
+   {
+    "session": 1,
+    "turn_index": 2,
+    "subject": "Alice",
+    "fact_text": "Alice works at Lumen Health.",
+    "attribute_key": "employer",
+    "polarity": "POS",
+    "mode": "EXPLICIT",
+    "is_event": false,
+    "entities_mentioned": [
+     {
+      "name": "Lumen Health",
+      "entity_type": "ORG",
+      "relation": null
+     }
+    ],
+    "time": {
+     "kind": "NONE",
+     "value": null,
+     "offset": null,
+     "unit": null,
+     "tense": "CURRENT"
+    },
+    "is_correction": false,
+    "quote": "work at Lumen Health"
+   },
+   {
+    "session": 1,
+    "turn_index": 2,
+    "subject": "Alice",
+    "fact_text": "Alice works as a designer.",
+    "attribute_key": "job_title",
+    "polarity": "POS",
+    "mode": "EXPLICIT",
+    "is_event": false,
+    "entities_mentioned": [],
+    "time": {
+     "kind": "NONE",
+     "value": null,
+     "offset": null,
+     "unit": null,
+     "tense": "CURRENT"
+    },
+    "is_correction": false,
+    "quote": "as a designer"
+   },
+   {
+    "session": 1,
+    "turn_index": 4,
+    "subject": "Alice",
+    "fact_text": "Alice runs every morning with her brother Sam.",
+    "attribute_key": null,
+    "polarity": "POS",
+    "mode": "EXPLICIT",
+    "is_event": false,
+    "entities_mentioned": [
+     {
+      "name": "Sam",
+      "entity_type": "PERSON",
+      "relation": "brother"
+     }
+    ],
+    "time": {
+     "kind": "NONE",
+     "value": null,
+     "offset": null,
+     "unit": null,
+     "tense": "CURRENT"
+    },
+    "is_correction": false,
+    "quote": "I run every morning with my brother Sam"
+   },
+   {
+    "session": 2,
+    "turn_index": 1,
+    "subject": "Alice",
+    "fact_text": "Alice is in Denver this week for a conference.",
+    "attribute_key": null,
+    "polarity": "POS",
+    "mode": "EXPLICIT",
+    "is_event": false,
+    "entities_mentioned": [
+     {
+      "name": "Denver",
+      "entity_type": "PLACE",
+      "relation": null
+     }
+    ],
+    "time": {
+     "kind": "RELATIVE",
+     "value": null,
+     "offset": 0,
+     "unit": "WEEK",
+     "tense": "CURRENT"
+    },
+    "is_correction": false,
+    "quote": "I'm in Denver this week for a conference"
+   },
+   {
+    "session": 2,
+    "turn_index": 3,
+    "subject": "Alice",
+    "fact_text": "Alice joined Brightwave.",
+    "attribute_key": "employer",
+    "polarity": "POS",
+    "mode": "EXPLICIT",
+    "is_event": false,
+    "entities_mentioned": [
+     {
+      "name": "Brightwave",
+      "entity_type": "ORG",
+      "relation": null
+     }
+    ],
+    "time": {
+     "kind": "ABSOLUTE",
+     "value": "2023-05",
+     "offset": null,
+     "unit": null,
+     "tense": "CURRENT"
+    },
+    "is_correction": false,
+    "quote": "joined Brightwave in May"
+   },
+   {
+    "session": 3,
+    "turn_index": 2,
+    "subject": "Alice",
+    "fact_text": "Alice no longer runs.",
+    "attribute_key": null,
+    "polarity": "NEG",
+    "mode": "EXPLICIT",
+    "is_event": false,
+    "entities_mentioned": [],
+    "time": {
+     "kind": "NONE",
+     "value": null,
+     "offset": null,
+     "unit": null,
+     "tense": "CURRENT"
+    },
+    "is_correction": false,
+    "quote": "I don't run anymore"
+   },
+   {
+    "session": 3,
+    "turn_index": 2,
+    "subject": "Alice",
+    "fact_text": "Alice moved to Milwaukee.",
+    "attribute_key": "residence",
+    "polarity": "POS",
+    "mode": "EXPLICIT",
+    "is_event": false,
+    "entities_mentioned": [
+     {
+      "name": "Milwaukee",
+      "entity_type": "PLACE",
+      "relation": null
+     }
+    ],
+    "time": {
+     "kind": "RELATIVE",
+     "value": null,
+     "offset": -1,
+     "unit": "MONTH",
+     "tense": "CURRENT"
+    },
+    "is_correction": false,
+    "quote": "we moved to Milwaukee last month"
+   },
+   {
+    "session": 3,
+    "turn_index": 4,
+    "subject": "Alice",
+    "fact_text": "Alice lived in Detroit in 2019.",
+    "attribute_key": "residence",
+    "polarity": "POS",
+    "mode": "EXPLICIT",
+    "is_event": false,
+    "entities_mentioned": [
+     {
+      "name": "Detroit",
+      "entity_type": "PLACE",
+      "relation": null
+     }
+    ],
+    "time": {
+     "kind": "ABSOLUTE",
+     "value": "2019",
+     "offset": null,
+     "unit": null,
+     "tense": "PAST_ENDED"
+    },
+    "is_correction": false,
+    "quote": "Back in 2019 I lived in Detroit"
+   }
+  ],
+  "relations": {
+   "Alice joined Brightwave.": {
+    "relation": "UPDATES",
+    "target": "Lumen"
+   },
+   "Alice no longer runs.": {
+    "relation": "UPDATES",
+    "target": "runs"
+   },
+   "Alice moved to Milwaukee.": {
+    "relation": "UPDATES",
+    "target": "Chicago"
+   },
+   "Alice lived in Detroit in 2019.": {
+    "relation": "HISTORICAL",
+    "target": "Milwaukee"
+   }
+  }
+ }
+}
