@@ -1,0 +1,93 @@
+{
+  "name": "quick_v1",
+  "description": "test_v1 LoCoMo sample for conv-50 + 20 test_v1 knowledge-update questions",
+  "seed": 42,
+  "generator": "eval/make_manifests.py",
+  "datasets": {
+    "locomo10.json": {
+      "sha256": "79fa87e90f04081343b8c8debecb80a9a6842b76a7aa537dc9fdf651ea698ff4"
+    },
+    "longmemeval_s.json": {
+      "sha256": "08d8dad4be43ee2049a22ff5674eb86725d0ce5ff434cde2627e5e8e7e117894"
+    }
+  },
+  "longmemeval_haystack": {
+    "max_tokens": 24000,
+    "seed": 42,
+    "tokenizer": "Qwen/Qwen2.5-7B-Instruct"
+  },
+  "locomo": {
+    "conversations": [
+      "conv-50"
+    ],
+    "question_ids": [
+      "locomo:conv-50:q0007",
+      "locomo:conv-50:q0013",
+      "locomo:conv-50:q0014",
+      "locomo:conv-50:q0021",
+      "locomo:conv-50:q0022",
+      "locomo:conv-50:q0025",
+      "locomo:conv-50:q0026",
+      "locomo:conv-50:q0028",
+      "locomo:conv-50:q0031",
+      "locomo:conv-50:q0037",
+      "locomo:conv-50:q0044",
+      "locomo:conv-50:q0045",
+      "locomo:conv-50:q0050",
+      "locomo:conv-50:q0055",
+      "locomo:conv-50:q0061",
+      "locomo:conv-50:q0082",
+      "locomo:conv-50:q0088",
+      "locomo:conv-50:q0090",
+      "locomo:conv-50:q0093",
+      "locomo:conv-50:q0098",
+      "locomo:conv-50:q0108",
+      "locomo:conv-50:q0116",
+      "locomo:conv-50:q0137",
+      "locomo:conv-50:q0146",
+      "locomo:conv-50:q0165",
+      "locomo:conv-50:q0176",
+      "locomo:conv-50:q0184",
+      "locomo:conv-50:q0185"
+    ]
+  },
+  "longmemeval": {
+    "question_ids": [
+      "6aeb4375",
+      "852ce960",
+      "945e3d21",
+      "d7c942c3",
+      "ce6d2d27",
+      "184da446",
+      "031748ae",
+      "4d6b87c8",
+      "f9e8c073",
+      "5a4f22c0",
+      "c4ea545c",
+      "db467c8c",
+      "1cea1afa",
+      "50635ada",
+      "f685340e",
+      "dfde3500",
+      "c7dc5443",
+      "3ba21379",
+      "5c40ec5b",
+      "2133c1b5_abs"
+    ]
+  },
+  "counts": {
+    "locomo_total": 28,
+    "locomo_by_category": {
+      "adversarial": 4,
+      "multi-hop": 3,
+      "open-domain": 4,
+      "single-hop": 9,
+      "temporal": 8
+    },
+    "longmemeval_total": 20,
+    "longmemeval_by_type": {
+      "knowledge-update": 20
+    },
+    "longmemeval_abstention": 1
+  }
+}
