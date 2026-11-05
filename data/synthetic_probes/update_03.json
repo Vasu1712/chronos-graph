@@ -1,0 +1,144 @@
+{
+ "conversation_id": "probe-update_03",
+ "probe_id": "update_03",
+ "case": "update_across_sessions",
+ "description": "Single -> engaged last week.",
+ "speakers": [
+  "Maya",
+  "Eli"
+ ],
+ "sessions": [
+  {
+   "ts": "2022-08-20T14:00:00",
+   "turns": [
+    {
+     "speaker": "Eli",
+     "text": "Seeing anyone?"
+    },
+    {
+     "speaker": "Maya",
+     "text": "I'm single and honestly enjoying it."
+    }
+   ]
+  },
+  {
+   "ts": "2023-02-11T21:00:00",
+   "turns": [
+    {
+     "speaker": "Maya",
+     "text": "I got engaged to Chris last weekend!"
+    },
+    {
+     "speaker": "Eli",
+     "text": "Congratulations!!"
+    }
+   ]
+  }
+ ],
+ "scripted": {
+  "extraction": [
+   {
+    "session": 1,
+    "turn_index": 2,
+    "subject": "Maya",
+    "fact_text": "Maya is single.",
+    "attribute_key": "relationship_status",
+    "polarity": "POS",
+    "mode": "EXPLICIT",
+    "is_event": false,
+    "entities_mentioned": [],
+    "time": {
+     "kind": "NONE",
+     "value": null,
+     "offset": null,
+     "unit": null,
+     "tense": "CURRENT"
+    },
+    "is_correction": false,
+    "quote": "I'm single and honestly enjoying it"
+   },
+   {
+    "session": 2,
+    "turn_index": 1,
+    "subject": "Maya",
+    "fact_text": "Maya is engaged.",
+    "attribute_key": "relationship_status",
+    "polarity": "POS",
+    "mode": "EXPLICIT",
+    "is_event": false,
+    "entities_mentioned": [],
+    "time": {
+     "kind": "RELATIVE",
+     "value": null,
+     "offset": -1,
+     "unit": "WEEK",
+     "tense": "CURRENT"
+    },
+    "is_correction": false,
+    "quote": "I got engaged to Chris last weekend"
+   },
+   {
+    "session": 2,
+    "turn_index": 1,
+    "subject": "Maya",
+    "fact_text": "Maya is engaged to Chris.",
+    "attribute_key": "partner",
+    "polarity": "POS",
+    "mode": "EXPLICIT",
+    "is_event": false,
+    "entities_mentioned": [
+     {
+      "name": "Chris",
+      "entity_type": "PERSON",
+      "relation": "fiance"
+     }
+    ],
+    "time": {
+     "kind": "RELATIVE",
+     "value": null,
+     "offset": -1,
+     "unit": "WEEK",
+     "tense": "CURRENT"
+    },
+    "is_correction": false,
+    "quote": "engaged to Chris"
+   }
+  ],
+  "relations": {
+   "Maya is engaged.": {
+    "relation": "UPDATES",
+    "target": "single"
+   }
+  }
+ },
+ "expected": {
+  "memories": [
+   {
+    "subject": "Maya",
+    "contains": "single",
+    "attribute_key": "relationship_status",
+    "status": "SUPERSEDED",
+    "valid_to": "2023-02-04",
+    "valid_to_precision": "WEEK"
+   },
+   {
+    "subject": "Maya",
+    "contains": "engaged",
+    "attribute_key": "relationship_status",
+    "status": "ACTIVE",
+    "valid_from": "2023-02-04",
+    "valid_to": null
+   }
+  ],
+  "current": [
+   {
+    "subject": "Maya",
+    "attribute_key": "relationship_status",
+    "contains": [
+     "engaged"
+    ]
+   }
+  ],
+  "absent": []
+ }
+}

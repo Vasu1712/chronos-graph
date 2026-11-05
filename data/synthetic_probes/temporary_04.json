@@ -1,0 +1,122 @@
+{
+ "conversation_id": "probe-temporary_04",
+ "probe_id": "temporary_04",
+ "case": "temporary_vs_move",
+ "description": "Visiting parents in Cairo is not a move.",
+ "speakers": [
+  "Ahmed",
+  "Joy"
+ ],
+ "sessions": [
+  {
+   "ts": "2023-05-10T10:00:00",
+   "turns": [
+    {
+     "speaker": "Ahmed",
+     "text": "I live in Dubai and work near the marina."
+    },
+    {
+     "speaker": "Joy",
+     "text": "Must be hot."
+    }
+   ]
+  },
+  {
+   "ts": "2023-08-03T10:00:00",
+   "turns": [
+    {
+     "speaker": "Ahmed",
+     "text": "I'm visiting my parents in Cairo for two weeks."
+    },
+    {
+     "speaker": "Joy",
+     "text": "Say hi to them!"
+    }
+   ]
+  }
+ ],
+ "scripted": {
+  "extraction": [
+   {
+    "session": 1,
+    "turn_index": 1,
+    "subject": "Ahmed",
+    "fact_text": "Ahmed lives in Dubai.",
+    "attribute_key": "residence",
+    "polarity": "POS",
+    "mode": "EXPLICIT",
+    "is_event": false,
+    "entities_mentioned": [
+     {
+      "name": "Dubai",
+      "entity_type": "PLACE",
+      "relation": null
+     }
+    ],
+    "time": {
+     "kind": "NONE",
+     "value": null,
+     "offset": null,
+     "unit": null,
+     "tense": "CURRENT"
+    },
+    "is_correction": false,
+    "quote": "I live in Dubai"
+   },
+   {
+    "session": 2,
+    "turn_index": 1,
+    "subject": "Ahmed",
+    "fact_text": "Ahmed is visiting his parents in Cairo for two weeks.",
+    "attribute_key": null,
+    "polarity": "POS",
+    "mode": "EXPLICIT",
+    "is_event": false,
+    "entities_mentioned": [
+     {
+      "name": "Cairo",
+      "entity_type": "PLACE",
+      "relation": null
+     }
+    ],
+    "time": {
+     "kind": "NONE",
+     "value": null,
+     "offset": null,
+     "unit": null,
+     "tense": "CURRENT"
+    },
+    "is_correction": false,
+    "quote": "I'm visiting my parents in Cairo for two weeks"
+   }
+  ],
+  "relations": {}
+ },
+ "expected": {
+  "memories": [
+   {
+    "subject": "Ahmed",
+    "contains": "Dubai",
+    "attribute_key": "residence",
+    "status": "ACTIVE",
+    "valid_to": null
+   }
+  ],
+  "current": [
+   {
+    "subject": "Ahmed",
+    "attribute_key": "residence",
+    "contains": [
+     "Dubai"
+    ]
+   }
+  ],
+  "absent": [
+   {
+    "subject": "Ahmed",
+    "contains": "Cairo",
+    "attribute_key": "residence"
+   }
+  ]
+ }
+}

@@ -1,0 +1,122 @@
+{
+ "conversation_id": "probe-temporary_02",
+ "probe_id": "temporary_02",
+ "case": "temporary_vs_move",
+ "description": "A work trip to Berlin is not a move.",
+ "speakers": [
+  "Hugo",
+  "Asha"
+ ],
+ "sessions": [
+  {
+   "ts": "2023-02-20T10:00:00",
+   "turns": [
+    {
+     "speaker": "Hugo",
+     "text": "I live in Lyon with my partner."
+    },
+    {
+     "speaker": "Asha",
+     "text": "Lovely city."
+    }
+   ]
+  },
+  {
+   "ts": "2023-03-15T10:00:00",
+   "turns": [
+    {
+     "speaker": "Hugo",
+     "text": "I'm on a work trip in Berlin until Friday."
+    },
+    {
+     "speaker": "Asha",
+     "text": "Try the currywurst."
+    }
+   ]
+  }
+ ],
+ "scripted": {
+  "extraction": [
+   {
+    "session": 1,
+    "turn_index": 1,
+    "subject": "Hugo",
+    "fact_text": "Hugo lives in Lyon.",
+    "attribute_key": "residence",
+    "polarity": "POS",
+    "mode": "EXPLICIT",
+    "is_event": false,
+    "entities_mentioned": [
+     {
+      "name": "Lyon",
+      "entity_type": "PLACE",
+      "relation": null
+     }
+    ],
+    "time": {
+     "kind": "NONE",
+     "value": null,
+     "offset": null,
+     "unit": null,
+     "tense": "CURRENT"
+    },
+    "is_correction": false,
+    "quote": "I live in Lyon"
+   },
+   {
+    "session": 2,
+    "turn_index": 1,
+    "subject": "Hugo",
+    "fact_text": "Hugo is on a work trip in Berlin.",
+    "attribute_key": null,
+    "polarity": "POS",
+    "mode": "EXPLICIT",
+    "is_event": false,
+    "entities_mentioned": [
+     {
+      "name": "Berlin",
+      "entity_type": "PLACE",
+      "relation": null
+     }
+    ],
+    "time": {
+     "kind": "NONE",
+     "value": null,
+     "offset": null,
+     "unit": null,
+     "tense": "CURRENT"
+    },
+    "is_correction": false,
+    "quote": "I'm on a work trip in Berlin until Friday"
+   }
+  ],
+  "relations": {}
+ },
+ "expected": {
+  "memories": [
+   {
+    "subject": "Hugo",
+    "contains": "Lyon",
+    "attribute_key": "residence",
+    "status": "ACTIVE",
+    "valid_to": null
+   }
+  ],
+  "current": [
+   {
+    "subject": "Hugo",
+    "attribute_key": "residence",
+    "contains": [
+     "Lyon"
+    ]
+   }
+  ],
+  "absent": [
+   {
+    "subject": "Hugo",
+    "contains": "Berlin",
+    "attribute_key": "residence"
+   }
+  ]
+ }
+}

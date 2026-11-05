@@ -1,0 +1,150 @@
+{
+ "conversation_id": "probe-update_02",
+ "probe_id": "update_02",
+ "case": "update_across_sessions",
+ "description": "Orbit Labs -> Quanta in February.",
+ "speakers": [
+  "Hana",
+  "Raj"
+ ],
+ "sessions": [
+  {
+   "ts": "2022-11-02T09:15:00",
+   "turns": [
+    {
+     "speaker": "Raj",
+     "text": "What do you do again?"
+    },
+    {
+     "speaker": "Hana",
+     "text": "I work at Orbit Labs as a data analyst."
+    }
+   ]
+  },
+  {
+   "ts": "2023-03-09T19:00:00",
+   "turns": [
+    {
+     "speaker": "Hana",
+     "text": "I left Orbit Labs and joined Quanta in February."
+    },
+    {
+     "speaker": "Raj",
+     "text": "Exciting!"
+    }
+   ]
+  }
+ ],
+ "scripted": {
+  "extraction": [
+   {
+    "session": 1,
+    "turn_index": 2,
+    "subject": "Hana",
+    "fact_text": "Hana works at Orbit Labs.",
+    "attribute_key": "employer",
+    "polarity": "POS",
+    "mode": "EXPLICIT",
+    "is_event": false,
+    "entities_mentioned": [
+     {
+      "name": "Orbit Labs",
+      "entity_type": "ORG",
+      "relation": null
+     }
+    ],
+    "time": {
+     "kind": "NONE",
+     "value": null,
+     "offset": null,
+     "unit": null,
+     "tense": "CURRENT"
+    },
+    "is_correction": false,
+    "quote": "I work at Orbit Labs"
+   },
+   {
+    "session": 1,
+    "turn_index": 2,
+    "subject": "Hana",
+    "fact_text": "Hana works as a data analyst.",
+    "attribute_key": "job_title",
+    "polarity": "POS",
+    "mode": "EXPLICIT",
+    "is_event": false,
+    "entities_mentioned": [],
+    "time": {
+     "kind": "NONE",
+     "value": null,
+     "offset": null,
+     "unit": null,
+     "tense": "CURRENT"
+    },
+    "is_correction": false,
+    "quote": "as a data analyst"
+   },
+   {
+    "session": 2,
+    "turn_index": 1,
+    "subject": "Hana",
+    "fact_text": "Hana joined Quanta.",
+    "attribute_key": "employer",
+    "polarity": "POS",
+    "mode": "EXPLICIT",
+    "is_event": false,
+    "entities_mentioned": [
+     {
+      "name": "Quanta",
+      "entity_type": "ORG",
+      "relation": null
+     }
+    ],
+    "time": {
+     "kind": "ABSOLUTE",
+     "value": "2023-02",
+     "offset": null,
+     "unit": null,
+     "tense": "CURRENT"
+    },
+    "is_correction": false,
+    "quote": "joined Quanta in February"
+   }
+  ],
+  "relations": {
+   "Hana joined Quanta.": {
+    "relation": "UPDATES",
+    "target": "Orbit"
+   }
+  }
+ },
+ "expected": {
+  "memories": [
+   {
+    "subject": "Hana",
+    "contains": "Orbit",
+    "attribute_key": "employer",
+    "status": "SUPERSEDED",
+    "valid_to": "*"
+   },
+   {
+    "subject": "Hana",
+    "contains": "Quanta",
+    "attribute_key": "employer",
+    "status": "ACTIVE",
+    "valid_from": "2023-02-01",
+    "valid_from_precision": "MONTH",
+    "valid_to": null
+   }
+  ],
+  "current": [
+   {
+    "subject": "Hana",
+    "attribute_key": "employer",
+    "contains": [
+     "Quanta"
+    ]
+   }
+  ],
+  "absent": []
+ }
+}

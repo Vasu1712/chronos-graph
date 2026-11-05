@@ -1,0 +1,127 @@
+{
+ "conversation_id": "probe-late_mention_03",
+ "probe_id": "late_mention_03",
+ "case": "late_mention",
+ "description": "A college from 2016 must not replace the current university.",
+ "speakers": [
+  "Aisha",
+  "Ben"
+ ],
+ "sessions": [
+  {
+   "ts": "2022-10-03T16:00:00",
+   "turns": [
+    {
+     "speaker": "Aisha",
+     "text": "Classes at Westfield University are intense this semester."
+    },
+    {
+     "speaker": "Ben",
+     "text": "Hang in there!"
+    }
+   ]
+  },
+  {
+   "ts": "2023-01-20T12:00:00",
+   "turns": [
+    {
+     "speaker": "Ben",
+     "text": "Was Westfield always the plan?"
+    },
+    {
+     "speaker": "Aisha",
+     "text": "Not at all, I studied at Lakeside College back in 2016 before transferring."
+    }
+   ]
+  }
+ ],
+ "scripted": {
+  "extraction": [
+   {
+    "session": 1,
+    "turn_index": 1,
+    "subject": "Aisha",
+    "fact_text": "Aisha attends Westfield University.",
+    "attribute_key": "school",
+    "polarity": "POS",
+    "mode": "EXPLICIT",
+    "is_event": false,
+    "entities_mentioned": [
+     {
+      "name": "Westfield University",
+      "entity_type": "ORG",
+      "relation": null
+     }
+    ],
+    "time": {
+     "kind": "NONE",
+     "value": null,
+     "offset": null,
+     "unit": null,
+     "tense": "CURRENT"
+    },
+    "is_correction": false,
+    "quote": "Classes at Westfield University are intense this semester"
+   },
+   {
+    "session": 2,
+    "turn_index": 2,
+    "subject": "Aisha",
+    "fact_text": "Aisha studied at Lakeside College in 2016.",
+    "attribute_key": "school",
+    "polarity": "POS",
+    "mode": "EXPLICIT",
+    "is_event": false,
+    "entities_mentioned": [
+     {
+      "name": "Lakeside College",
+      "entity_type": "ORG",
+      "relation": null
+     }
+    ],
+    "time": {
+     "kind": "ABSOLUTE",
+     "value": "2016",
+     "offset": null,
+     "unit": null,
+     "tense": "PAST_ENDED"
+    },
+    "is_correction": false,
+    "quote": "I studied at Lakeside College back in 2016"
+   }
+  ],
+  "relations": {
+   "Aisha studied at Lakeside College in 2016.": {
+    "relation": "HISTORICAL",
+    "target": "Westfield"
+   }
+  }
+ },
+ "expected": {
+  "memories": [
+   {
+    "subject": "Aisha",
+    "contains": "Westfield",
+    "attribute_key": "school",
+    "status": "ACTIVE",
+    "valid_to": null
+   },
+   {
+    "subject": "Aisha",
+    "contains": "Lakeside",
+    "valid_from": "2016-01-01",
+    "valid_to": "2016-12-31"
+   }
+  ],
+  "current": [
+   {
+    "subject": "Aisha",
+    "attribute_key": "school",
+    "contains": [
+     "Westfield"
+    ]
+   }
+  ],
+  "absent": []
+ }
+}

@@ -1,0 +1,129 @@
+{
+ "conversation_id": "probe-out_of_order_02",
+ "probe_id": "out_of_order_02",
+ "case": "out_of_order_dates",
+ "description": "A 2020 job told after the 2023 one.",
+ "speakers": [
+  "Owen",
+  "Rita"
+ ],
+ "sessions": [
+  {
+   "ts": "2023-04-01T09:00:00",
+   "turns": [
+    {
+     "speaker": "Owen",
+     "text": "I joined Fairway Logistics in January 2023."
+    },
+    {
+     "speaker": "Rita",
+     "text": "How's the commute?"
+    }
+   ]
+  },
+  {
+   "ts": "2023-06-15T09:00:00",
+   "turns": [
+    {
+     "speaker": "Rita",
+     "text": "What was your first job?"
+    },
+    {
+     "speaker": "Owen",
+     "text": "I started at Summit Foods in 2020, my first real job."
+    }
+   ]
+  }
+ ],
+ "scripted": {
+  "extraction": [
+   {
+    "session": 1,
+    "turn_index": 1,
+    "subject": "Owen",
+    "fact_text": "Owen works at Fairway Logistics.",
+    "attribute_key": "employer",
+    "polarity": "POS",
+    "mode": "EXPLICIT",
+    "is_event": false,
+    "entities_mentioned": [
+     {
+      "name": "Fairway Logistics",
+      "entity_type": "ORG",
+      "relation": null
+     }
+    ],
+    "time": {
+     "kind": "ABSOLUTE",
+     "value": "2023-01",
+     "offset": null,
+     "unit": null,
+     "tense": "CURRENT"
+    },
+    "is_correction": false,
+    "quote": "I joined Fairway Logistics in January 2023"
+   },
+   {
+    "session": 2,
+    "turn_index": 2,
+    "subject": "Owen",
+    "fact_text": "Owen started working at Summit Foods.",
+    "attribute_key": "employer",
+    "polarity": "POS",
+    "mode": "EXPLICIT",
+    "is_event": false,
+    "entities_mentioned": [
+     {
+      "name": "Summit Foods",
+      "entity_type": "ORG",
+      "relation": null
+     }
+    ],
+    "time": {
+     "kind": "ABSOLUTE",
+     "value": "2020",
+     "offset": null,
+     "unit": null,
+     "tense": "CURRENT"
+    },
+    "is_correction": false,
+    "quote": "I started at Summit Foods in 2020"
+   }
+  ],
+  "relations": {
+   "Owen started working at Summit Foods.": {
+    "relation": "UPDATES",
+    "target": "Fairway"
+   }
+  }
+ },
+ "expected": {
+  "memories": [
+   {
+    "subject": "Owen",
+    "contains": "Fairway",
+    "attribute_key": "employer",
+    "status": "ACTIVE",
+    "valid_from": "2023-01-01",
+    "valid_to": null
+   },
+   {
+    "subject": "Owen",
+    "contains": "Summit",
+    "valid_from": "2020-01-01",
+    "valid_from_precision": "YEAR",
+    "valid_to": "*"
+   }
+  ],
+  "current": [
+   {
+    "subject": "Owen",
+    "attribute_key": "employer",
+    "contains": [
+     "Fairway"
+    ]
+   }
+  ],
+  "absent": []
+ }
+}

@@ -1,0 +1,130 @@
+{
+ "conversation_id": "probe-out_of_order_04",
+ "probe_id": "out_of_order_04",
+ "case": "out_of_order_dates",
+ "description": "Day-precision moves told in reverse order.",
+ "speakers": [
+  "Arun",
+  "Bea"
+ ],
+ "sessions": [
+  {
+   "ts": "2023-10-20T09:30:00",
+   "turns": [
+    {
+     "speaker": "Arun",
+     "text": "We moved into our place in Chennai on October 1st."
+    },
+    {
+     "speaker": "Bea",
+     "text": "Housewarming soon?"
+    }
+   ]
+  },
+  {
+   "ts": "2023-11-05T09:30:00",
+   "turns": [
+    {
+     "speaker": "Bea",
+     "text": "Where were you before Chennai?"
+    },
+    {
+     "speaker": "Arun",
+     "text": "Before that, on May 2nd we moved to Hyderabad."
+    }
+   ]
+  }
+ ],
+ "scripted": {
+  "extraction": [
+   {
+    "session": 1,
+    "turn_index": 1,
+    "subject": "Arun",
+    "fact_text": "Arun lives in Chennai.",
+    "attribute_key": "residence",
+    "polarity": "POS",
+    "mode": "EXPLICIT",
+    "is_event": false,
+    "entities_mentioned": [
+     {
+      "name": "Chennai",
+      "entity_type": "PLACE",
+      "relation": null
+     }
+    ],
+    "time": {
+     "kind": "ABSOLUTE",
+     "value": "2023-10-01",
+     "offset": null,
+     "unit": null,
+     "tense": "CURRENT"
+    },
+    "is_correction": false,
+    "quote": "We moved into our place in Chennai on October 1st"
+   },
+   {
+    "session": 2,
+    "turn_index": 2,
+    "subject": "Arun",
+    "fact_text": "Arun moved to Hyderabad.",
+    "attribute_key": "residence",
+    "polarity": "POS",
+    "mode": "EXPLICIT",
+    "is_event": false,
+    "entities_mentioned": [
+     {
+      "name": "Hyderabad",
+      "entity_type": "PLACE",
+      "relation": null
+     }
+    ],
+    "time": {
+     "kind": "ABSOLUTE",
+     "value": "2023-05-02",
+     "offset": null,
+     "unit": null,
+     "tense": "CURRENT"
+    },
+    "is_correction": false,
+    "quote": "on May 2nd we moved to Hyderabad"
+   }
+  ],
+  "relations": {
+   "Arun moved to Hyderabad.": {
+    "relation": "UPDATES",
+    "target": "Chennai"
+   }
+  }
+ },
+ "expected": {
+  "memories": [
+   {
+    "subject": "Arun",
+    "contains": "Chennai",
+    "attribute_key": "residence",
+    "status": "ACTIVE",
+    "valid_from": "2023-10-01",
+    "valid_from_precision": "DAY",
+    "valid_to": null
+   },
+   {
+    "subject": "Arun",
+    "contains": "Hyderabad",
+    "valid_from": "2023-05-02",
+    "valid_from_precision": "DAY",
+    "valid_to": "2023-10-01"
+   }
+  ],
+  "current": [
+   {
+    "subject": "Arun",
+    "attribute_key": "residence",
+    "contains": [
+     "Chennai"
+    ]
+   }
+  ],
+  "absent": []
+ }
+}

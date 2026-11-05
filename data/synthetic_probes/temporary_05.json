@@ -1,0 +1,129 @@
+{
+ "conversation_id": "probe-temporary_05",
+ "probe_id": "temporary_05",
+ "case": "temporary_vs_move",
+ "description": "Control: settling in Denver with a lease IS a move.",
+ "speakers": [
+  "Mira",
+  "Sean"
+ ],
+ "sessions": [
+  {
+   "ts": "2023-03-12T10:00:00",
+   "turns": [
+    {
+     "speaker": "Mira",
+     "text": "I'm based in Boston for now."
+    },
+    {
+     "speaker": "Sean",
+     "text": "Cold winters!"
+    }
+   ]
+  },
+  {
+   "ts": "2023-10-01T10:00:00",
+   "turns": [
+    {
+     "speaker": "Mira",
+     "text": "I settled in Denver in September, signed a two-year lease."
+    },
+    {
+     "speaker": "Sean",
+     "text": "Mountains!"
+    }
+   ]
+  }
+ ],
+ "scripted": {
+  "extraction": [
+   {
+    "session": 1,
+    "turn_index": 1,
+    "subject": "Mira",
+    "fact_text": "Mira lives in Boston.",
+    "attribute_key": "residence",
+    "polarity": "POS",
+    "mode": "EXPLICIT",
+    "is_event": false,
+    "entities_mentioned": [
+     {
+      "name": "Boston",
+      "entity_type": "PLACE",
+      "relation": null
+     }
+    ],
+    "time": {
+     "kind": "NONE",
+     "value": null,
+     "offset": null,
+     "unit": null,
+     "tense": "CURRENT"
+    },
+    "is_correction": false,
+    "quote": "I'm based in Boston for now"
+   },
+   {
+    "session": 2,
+    "turn_index": 1,
+    "subject": "Mira",
+    "fact_text": "Mira lives in Denver.",
+    "attribute_key": "residence",
+    "polarity": "POS",
+    "mode": "EXPLICIT",
+    "is_event": false,
+    "entities_mentioned": [
+     {
+      "name": "Denver",
+      "entity_type": "PLACE",
+      "relation": null
+     }
+    ],
+    "time": {
+     "kind": "ABSOLUTE",
+     "value": "2023-09",
+     "offset": null,
+     "unit": null,
+     "tense": "CURRENT"
+    },
+    "is_correction": false,
+    "quote": "I settled in Denver in September"
+   }
+  ],
+  "relations": {
+   "Mira lives in Denver.": {
+    "relation": "UPDATES",
+    "target": "Boston"
+   }
+  }
+ },
+ "expected": {
+  "memories": [
+   {
+    "subject": "Mira",
+    "contains": "Boston",
+    "attribute_key": "residence",
+    "status": "SUPERSEDED",
+    "valid_to": "2023-09-01"
+   },
+   {
+    "subject": "Mira",
+    "contains": "Denver",
+    "attribute_key": "residence",
+    "status": "ACTIVE",
+    "valid_from": "2023-09-01",
+    "valid_to": null
+   }
+  ],
+  "current": [
+   {
+    "subject": "Mira",
+    "attribute_key": "residence",
+    "contains": [
+     "Denver"
+    ]
+   }
+  ],
+  "absent": []
+ }
+}

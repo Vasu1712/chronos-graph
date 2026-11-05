@@ -1,0 +1,128 @@
+{
+ "conversation_id": "probe-late_mention_05",
+ "probe_id": "late_mention_05",
+ "case": "late_mention",
+ "description": "Living in Montreal in March 2020 must not replace Toronto.",
+ "speakers": [
+  "Sofia",
+  "Liam"
+ ],
+ "sessions": [
+  {
+   "ts": "2023-05-02T11:00:00",
+   "turns": [
+    {
+     "speaker": "Sofia",
+     "text": "I live in Toronto now, close to the lake."
+    },
+    {
+     "speaker": "Liam",
+     "text": "Lucky you, the lake is gorgeous."
+    }
+   ]
+  },
+  {
+   "ts": "2023-08-19T15:20:00",
+   "turns": [
+    {
+     "speaker": "Liam",
+     "text": "Where were you when the lockdowns started?"
+    },
+    {
+     "speaker": "Sofia",
+     "text": "In March 2020 I was living in Montreal, right when everything shut down."
+    }
+   ]
+  }
+ ],
+ "scripted": {
+  "extraction": [
+   {
+    "session": 1,
+    "turn_index": 1,
+    "subject": "Sofia",
+    "fact_text": "Sofia lives in Toronto.",
+    "attribute_key": "residence",
+    "polarity": "POS",
+    "mode": "EXPLICIT",
+    "is_event": false,
+    "entities_mentioned": [
+     {
+      "name": "Toronto",
+      "entity_type": "PLACE",
+      "relation": null
+     }
+    ],
+    "time": {
+     "kind": "NONE",
+     "value": null,
+     "offset": null,
+     "unit": null,
+     "tense": "CURRENT"
+    },
+    "is_correction": false,
+    "quote": "I live in Toronto now"
+   },
+   {
+    "session": 2,
+    "turn_index": 2,
+    "subject": "Sofia",
+    "fact_text": "Sofia lived in Montreal in March 2020.",
+    "attribute_key": "residence",
+    "polarity": "POS",
+    "mode": "EXPLICIT",
+    "is_event": false,
+    "entities_mentioned": [
+     {
+      "name": "Montreal",
+      "entity_type": "PLACE",
+      "relation": null
+     }
+    ],
+    "time": {
+     "kind": "ABSOLUTE",
+     "value": "2020-03",
+     "offset": null,
+     "unit": null,
+     "tense": "PAST_ENDED"
+    },
+    "is_correction": false,
+    "quote": "In March 2020 I was living in Montreal"
+   }
+  ],
+  "relations": {
+   "Sofia lived in Montreal in March 2020.": {
+    "relation": "HISTORICAL",
+    "target": "Toronto"
+   }
+  }
+ },
+ "expected": {
+  "memories": [
+   {
+    "subject": "Sofia",
+    "contains": "Toronto",
+    "attribute_key": "residence",
+    "status": "ACTIVE",
+    "valid_to": null
+   },
+   {
+    "subject": "Sofia",
+    "contains": "Montreal",
+    "valid_from": "2020-03-01",
+    "valid_from_precision": "MONTH",
+    "valid_to": "2020-03-31"
+   }
+  ],
+  "current": [
+   {
+    "subject": "Sofia",
+    "attribute_key": "residence",
+    "contains": [
+     "Toronto"
+    ]
+   }
+  ],
+  "absent": []
+ }
+}

@@ -1,0 +1,177 @@
+{
+ "conversation_id": "probe-update_05",
+ "probe_id": "update_05",
+ "case": "update_across_sessions",
+ "description": "Leeds -> Bristol (October) -> Cardiff (May), three sessions.",
+ "speakers": [
+  "Zoe",
+  "Max"
+ ],
+ "sessions": [
+  {
+   "ts": "2022-05-10T12:00:00",
+   "turns": [
+    {
+     "speaker": "Zoe",
+     "text": "I live in Leeds, it rains a lot."
+    },
+    {
+     "speaker": "Max",
+     "text": "Classic Yorkshire."
+    }
+   ]
+  },
+  {
+   "ts": "2022-12-01T12:00:00",
+   "turns": [
+    {
+     "speaker": "Zoe",
+     "text": "We moved to Bristol in October."
+    },
+    {
+     "speaker": "Max",
+     "text": "Nice harbour there."
+    }
+   ]
+  },
+  {
+   "ts": "2023-07-15T12:00:00",
+   "turns": [
+    {
+     "speaker": "Max",
+     "text": "Still in Bristol?"
+    },
+    {
+     "speaker": "Zoe",
+     "text": "No, since May we've been living in Cardiff."
+    }
+   ]
+  }
+ ],
+ "scripted": {
+  "extraction": [
+   {
+    "session": 1,
+    "turn_index": 1,
+    "subject": "Zoe",
+    "fact_text": "Zoe lives in Leeds.",
+    "attribute_key": "residence",
+    "polarity": "POS",
+    "mode": "EXPLICIT",
+    "is_event": false,
+    "entities_mentioned": [
+     {
+      "name": "Leeds",
+      "entity_type": "PLACE",
+      "relation": null
+     }
+    ],
+    "time": {
+     "kind": "NONE",
+     "value": null,
+     "offset": null,
+     "unit": null,
+     "tense": "CURRENT"
+    },
+    "is_correction": false,
+    "quote": "I live in Leeds"
+   },
+   {
+    "session": 2,
+    "turn_index": 1,
+    "subject": "Zoe",
+    "fact_text": "Zoe moved to Bristol.",
+    "attribute_key": "residence",
+    "polarity": "POS",
+    "mode": "EXPLICIT",
+    "is_event": false,
+    "entities_mentioned": [
+     {
+      "name": "Bristol",
+      "entity_type": "PLACE",
+      "relation": null
+     }
+    ],
+    "time": {
+     "kind": "ABSOLUTE",
+     "value": "2022-10",
+     "offset": null,
+     "unit": null,
+     "tense": "CURRENT"
+    },
+    "is_correction": false,
+    "quote": "We moved to Bristol in October"
+   },
+   {
+    "session": 3,
+    "turn_index": 2,
+    "subject": "Zoe",
+    "fact_text": "Zoe lives in Cardiff.",
+    "attribute_key": "residence",
+    "polarity": "POS",
+    "mode": "EXPLICIT",
+    "is_event": false,
+    "entities_mentioned": [
+     {
+      "name": "Cardiff",
+      "entity_type": "PLACE",
+      "relation": null
+     }
+    ],
+    "time": {
+     "kind": "ABSOLUTE",
+     "value": "2023-05",
+     "offset": null,
+     "unit": null,
+     "tense": "CURRENT"
+    },
+    "is_correction": false,
+    "quote": "since May we've been living in Cardiff"
+   }
+  ],
+  "relations": {
+   "Zoe moved to Bristol.": {
+    "relation": "UPDATES",
+    "target": "Leeds"
+   },
+   "Zoe lives in Cardiff.": {
+    "relation": "UPDATES",
+    "target": "Bristol"
+   }
+  }
+ },
+ "expected": {
+  "memories": [
+   {
+    "subject": "Zoe",
+    "contains": "Leeds",
+    "status": "SUPERSEDED",
+    "valid_to": "2022-10-01"
+   },
+   {
+    "subject": "Zoe",
+    "contains": "Bristol",
+    "status": "SUPERSEDED",
+    "valid_from": "2022-10-01",
+    "valid_to": "2023-05-01"
+   },
+   {
+    "subject": "Zoe",
+    "contains": "Cardiff",
+    "status": "ACTIVE",
+    "valid_from": "2023-05-01",
+    "valid_to": null
+   }
+  ],
+  "current": [
+   {
+    "subject": "Zoe",
+    "attribute_key": "residence",
+    "contains": [
+     "Cardiff"
+    ]
+   }
+  ],
+  "absent": []
+ }
+}

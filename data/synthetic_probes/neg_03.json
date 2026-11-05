@@ -1,0 +1,125 @@
+{
+ "conversation_id": "probe-neg_03",
+ "probe_id": "neg_03",
+ "case": "neg_polarity",
+ "description": "I don't work at Delta Print anymore.",
+ "speakers": [
+  "Yusuf",
+  "Clara"
+ ],
+ "sessions": [
+  {
+   "ts": "2023-01-09T07:00:00",
+   "turns": [
+    {
+     "speaker": "Yusuf",
+     "text": "I work at Delta Print, mostly night shifts."
+    },
+    {
+     "speaker": "Clara",
+     "text": "That sounds exhausting."
+    }
+   ]
+  },
+  {
+   "ts": "2023-05-22T07:00:00",
+   "turns": [
+    {
+     "speaker": "Yusuf",
+     "text": "I don't work at Delta Print anymore, I'm taking some time off."
+    },
+    {
+     "speaker": "Clara",
+     "text": "Good for you."
+    }
+   ]
+  }
+ ],
+ "scripted": {
+  "extraction": [
+   {
+    "session": 1,
+    "turn_index": 1,
+    "subject": "Yusuf",
+    "fact_text": "Yusuf works at Delta Print.",
+    "attribute_key": "employer",
+    "polarity": "POS",
+    "mode": "EXPLICIT",
+    "is_event": false,
+    "entities_mentioned": [
+     {
+      "name": "Delta Print",
+      "entity_type": "ORG",
+      "relation": null
+     }
+    ],
+    "time": {
+     "kind": "NONE",
+     "value": null,
+     "offset": null,
+     "unit": null,
+     "tense": "CURRENT"
+    },
+    "is_correction": false,
+    "quote": "I work at Delta Print"
+   },
+   {
+    "session": 2,
+    "turn_index": 1,
+    "subject": "Yusuf",
+    "fact_text": "Yusuf no longer works at Delta Print.",
+    "attribute_key": "employer",
+    "polarity": "NEG",
+    "mode": "EXPLICIT",
+    "is_event": false,
+    "entities_mentioned": [
+     {
+      "name": "Delta Print",
+      "entity_type": "ORG",
+      "relation": null
+     }
+    ],
+    "time": {
+     "kind": "NONE",
+     "value": null,
+     "offset": null,
+     "unit": null,
+     "tense": "CURRENT"
+    },
+    "is_correction": false,
+    "quote": "I don't work at Delta Print anymore"
+   }
+  ],
+  "relations": {
+   "Yusuf no longer works at Delta Print.": {
+    "relation": "UPDATES",
+    "target": "Delta"
+   }
+  }
+ },
+ "expected": {
+  "memories": [
+   {
+    "subject": "Yusuf",
+    "contains": "Delta",
+    "polarity": "POS",
+    "status": "SUPERSEDED",
+    "valid_to": "*"
+   },
+   {
+    "subject": "Yusuf",
+    "contains": "Delta",
+    "polarity": "NEG",
+    "status": "ACTIVE"
+   }
+  ],
+  "current": [],
+  "absent": [
+   {
+    "subject": "Yusuf",
+    "contains": "Delta",
+    "polarity": "POS"
+   }
+  ]
+ }
+}

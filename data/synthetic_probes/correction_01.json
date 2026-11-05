@@ -1,0 +1,122 @@
+{
+ "conversation_id": "probe-correction_01",
+ "probe_id": "correction_01",
+ "case": "in_session_correction",
+ "description": "Pune, sorry, I meant Mumbai.",
+ "speakers": [
+  "Neha",
+  "Sam"
+ ],
+ "sessions": [
+  {
+   "ts": "2023-04-04T19:00:00",
+   "turns": [
+    {
+     "speaker": "Sam",
+     "text": "Where are you based these days?"
+    },
+    {
+     "speaker": "Neha",
+     "text": "I live in Pune now."
+    },
+    {
+     "speaker": "Sam",
+     "text": "Pune, nice!"
+    },
+    {
+     "speaker": "Neha",
+     "text": "Pune, sorry, I meant Mumbai. I always mix them up when I'm tired."
+    }
+   ]
+  }
+ ],
+ "scripted": {
+  "extraction": [
+   {
+    "session": 1,
+    "turn_index": 2,
+    "subject": "Neha",
+    "fact_text": "Neha lives in Pune.",
+    "attribute_key": "residence",
+    "polarity": "POS",
+    "mode": "EXPLICIT",
+    "is_event": false,
+    "entities_mentioned": [
+     {
+      "name": "Pune",
+      "entity_type": "PLACE",
+      "relation": null
+     }
+    ],
+    "time": {
+     "kind": "NONE",
+     "value": null,
+     "offset": null,
+     "unit": null,
+     "tense": "CURRENT"
+    },
+    "is_correction": false,
+    "quote": "I live in Pune now"
+   },
+   {
+    "session": 1,
+    "turn_index": 4,
+    "subject": "Neha",
+    "fact_text": "Neha lives in Mumbai.",
+    "attribute_key": "residence",
+    "polarity": "POS",
+    "mode": "EXPLICIT",
+    "is_event": false,
+    "entities_mentioned": [
+     {
+      "name": "Mumbai",
+      "entity_type": "PLACE",
+      "relation": null
+     }
+    ],
+    "time": {
+     "kind": "NONE",
+     "value": null,
+     "offset": null,
+     "unit": null,
+     "tense": "CURRENT"
+    },
+    "is_correction": true,
+    "quote": "sorry, I meant Mumbai"
+   }
+  ],
+  "relations": {
+   "Neha lives in Mumbai.": {
+    "relation": "CORRECTS",
+    "target": "Pune"
+   }
+  }
+ },
+ "expected": {
+  "memories": [
+   {
+    "subject": "Neha",
+    "contains": "Pune",
+    "attribute_key": "residence",
+    "status": "RETRACTED"
+   },
+   {
+    "subject": "Neha",
+    "contains": "Mumbai",
+    "attribute_key": "residence",
+    "status": "ACTIVE",
+    "valid_to": null
+   }
+  ],
+  "current": [
+   {
+    "subject": "Neha",
+    "attribute_key": "residence",
+    "contains": [
+     "Mumbai"
+    ]
+   }
+  ],
+  "absent": []
+ }
+}

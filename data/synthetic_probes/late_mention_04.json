@@ -1,0 +1,115 @@
+{
+ "conversation_id": "probe-late_mention_04",
+ "probe_id": "late_mention_04",
+ "case": "late_mention",
+ "description": "A 2015 barista job must not replace the current nursing job.",
+ "speakers": [
+  "Kenji",
+  "Mara"
+ ],
+ "sessions": [
+  {
+   "ts": "2023-04-11T07:45:00",
+   "turns": [
+    {
+     "speaker": "Mara",
+     "text": "Any plans this weekend?"
+    },
+    {
+     "speaker": "Kenji",
+     "text": "As a nurse I barely get weekends off."
+    }
+   ]
+  },
+  {
+   "ts": "2023-07-30T21:10:00",
+   "turns": [
+    {
+     "speaker": "Mara",
+     "text": "How do you stand all day?"
+    },
+    {
+     "speaker": "Kenji",
+     "text": "In 2015 I was a barista, which is how I learned to stay on my feet all day."
+    }
+   ]
+  }
+ ],
+ "scripted": {
+  "extraction": [
+   {
+    "session": 1,
+    "turn_index": 2,
+    "subject": "Kenji",
+    "fact_text": "Kenji works as a nurse.",
+    "attribute_key": "job_title",
+    "polarity": "POS",
+    "mode": "EXPLICIT",
+    "is_event": false,
+    "entities_mentioned": [],
+    "time": {
+     "kind": "NONE",
+     "value": null,
+     "offset": null,
+     "unit": null,
+     "tense": "CURRENT"
+    },
+    "is_correction": false,
+    "quote": "As a nurse I barely get weekends off"
+   },
+   {
+    "session": 2,
+    "turn_index": 2,
+    "subject": "Kenji",
+    "fact_text": "Kenji was a barista in 2015.",
+    "attribute_key": "job_title",
+    "polarity": "POS",
+    "mode": "EXPLICIT",
+    "is_event": false,
+    "entities_mentioned": [],
+    "time": {
+     "kind": "ABSOLUTE",
+     "value": "2015",
+     "offset": null,
+     "unit": null,
+     "tense": "PAST_ENDED"
+    },
+    "is_correction": false,
+    "quote": "In 2015 I was a barista"
+   }
+  ],
+  "relations": {
+   "Kenji was a barista in 2015.": {
+    "relation": "HISTORICAL",
+    "target": "nurse"
+   }
+  }
+ },
+ "expected": {
+  "memories": [
+   {
+    "subject": "Kenji",
+    "contains": "nurse",
+    "attribute_key": "job_title",
+    "status": "ACTIVE",
+    "valid_to": null
+   },
+   {
+    "subject": "Kenji",
+    "contains": "barista",
+    "valid_from": "2015-01-01",
+    "valid_to": "2015-12-31"
+   }
+  ],
+  "current": [
+   {
+    "subject": "Kenji",
+    "attribute_key": "job_title",
+    "contains": [
+     "nurse"
+    ]
+   }
+  ],
+  "absent": []
+ }
+}
