@@ -1,78 +1,95 @@
 # Closed single-valued attribute keys (SPEC §3.1).
-# A fact that maps to one of these keys has exactly one ACTIVE value per subject at a time.
+#
+# A fact that maps to one of these keys has at most one current (open-interval) value per subject.
 # Anything else gets attribute_key = NULL and is multi-valued.
-# Keys ending in ":<...>" are templates; the extractor fills the slot with a short
-# lowercase snake_case noun, e.g. favorite:book, primary_tool:note_taking.
+#
+# Per key:
+#   description  one line, shown to the extractor
+#   paraphrases  3-5 short phrasings that SHOULD map to the key
+#   not          phrasings that must NOT map to it (temporary or unrelated states)
+#
+# Keys written "name:<slot>" are templates. The extractor fills the slot with a short lowercase
+# snake_case noun (favorite:book, primary_tool:note_taking). A bare template is invalid.
 
 residence:
-  description: Where the subject currently lives (city, region or country).
-  examples:
-    - "I live in Mumbai now."
-    - "We moved to Seattle last spring."
-    - "My place in Berlin is tiny."
-    - "I'm based out of Austin these days."
+  description: The place the subject currently lives (city, region or country).
+  paraphrases: ["lives in", "based in", "moved to", "settled in", "relocated to"]
+  not:
+    - "visiting"
+    - "in Pune this week for a wedding"
+    - "on a business trip to Berlin"
+    - "vacationing in Goa"
+    - "grew up in Lagos (that is hometown)"
 
 hometown:
-  description: Where the subject grew up or is originally from.
-  examples:
-    - "I grew up in Pune."
-    - "I'm originally from a small town in Ohio."
-    - "Back home in Lagos we'd do this every summer."
+  description: The place the subject grew up or is originally from.
+  paraphrases: ["grew up in", "originally from", "born and raised in", "native of"]
+  not:
+    - "lives in (that is residence)"
+    - "went to college in (that is school)"
+    - "has family in"
 
 employer:
   description: The organization the subject currently works for.
-  examples:
-    - "I work at Acme Corp."
-    - "I just joined Stripe."
-    - "My company, a small design studio, ..."
-    - "I left Google and started at a startup called Nimbus."
+  paraphrases: ["works at", "works for", "joined", "employed by", "got a job at"]
+  not:
+    - "interviewing at"
+    - "freelancing for a client"
+    - "volunteers at"
+    - "used to work at (past, not current)"
 
 job_title:
   description: The subject's current role or occupation.
-  examples:
-    - "I'm a nurse."
-    - "I got promoted to senior engineer."
-    - "I've been working as a counselor."
+  paraphrases: ["works as", "is a", "got promoted to", "role is", "became a"]
+  not:
+    - "wants to become"
+    - "studying to be"
+    - "covering for a colleague"
 
 school:
   description: The school, college or university the subject currently attends or most recently attended.
-  examples:
-    - "I'm a junior at UCLA."
-    - "I started my master's at ETH Zurich."
-    - "I'm taking classes at the community college."
+  paraphrases: ["studies at", "attends", "enrolled at", "is a student at", "started a degree at"]
+  not:
+    - "visited the campus of"
+    - "teaches at"
+    - "took a one-day workshop at"
 
 relationship_status:
   description: The subject's current relationship status (single, dating, engaged, married, divorced, widowed).
-  examples:
-    - "I'm single again."
-    - "We got engaged last week!"
-    - "My husband and I ..."
-    - "Since the divorce ..."
+  paraphrases: ["is single", "is dating", "got engaged", "is married", "got divorced"]
+  not:
+    - "is going on a date (a single event)"
+    - "has a crush on"
+    - "is attending a friend's wedding"
 
 partner:
-  description: The name or identity of the subject's current romantic partner or spouse.
-  examples:
-    - "My girlfriend Priya ..."
-    - "I've been seeing someone named Alex."
-    - "My wife, Dana, ..."
+  description: The identity of the subject's current romantic partner or spouse.
+  paraphrases: ["is dating", "is married to", "partner is", "girlfriend is", "boyfriend is"]
+  not:
+    - "is friends with"
+    - "went on a date with (single event)"
+    - "has a crush on"
 
 diet:
   description: The subject's current dietary pattern (vegan, vegetarian, keto, pescatarian, gluten-free, ...).
-  examples:
-    - "I went vegan in January."
-    - "I'm doing keto now."
-    - "I stopped eating meat."
+  paraphrases: ["is vegan", "is vegetarian", "follows a keto diet", "stopped eating meat", "went gluten-free"]
+  not:
+    - "tried a vegan restaurant once"
+    - "is fasting for a day"
+    - "has an allergy to"
 
 "favorite:<category>":
-  description: The subject's single current favorite in a category (book, movie, food, band, color, sport, ...).
-  examples:
-    - "My favorite book is Dune."  # favorite:book
-    - "Hands down my favorite food is ramen."  # favorite:food
-    - "Pink Floyd is my all-time favorite band."  # favorite:band
+  description: The subject's single current favorite in a category such as book, movie, food, band, color or sport.
+  paraphrases: ["favorite is", "absolute favorite", "all-time favorite", "can't get enough of", "loves most"]
+  not:
+    - "liked a thing once"
+    - "is currently reading (not a favorite)"
+    - "wants to try"
 
 "primary_tool:<purpose>":
-  description: The main tool, app or device the subject currently uses for a purpose.
-  examples:
-    - "I use Notion for all my notes."  # primary_tool:note_taking
-    - "I switched from Strava to Garmin Connect for tracking runs."  # primary_tool:run_tracking
-    - "I edit everything in DaVinci Resolve."  # primary_tool:video_editing
+  description: The main tool, app or device the subject currently uses for a purpose (note_taking, run_tracking, video_editing, ...).
+  paraphrases: ["uses for", "switched to", "relies on", "does all their work in", "moved from X to"]
+  not:
+    - "tried out"
+    - "is evaluating"
+    - "used once for a demo"
