@@ -81,3 +81,33 @@ class FakeClock:
     def sleep(self, s: float) -> None:
         self.slept.append(s)
         self.now += s
+
+
+class FakeEmbedder:
+    """Deterministic bag-of-words embedder: shared words -> high cosine similarity."""
+
+    dim = 256
+
+    def _vec(self, text: str):
+        import hashlib
+        import re
+
+        import numpy as np
+
+        v = np.zeros(self.dim, dtype=np.float32)
+        for w in re.findall(r"[a-z0-9]+", text.lower()):
+            v[int(hashlib.md5(w.encode()).hexdigest(), 16) % self.dim] += 1.0
+        n = np.linalg.norm(v)
+        return v / n if n else v
+
+    def encode_passages(self, texts):
+        import numpy as np
+
+        return (
+            np.stack([self._vec(t) for t in texts])
+            if texts
+            else np.zeros((0, self.dim), np.float32)
+        )
+
+    encode_queries = encode_passages
+    encode = encode_passages
