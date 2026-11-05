@@ -26,7 +26,13 @@ class LocalLLMConfig:
     base_url: str = field(
         default_factory=lambda: _env("OLLAMA_BASE_URL", "http://localhost:11434/v1")
     )
+    # Canonical model tag: used in cache keys, logs and reports.
     model: str = field(default_factory=lambda: _env("OLLAMA_MODEL", "qwen2.5:7b-instruct-q4_K_M"))
+    # Tag actually requested: an alias of `model` with num_ctx=32768 baked in by
+    # scripts/setup_ollama.sh, because Ollama's /v1 endpoint may ignore per-request num_ctx.
+    served_model: str = field(
+        default_factory=lambda: _env("OLLAMA_SERVED_MODEL", "chronos-qwen2.5-7b-32k")
+    )
     quantization: str = "q4_K_M"
     num_ctx: int = 32768
     temperature: float = 0.0
