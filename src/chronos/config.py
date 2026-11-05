@@ -120,4 +120,14 @@ class RetrievalConfig:
     episode_window: int = 1
 
 
+@dataclass(frozen=True)
+class IngestionConfig:
+    chunk_turns: int = 8  # turns extracted per LLM call
+    context_turns: int = 4  # previous turns shown read-only
+    quote_fuzzy_threshold: float = 90.0  # rapidfuzz partial_ratio for non-exact quotes
+    candidate_top_k: int = 5  # same-subject ACTIVE memories for multi-valued facts
+    candidate_min_similarity: float = 0.0  # 0 = take the top-k regardless (SPEC); tune on dev
+    entity_similarity_threshold: float = 0.80  # tie-breaker only; tune on dev
+
+
 SEED = 42
