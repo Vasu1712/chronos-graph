@@ -22,6 +22,9 @@ uv run python -m eval.probes --mode live      # 30 probes against the real model
 uv run python scripts/audit_facts.py --ingest # dev conversation -> unlabelled CSV for hand audit
 ```
 
+Part 1 of 4: spec, scaffold, storage layer, model clients, dataset loaders and eval manifests.
+No benchmark results have been produced yet.
+
 ## Quick start
 
 ```bash

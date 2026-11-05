@@ -5,6 +5,10 @@ from __future__ import annotations
 import logging
 from pathlib import Path
 
+"""Command-line entry point (`chronos`)."""
+
+from __future__ import annotations
+
 import typer
 
 app = typer.Typer(no_args_is_help=True, add_completion=False)
@@ -117,6 +121,11 @@ def ingest_demo(
         Path(f"{path}{suffix}").unlink(missing_ok=True)
     ingest(REPO_ROOT / "data" / "demo_sessions" / "demo.json", db=path, scripted=scripted,
            embedder="hash" if scripted else "bge", verbose=False)  # fmt: skip
+@app.command("ingest-demo")
+def ingest_demo() -> None:
+    """Ingest data/demo_sessions (implemented in Part 2)."""
+    typer.echo("ingest-demo: not implemented yet (Part 2)", err=True)
+    raise typer.Exit(1)
 
 
 @app.command("eval")
