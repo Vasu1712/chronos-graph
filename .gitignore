@@ -1,0 +1,28 @@
+# secrets
+.env
+
+# raw datasets (checksums are tracked)
+data/raw/*
+!data/raw/CHECKSUMS
+!data/raw/.gitkeep
+
+# databases, except the shared LLM response cache
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm
+!artifacts/llm_cache.sqlite
+
+# python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+dist/
+build/
+
+# os / editors
+.DS_Store
+.vscode/
+.idea/
