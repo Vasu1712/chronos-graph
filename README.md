@@ -7,8 +7,20 @@ The architecture, schema and write rules are in [SPEC.md](SPEC.md).
 
 ## Status
 
-Part 1 of 4: spec, scaffold, storage layer, model clients, dataset loaders and eval manifests.
+- Part 1: spec, scaffold, storage layer, model clients, dataset loaders, eval manifests.
+- Part 2: ingestion engine (ontology, temporal resolver, extractor, entity resolution, state
+  resolver, pipeline), 30 synthetic probes, restart/idempotence tests, fact audit tool.
+
 No benchmark results have been produced yet.
+
+## Ingestion
+
+```bash
+uv run python -m chronos.cli ingest data/synthetic_probes/update_01.json --db /tmp/x.sqlite
+uv run python -m chronos.cli ingest data/demo_sessions/demo.json --scripted --embedder hash  # offline
+uv run python -m eval.probes --mode live      # 30 probes against the real model, per-case report
+uv run python scripts/audit_facts.py --ingest # dev conversation -> unlabelled CSV for hand audit
+```
 
 ## Quick start
 
