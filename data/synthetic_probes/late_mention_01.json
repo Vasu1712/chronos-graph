@@ -1,0 +1,130 @@
+{
+ "conversation_id": "probe-late_mention_01",
+ "probe_id": "late_mention_01",
+ "case": "late_mention",
+ "description": "Delhi 2019 mentioned late must not replace Bengaluru.",
+ "speakers": [
+  "Priya",
+  "Rahul"
+ ],
+ "sessions": [
+  {
+   "ts": "2023-03-05T10:00:00",
+   "turns": [
+    {
+     "speaker": "Rahul",
+     "text": "How is the new job treating you?"
+    },
+    {
+     "speaker": "Priya",
+     "text": "Work has been hectic since I settled in Bengaluru."
+    }
+   ]
+  },
+  {
+   "ts": "2023-06-10T18:30:00",
+   "turns": [
+    {
+     "speaker": "Rahul",
+     "text": "Did you ever live up north?"
+    },
+    {
+     "speaker": "Priya",
+     "text": "Yes, back in 2019 I lived in Delhi for a year, the winters were brutal."
+    }
+   ]
+  }
+ ],
+ "scripted": {
+  "extraction": [
+   {
+    "session": 1,
+    "turn_index": 2,
+    "subject": "Priya",
+    "fact_text": "Priya lives in Bengaluru.",
+    "attribute_key": "residence",
+    "polarity": "POS",
+    "mode": "EXPLICIT",
+    "is_event": false,
+    "entities_mentioned": [
+     {
+      "name": "Bengaluru",
+      "entity_type": "PLACE",
+      "relation": null
+     }
+    ],
+    "time": {
+     "kind": "NONE",
+     "value": null,
+     "offset": null,
+     "unit": null,
+     "tense": "CURRENT"
+    },
+    "is_correction": false,
+    "quote": "since I settled in Bengaluru"
+   },
+   {
+    "session": 2,
+    "turn_index": 2,
+    "subject": "Priya",
+    "fact_text": "Priya lived in Delhi in 2019.",
+    "attribute_key": "residence",
+    "polarity": "POS",
+    "mode": "EXPLICIT",
+    "is_event": false,
+    "entities_mentioned": [
+     {
+      "name": "Delhi",
+      "entity_type": "PLACE",
+      "relation": null
+     }
+    ],
+    "time": {
+     "kind": "ABSOLUTE",
+     "value": "2019",
+     "offset": null,
+     "unit": null,
+     "tense": "PAST_ENDED"
+    },
+    "is_correction": false,
+    "quote": "back in 2019 I lived in Delhi for a year"
+   }
+  ],
+  "relations": {
+   "Priya lived in Delhi in 2019.": {
+    "relation": "HISTORICAL",
+    "target": "Bengaluru"
+   }
+  }
+ },
+ "expected": {
+  "memories": [
+   {
+    "subject": "Priya",
+    "contains": "Bengaluru",
+    "attribute_key": "residence",
+    "status": "ACTIVE",
+    "valid_to": null
+   },
+   {
+    "subject": "Priya",
+    "contains": "Delhi",
+    "attribute_key": "residence",
+    "valid_from": "2019-01-01",
+    "valid_from_precision": "YEAR",
+    "valid_to": "2019-12-31",
+    "valid_to_precision": "YEAR"
+   }
+  ],
+  "current": [
+   {
+    "subject": "Priya",
+    "attribute_key": "residence",
+    "contains": [
+     "Bengaluru"
+    ]
+   }
+  ],
+  "absent": []
+ }
+}

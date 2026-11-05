@@ -1,0 +1,106 @@
+{
+ "conversation_id": "probe-correction_03",
+ "probe_id": "correction_03",
+ "case": "in_session_correction",
+ "description": "Vegan corrected to vegetarian.",
+ "speakers": [
+  "Ravi",
+  "Ella"
+ ],
+ "sessions": [
+  {
+   "ts": "2023-05-30T13:00:00",
+   "turns": [
+    {
+     "speaker": "Ravi",
+     "text": "I've been vegan for a year now."
+    },
+    {
+     "speaker": "Ella",
+     "text": "Impressive."
+    },
+    {
+     "speaker": "Ravi",
+     "text": "Actually no, vegetarian, I still eat cheese."
+    }
+   ]
+  }
+ ],
+ "scripted": {
+  "extraction": [
+   {
+    "session": 1,
+    "turn_index": 1,
+    "subject": "Ravi",
+    "fact_text": "Ravi is vegan.",
+    "attribute_key": "diet",
+    "polarity": "POS",
+    "mode": "EXPLICIT",
+    "is_event": false,
+    "entities_mentioned": [],
+    "time": {
+     "kind": "NONE",
+     "value": null,
+     "offset": null,
+     "unit": null,
+     "tense": "CURRENT"
+    },
+    "is_correction": false,
+    "quote": "I've been vegan for a year now"
+   },
+   {
+    "session": 1,
+    "turn_index": 3,
+    "subject": "Ravi",
+    "fact_text": "Ravi is vegetarian.",
+    "attribute_key": "diet",
+    "polarity": "POS",
+    "mode": "EXPLICIT",
+    "is_event": false,
+    "entities_mentioned": [],
+    "time": {
+     "kind": "NONE",
+     "value": null,
+     "offset": null,
+     "unit": null,
+     "tense": "CURRENT"
+    },
+    "is_correction": true,
+    "quote": "Actually no, vegetarian, I still eat cheese"
+   }
+  ],
+  "relations": {
+   "Ravi is vegetarian.": {
+    "relation": "CORRECTS",
+    "target": "vegan"
+   }
+  }
+ },
+ "expected": {
+  "memories": [
+   {
+    "subject": "Ravi",
+    "contains": "vegan",
+    "attribute_key": "diet",
+    "status": "RETRACTED"
+   },
+   {
+    "subject": "Ravi",
+    "contains": "vegetarian",
+    "attribute_key": "diet",
+    "status": "ACTIVE",
+    "valid_to": null
+   }
+  ],
+  "current": [
+   {
+    "subject": "Ravi",
+    "attribute_key": "diet",
+    "contains": [
+     "vegetarian"
+    ]
+   }
+  ],
+  "absent": []
+ }
+}

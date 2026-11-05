@@ -1,0 +1,129 @@
+{
+ "conversation_id": "probe-out_of_order_01",
+ "probe_id": "out_of_order_01",
+ "case": "out_of_order_dates",
+ "description": "Denver (March 2021) told after Austin (June 2022).",
+ "speakers": [
+  "Ines",
+  "Paul"
+ ],
+ "sessions": [
+  {
+   "ts": "2023-07-10T10:00:00",
+   "turns": [
+    {
+     "speaker": "Ines",
+     "text": "I moved to Austin in June 2022 and still love it."
+    },
+    {
+     "speaker": "Paul",
+     "text": "Austin suits you."
+    }
+   ]
+  },
+  {
+   "ts": "2023-09-02T10:00:00",
+   "turns": [
+    {
+     "speaker": "Paul",
+     "text": "Was Austin your first move?"
+    },
+    {
+     "speaker": "Ines",
+     "text": "No, I moved to Denver in March 2021, that was my first big move."
+    }
+   ]
+  }
+ ],
+ "scripted": {
+  "extraction": [
+   {
+    "session": 1,
+    "turn_index": 1,
+    "subject": "Ines",
+    "fact_text": "Ines moved to Austin.",
+    "attribute_key": "residence",
+    "polarity": "POS",
+    "mode": "EXPLICIT",
+    "is_event": false,
+    "entities_mentioned": [
+     {
+      "name": "Austin",
+      "entity_type": "PLACE",
+      "relation": null
+     }
+    ],
+    "time": {
+     "kind": "ABSOLUTE",
+     "value": "2022-06",
+     "offset": null,
+     "unit": null,
+     "tense": "CURRENT"
+    },
+    "is_correction": false,
+    "quote": "I moved to Austin in June 2022"
+   },
+   {
+    "session": 2,
+    "turn_index": 2,
+    "subject": "Ines",
+    "fact_text": "Ines moved to Denver.",
+    "attribute_key": "residence",
+    "polarity": "POS",
+    "mode": "EXPLICIT",
+    "is_event": false,
+    "entities_mentioned": [
+     {
+      "name": "Denver",
+      "entity_type": "PLACE",
+      "relation": null
+     }
+    ],
+    "time": {
+     "kind": "ABSOLUTE",
+     "value": "2021-03",
+     "offset": null,
+     "unit": null,
+     "tense": "CURRENT"
+    },
+    "is_correction": false,
+    "quote": "I moved to Denver in March 2021"
+   }
+  ],
+  "relations": {
+   "Ines moved to Denver.": {
+    "relation": "UPDATES",
+    "target": "Austin"
+   }
+  }
+ },
+ "expected": {
+  "memories": [
+   {
+    "subject": "Ines",
+    "contains": "Austin",
+    "attribute_key": "residence",
+    "status": "ACTIVE",
+    "valid_from": "2022-06-01",
+    "valid_to": null
+   },
+   {
+    "subject": "Ines",
+    "contains": "Denver",
+    "valid_from": "2021-03-01",
+    "valid_from_precision": "MONTH",
+    "valid_to": "*"
+   }
+  ],
+  "current": [
+   {
+    "subject": "Ines",
+    "attribute_key": "residence",
+    "contains": [
+     "Austin"
+    ]
+   }
+  ],
+  "absent": []
+ }
+}

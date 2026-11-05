@@ -75,3 +75,28 @@ def top_k(query: np.ndarray, matrix: np.ndarray, k: int) -> list[tuple[int, floa
     idx = np.argpartition(-scores, k - 1)[:k]
     idx = idx[np.argsort(-scores[idx], kind="stable")]
     return [(int(i), float(scores[i])) for i in idx]
+
+
+class HashingEmbedder:
+    """Deterministic bag-of-words embedder for offline tests and scripted demos (not for eval)."""
+
+    def __init__(self, dim: int = 256) -> None:
+        self.dim = dim
+
+    def _vec(self, text: str) -> np.ndarray:
+        import hashlib
+        import re
+
+        v = np.zeros(self.dim, dtype=np.float32)
+        for w in re.findall(r"[a-z0-9]+", text.lower()):
+            v[int(hashlib.md5(w.encode()).hexdigest(), 16) % self.dim] += 1.0
+        n = np.linalg.norm(v)
+        return v / n if n else v
+
+    def encode(self, texts: Sequence[str]) -> np.ndarray:
+        if len(texts) == 0:
+            return np.zeros((0, self.dim), dtype=np.float32)
+        return np.stack([self._vec(t) for t in texts])
+
+    encode_passages = encode
+    encode_queries = encode

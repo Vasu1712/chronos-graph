@@ -1,0 +1,116 @@
+{
+ "conversation_id": "probe-out_of_order_03",
+ "probe_id": "out_of_order_03",
+ "case": "out_of_order_dates",
+ "description": "Software engineer (2019) told after team lead (April).",
+ "speakers": [
+  "Lucia",
+  "Ken"
+ ],
+ "sessions": [
+  {
+   "ts": "2023-05-05T18:00:00",
+   "turns": [
+    {
+     "speaker": "Lucia",
+     "text": "I became a team lead in April."
+    },
+    {
+     "speaker": "Ken",
+     "text": "Well deserved!"
+    }
+   ]
+  },
+  {
+   "ts": "2023-08-08T18:00:00",
+   "turns": [
+    {
+     "speaker": "Ken",
+     "text": "How long have you been coding?"
+    },
+    {
+     "speaker": "Lucia",
+     "text": "I became a software engineer in 2019 after my bootcamp."
+    }
+   ]
+  }
+ ],
+ "scripted": {
+  "extraction": [
+   {
+    "session": 1,
+    "turn_index": 1,
+    "subject": "Lucia",
+    "fact_text": "Lucia works as a team lead.",
+    "attribute_key": "job_title",
+    "polarity": "POS",
+    "mode": "EXPLICIT",
+    "is_event": false,
+    "entities_mentioned": [],
+    "time": {
+     "kind": "ABSOLUTE",
+     "value": "2023-04",
+     "offset": null,
+     "unit": null,
+     "tense": "CURRENT"
+    },
+    "is_correction": false,
+    "quote": "I became a team lead in April"
+   },
+   {
+    "session": 2,
+    "turn_index": 2,
+    "subject": "Lucia",
+    "fact_text": "Lucia works as a software engineer.",
+    "attribute_key": "job_title",
+    "polarity": "POS",
+    "mode": "EXPLICIT",
+    "is_event": false,
+    "entities_mentioned": [],
+    "time": {
+     "kind": "ABSOLUTE",
+     "value": "2019",
+     "offset": null,
+     "unit": null,
+     "tense": "CURRENT"
+    },
+    "is_correction": false,
+    "quote": "I became a software engineer in 2019"
+   }
+  ],
+  "relations": {
+   "Lucia works as a software engineer.": {
+    "relation": "UPDATES",
+    "target": "team lead"
+   }
+  }
+ },
+ "expected": {
+  "memories": [
+   {
+    "subject": "Lucia",
+    "contains": "team lead",
+    "attribute_key": "job_title",
+    "status": "ACTIVE",
+    "valid_from": "2023-04-01",
+    "valid_to": null
+   },
+   {
+    "subject": "Lucia",
+    "contains": "software engineer",
+    "valid_from": "2019-01-01",
+    "valid_to": "*"
+   }
+  ],
+  "current": [
+   {
+    "subject": "Lucia",
+    "attribute_key": "job_title",
+    "contains": [
+     "team lead"
+    ]
+   }
+  ],
+  "absent": []
+ }
+}

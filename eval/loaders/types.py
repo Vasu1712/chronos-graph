@@ -5,6 +5,9 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any
 
+from chronos.ingestion.types import Conversation, Session, Turn
+
+__all__ = ["Conversation", "QAItem", "Session", "Turn"]
 
 @dataclass(frozen=True)
 class Turn:

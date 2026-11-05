@@ -1,0 +1,128 @@
+{
+ "conversation_id": "probe-out_of_order_05",
+ "probe_id": "out_of_order_05",
+ "case": "out_of_order_dates",
+ "description": "A 2018 college told after the current master's.",
+ "speakers": [
+  "Tara",
+  "Vik"
+ ],
+ "sessions": [
+  {
+   "ts": "2023-09-12T15:00:00",
+   "turns": [
+    {
+     "speaker": "Tara",
+     "text": "I started my master's at Kingsbridge University in September."
+    },
+    {
+     "speaker": "Vik",
+     "text": "Good luck!"
+    }
+   ]
+  },
+  {
+   "ts": "2023-10-30T15:00:00",
+   "turns": [
+    {
+     "speaker": "Vik",
+     "text": "Where did you do your bachelor's?"
+    },
+    {
+     "speaker": "Tara",
+     "text": "I enrolled at Elmwood College in 2018 for my bachelor's."
+    }
+   ]
+  }
+ ],
+ "scripted": {
+  "extraction": [
+   {
+    "session": 1,
+    "turn_index": 1,
+    "subject": "Tara",
+    "fact_text": "Tara studies at Kingsbridge University.",
+    "attribute_key": "school",
+    "polarity": "POS",
+    "mode": "EXPLICIT",
+    "is_event": false,
+    "entities_mentioned": [
+     {
+      "name": "Kingsbridge University",
+      "entity_type": "ORG",
+      "relation": null
+     }
+    ],
+    "time": {
+     "kind": "ABSOLUTE",
+     "value": "2023-09",
+     "offset": null,
+     "unit": null,
+     "tense": "CURRENT"
+    },
+    "is_correction": false,
+    "quote": "I started my master's at Kingsbridge University in September"
+   },
+   {
+    "session": 2,
+    "turn_index": 2,
+    "subject": "Tara",
+    "fact_text": "Tara studied at Elmwood College.",
+    "attribute_key": "school",
+    "polarity": "POS",
+    "mode": "EXPLICIT",
+    "is_event": false,
+    "entities_mentioned": [
+     {
+      "name": "Elmwood College",
+      "entity_type": "ORG",
+      "relation": null
+     }
+    ],
+    "time": {
+     "kind": "ABSOLUTE",
+     "value": "2018",
+     "offset": null,
+     "unit": null,
+     "tense": "CURRENT"
+    },
+    "is_correction": false,
+    "quote": "I enrolled at Elmwood College in 2018"
+   }
+  ],
+  "relations": {
+   "Tara studied at Elmwood College.": {
+    "relation": "UPDATES",
+    "target": "Kingsbridge"
+   }
+  }
+ },
+ "expected": {
+  "memories": [
+   {
+    "subject": "Tara",
+    "contains": "Kingsbridge",
+    "attribute_key": "school",
+    "status": "ACTIVE",
+    "valid_from": "2023-09-01",
+    "valid_to": null
+   },
+   {
+    "subject": "Tara",
+    "contains": "Elmwood",
+    "valid_from": "2018-01-01",
+    "valid_to": "*"
+   }
+  ],
+  "current": [
+   {
+    "subject": "Tara",
+    "attribute_key": "school",
+    "contains": [
+     "Kingsbridge"
+    ]
+   }
+  ],
+  "absent": []
+ }
+}

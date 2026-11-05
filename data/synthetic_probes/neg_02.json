@@ -1,0 +1,114 @@
+{
+ "conversation_id": "probe-neg_02",
+ "probe_id": "neg_02",
+ "case": "neg_polarity",
+ "description": "I don't smoke anymore.",
+ "speakers": [
+  "Pedro",
+  "Ann"
+ ],
+ "sessions": [
+  {
+   "ts": "2022-12-01T22:00:00",
+   "turns": [
+    {
+     "speaker": "Pedro",
+     "text": "I smoke maybe half a pack a day, I know, I know."
+    },
+    {
+     "speaker": "Ann",
+     "text": "Pedro..."
+    }
+   ]
+  },
+  {
+   "ts": "2023-04-14T22:00:00",
+   "turns": [
+    {
+     "speaker": "Pedro",
+     "text": "I don't smoke anymore, three months clean!"
+    },
+    {
+     "speaker": "Ann",
+     "text": "So proud of you!"
+    }
+   ]
+  }
+ ],
+ "scripted": {
+  "extraction": [
+   {
+    "session": 1,
+    "turn_index": 1,
+    "subject": "Pedro",
+    "fact_text": "Pedro smokes about half a pack a day.",
+    "attribute_key": null,
+    "polarity": "POS",
+    "mode": "EXPLICIT",
+    "is_event": false,
+    "entities_mentioned": [],
+    "time": {
+     "kind": "NONE",
+     "value": null,
+     "offset": null,
+     "unit": null,
+     "tense": "CURRENT"
+    },
+    "is_correction": false,
+    "quote": "I smoke maybe half a pack a day"
+   },
+   {
+    "session": 2,
+    "turn_index": 1,
+    "subject": "Pedro",
+    "fact_text": "Pedro no longer smokes.",
+    "attribute_key": null,
+    "polarity": "NEG",
+    "mode": "EXPLICIT",
+    "is_event": false,
+    "entities_mentioned": [],
+    "time": {
+     "kind": "NONE",
+     "value": null,
+     "offset": null,
+     "unit": null,
+     "tense": "CURRENT"
+    },
+    "is_correction": false,
+    "quote": "I don't smoke anymore"
+   }
+  ],
+  "relations": {
+   "Pedro no longer smokes.": {
+    "relation": "UPDATES",
+    "target": "smokes"
+   }
+  }
+ },
+ "expected": {
+  "memories": [
+   {
+    "subject": "Pedro",
+    "contains": "smoke",
+    "polarity": "POS",
+    "status": "SUPERSEDED",
+    "valid_to": "*"
+   },
+   {
+    "subject": "Pedro",
+    "contains": "smoke",
+    "polarity": "NEG",
+    "status": "ACTIVE",
+    "valid_to": null
+   }
+  ],
+  "current": [],
+  "absent": [
+   {
+    "subject": "Pedro",
+    "contains": "smoke",
+    "polarity": "POS"
+   }
+  ]
+ }
+}

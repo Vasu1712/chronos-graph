@@ -253,3 +253,50 @@ Order key = `(session_ordinal, turn_index)`.
 - Judge: `gpt-oss-120b`, routed by `sha256(question_id) mod 2` to Groq or Cerebras so every
   system's answer to a question is judged by the same provider; wait on quota exhaustion
   rather than switch; provider recorded on every verdict.
+
+---
+
+## 8. Implementation notes (Part 2, ingestion)
+
+Decisions the sections above leave open. They refine the architecture; none changes it.
+
+**Extraction schema** (`chronos.ingestion.extractor`). Per fact: `turn_index, subject, fact_text,
+attribute_key, polarity, mode, is_event, entities_mentioned[{name, entity_type, relation}], time
+{kind, value, offset, unit, tense}, is_correction, quote`.
+- `is_event` separates point events (stored in `event_date`) from states (stored in `valid_*`).
+- `entities_mentioned` are objects so a PERSON's relation to the speaker is available for the
+  entity-merge guard.
+- `tense = FUTURE_PLAN` facts never carry an `attribute_key`: a plan does not change a current value.
+
+**Dates.** Memory dates are stored as `YYYY-MM-DD`; `SESSION` and `BEFORE` use the session date.
+Spans: `RELATIVE n WEEK` = `session − 7n days` .. `+6 days`; `RELATIVE n MONTH` = the calendar
+month shifted by n; `ABSOLUTE` accepts `YYYY`, `YYYY-MM`, `YYYY-MM-DD`; anything else is `UNKNOWN`.
+
+**Entities.** `entities.descriptor` holds a JSON object `{"relation", "anchor", "text"}`, where
+`relation` is the canonical relation to `anchor` (the speaker who introduced the person).
+
+**Statuses.** A fact with a closed interval (HISTORICAL, or NEW with `PAST_ENDED`) is stored
+`ACTIVE` with a non-null `valid_to`, so CURRENT = `ACTIVE AND valid_to IS NULL`. Candidate lookup
+returns all ACTIVE same-key facts (open first); UPDATES / CORRECTS / NEG closing need an open target.
+
+**Deterministic normalization of the classifier's choice** (`chronos.ingestion.resolver`):
+1. no valid target label → the only candidate if there is exactly one, else NEW;
+2. `is_correction` + UPDATES → CORRECTS;
+3. CONFLICT whose target is from a different turn → UPDATES;
+4. DUPLICATE with opposite polarity → UPDATES;
+5. NEG fact + POS target via UPDATES → NEGATES: the target becomes SUPERSEDED with `valid_to` from
+   the NEG fact, and the NEG fact is inserted ACTIVE, linked by `supersedes_id`;
+6. target not open → the open same-key candidate, else NEW;
+7. UPDATES by a fact whose own interval is closed → HISTORICAL (an ended state never replaces the
+   current one; needed because SESSION precision makes `compare` INCOMPARABLE);
+8. HISTORICAL with an open interval → the time is re-resolved as `PAST_ENDED`.
+
+**Transactions.** Tier 1 commits first. The Tier 2 transaction (`BEGIN IMMEDIATE`) stays open
+during the classifier calls of that session so in-session facts see each other; a crash rolls the
+whole session back. All ids (memories, entities, conflict sets) are deterministic.
+
+**Episode text.** For LoCoMo turns that share an image, `episodes.text` is the utterance followed
+by `[shares a photo: <blip_caption>]`, so the caption is searchable and quotable.
+
+**Known limitation.** Short-lived states ("in Pune this week") stay open-ended; nothing closes them
+when the week is over.

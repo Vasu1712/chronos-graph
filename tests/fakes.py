@@ -81,3 +81,9 @@ class FakeClock:
     def sleep(self, s: float) -> None:
         self.slept.append(s)
         self.now += s
+
+
+def FakeEmbedder():  # noqa: N802 - kept as a factory for existing tests
+    from chronos.llm.embed import HashingEmbedder
+
+    return HashingEmbedder()

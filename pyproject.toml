@@ -17,6 +17,7 @@ dependencies = [
     "tokenizers>=0.19",
     "huggingface-hub>=0.23",
     "typer>=0.12",
+    "rapidfuzz>=3.14.6",
 ]
 
 [dependency-groups]
@@ -51,3 +52,6 @@ src = ["src", "."]
 [tool.ruff.lint]
 select = ["E", "F", "I", "B", "UP", "SIM"]
 ignore = ["E501"]
+
+[tool.ruff.lint.per-file-ignores]
+"src/chronos/cli.py" = ["B008"]  # typer.Option/Argument defaults are the typer idiom

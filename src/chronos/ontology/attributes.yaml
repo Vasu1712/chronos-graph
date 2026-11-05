@@ -1,4 +1,98 @@
 # Closed single-valued attribute keys (SPEC §3.1).
+#
+# A fact that maps to one of these keys has at most one current (open-interval) value per subject.
+# Anything else gets attribute_key = NULL and is multi-valued.
+#
+# Per key:
+#   description  one line, shown to the extractor
+#   paraphrases  3-5 short phrasings that SHOULD map to the key
+#   not          phrasings that must NOT map to it (temporary or unrelated states)
+#
+# Keys written "name:<slot>" are templates. The extractor fills the slot with a short lowercase
+# snake_case noun (favorite:book, primary_tool:note_taking). A bare template is invalid.
+
+residence:
+  description: The place the subject currently lives (city, region or country).
+  paraphrases: ["lives in", "based in", "moved to", "settled in", "relocated to"]
+  not:
+    - "visiting"
+    - "in Pune this week for a wedding"
+    - "on a business trip to Berlin"
+    - "vacationing in Goa"
+    - "grew up in Lagos (that is hometown)"
+
+hometown:
+  description: The place the subject grew up or is originally from.
+  paraphrases: ["grew up in", "originally from", "born and raised in", "native of"]
+  not:
+    - "lives in (that is residence)"
+    - "went to college in (that is school)"
+    - "has family in"
+
+employer:
+  description: The organization the subject currently works for.
+  paraphrases: ["works at", "works for", "joined", "employed by", "got a job at"]
+  not:
+    - "interviewing at"
+    - "freelancing for a client"
+    - "volunteers at"
+    - "used to work at (past, not current)"
+
+job_title:
+  description: The subject's current role or occupation.
+  paraphrases: ["works as", "is a", "got promoted to", "role is", "became a"]
+  not:
+    - "wants to become"
+    - "studying to be"
+    - "covering for a colleague"
+
+school:
+  description: The school, college or university the subject currently attends or most recently attended.
+  paraphrases: ["studies at", "attends", "enrolled at", "is a student at", "started a degree at"]
+  not:
+    - "visited the campus of"
+    - "teaches at"
+    - "took a one-day workshop at"
+
+relationship_status:
+  description: The subject's current relationship status (single, dating, engaged, married, divorced, widowed).
+  paraphrases: ["is single", "is dating", "got engaged", "is married", "got divorced"]
+  not:
+    - "is going on a date (a single event)"
+    - "has a crush on"
+    - "is attending a friend's wedding"
+
+partner:
+  description: The identity of the subject's current romantic partner or spouse.
+  paraphrases: ["is dating", "is married to", "partner is", "girlfriend is", "boyfriend is"]
+  not:
+    - "is friends with"
+    - "went on a date with (single event)"
+    - "has a crush on"
+
+diet:
+  description: The subject's current dietary pattern (vegan, vegetarian, keto, pescatarian, gluten-free, ...).
+  paraphrases: ["is vegan", "is vegetarian", "follows a keto diet", "stopped eating meat", "went gluten-free"]
+  not:
+    - "tried a vegan restaurant once"
+    - "is fasting for a day"
+    - "has an allergy to"
+
+"favorite:<category>":
+  description: The subject's single current favorite in a category such as book, movie, food, band, color or sport.
+  paraphrases: ["favorite is", "absolute favorite", "all-time favorite", "can't get enough of", "loves most"]
+  not:
+    - "liked a thing once"
+    - "is currently reading (not a favorite)"
+    - "wants to try"
+
+"primary_tool:<purpose>":
+  description: The main tool, app or device the subject currently uses for a purpose (note_taking, run_tracking, video_editing, ...).
+  paraphrases: ["uses for", "switched to", "relies on", "does all their work in", "moved from X to"]
+  not:
+    - "tried out"
+    - "is evaluating"
+    - "used once for a demo"
 # A fact that maps to one of these keys has exactly one ACTIVE value per subject at a time.
 # Anything else gets attribute_key = NULL and is multi-valued.
 # Keys ending in ":<...>" are templates; the extractor fills the slot with a short
