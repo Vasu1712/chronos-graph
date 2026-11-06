@@ -51,6 +51,15 @@ def test_manifest_contents(built, stats):
     assert len(quick["locomo"]["conversations"]) == 1
     assert quick["counts"]["longmemeval_by_type"] == {"knowledge-update": 20}
 
+    # quick50 needs no ingestion beyond quick_v1: same conversation, same histories
+    q50 = built["quick50"]
+    assert q50["locomo"]["conversations"] == quick["locomo"]["conversations"]
+    assert q50["longmemeval"]["question_ids"] == quick["longmemeval"]["question_ids"]
+    assert q50["counts"]["locomo_by_category"] == {
+        c: 6 for c in ("adversarial", "multi-hop", "open-domain", "single-hop", "temporal")
+    }
+    assert not (set(q50["locomo"]["question_ids"]) & d_lo)
+
     for m in built.values():
         c = m["counts"]
         stats.append(

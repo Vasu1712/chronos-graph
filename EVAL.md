@@ -310,6 +310,7 @@ Rule: the NLI verdict on a sampled claim disagrees with the gpt-oss-120b re-chec
 
 ```
 make eval-quick     # ingest, answer, judge and report on the quick manifest
+make eval-50        # 50 questions, every system and ablation (reuses the quick ingestion)
 make eval-full      # everything, including ablations (long: schedule it overnight)
 make report         # rebuild every table and figure from artifacts/, no API call
 ```

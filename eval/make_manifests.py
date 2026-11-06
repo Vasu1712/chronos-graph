@@ -7,6 +7,10 @@ test_v1  50 QA per LoCoMo category sampled from the remaining 9 conversations
          + every LongMemEval knowledge-update or abstention question not in dev.
 quick_v1 One LoCoMo test conversation's share of the test sample
          + 20 knowledge-update questions from the test set. quick is a strict subset of test.
+quick50  The same LoCoMo conversation and the same 20 knowledge-update histories as quick_v1 (so
+         nothing new is ingested), with LoCoMo rebalanced to 6 questions per category: quick_v1's
+         questions are kept (trimmed by seed where a category has more than 6) and topped up from
+         the rest of that conversation. 30 LoCoMo + 20 LongMemEval = 50. Not a subset of test_v1.
 
 Each stratum uses its own RNG, random.Random(f"{seed}:{stratum}"), so changing one stratum
 never reshuffles another. Output contains no timestamps: re-running yields identical files.
@@ -30,6 +34,7 @@ LME_FILE = "longmemeval_s.json"
 LOCOMO_PER_CATEGORY = 50
 DEV_LME_STRATA = {"knowledge-update": 7, "temporal-reasoning": 7, "abstention": 6}
 QUICK_KU = 20
+QUICK50_PER_CATEGORY = 6
 HAYSTACK = {"max_tokens": 24000, "seed": SEED, "tokenizer": TOKENIZER_REPO}
 
 
@@ -122,6 +127,8 @@ def build_manifests(raw: Path, seed: int = SEED) -> dict[str, dict]:
     quick_lme = sorted(_rng(seed, "quick:lme:knowledge-update").sample(test_ku, QUICK_KU))
     quick_lme = [qid for qid in test_lme if qid in set(quick_lme)]  # dataset order
 
+    quick50_locomo = quick50_select(qas, quick_conv, quick_locomo, seed)
+
     def manifest(name: str, description: str, locomo_q: list[str], lme_q: list[str]) -> dict:
         return {
             "name": name,
@@ -170,7 +177,35 @@ def build_manifests(raw: Path, seed: int = SEED) -> dict[str, dict]:
             quick_locomo,
             quick_lme,
         ),
+        "quick50": manifest(
+            "quick50",
+            f"quick_v1 rebalanced: {QUICK50_PER_CATEGORY} LoCoMo questions per category from "
+            f"{quick_conv} + the same {QUICK_KU} knowledge-update questions (no new ingestion)",
+            quick50_locomo,
+            quick_lme,
+        ),
     }
+
+
+def quick50_select(
+    qas, conv: str, base: list[str], seed: int, per: int = QUICK50_PER_CATEGORY
+) -> list[str]:
+    """`per` questions per LoCoMo category from `conv`: keep `base` (trimmed by seed), top up by seed."""
+    cat_of = {q.question_id: q.category for q in qas}
+    out: list[str] = []
+    for cat_id in sorted(CATEGORY_MAP):
+        cat = CATEGORY_MAP[cat_id]
+        have = sorted(q for q in base if cat_of.get(q) == cat)
+        if len(have) > per:
+            have = sorted(_rng(seed, f"quick50:trim:{cat}").sample(have, per))
+        pool = sorted(
+            q.question_id
+            for q in qas
+            if q.conversation_id == conv and q.category == cat and q.question_id not in have
+        )
+        need = max(0, per - len(have))
+        out += have + _rng(seed, f"quick50:add:{cat}").sample(pool, min(need, len(pool)))
+    return _locomo_sorted(out)
 
 
 def _locomo_sorted(qids: list[str]) -> list[str]:

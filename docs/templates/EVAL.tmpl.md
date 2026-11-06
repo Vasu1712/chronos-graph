@@ -22,6 +22,8 @@ shown context in the same turn-tagged format `[turn_uid | date | speaker] text` 
 {{budget}} tokens, except B2 (the whole history). Baselines get no answerability gate and no
 query-type hint; ChronosGraph's rule-based query analysis is part of the system. Only LongMemEval
 questions carry an asker hint (the user), for every system alike.
+Relative date words in every shown turn are resolved in code against that turn's date, for every
+system alike (`chronos.textdates`), so a turn reads `yesterday [= 8 June 2023]` instead of a bare "yesterday".
 
 ### Systems
 
@@ -148,6 +150,7 @@ count is a number of candidates a human should read, not a verdict.
 
 ```
 make eval-quick     # ingest, answer, judge and report on the quick manifest
+make eval-50        # 50 questions, every system and ablation (reuses the quick ingestion)
 make eval-full      # everything, including ablations (long: schedule it overnight)
 make report         # rebuild every table and figure from artifacts/, no API call
 ```
