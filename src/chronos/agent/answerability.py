@@ -122,7 +122,10 @@ class AnswerabilityGate:
         ]  # fmt: skip
         if not relevant:
             return False, None, False
-        if not all(r["is_speaker"] and r["subject_entity_id"] != a_id for r in relevant):
+        # every speaker the question names is a legitimate subject ("Calvin and Dave want to meet
+        # where?" is not about Calvin alone), so only memories about unnamed speakers are a mismatch
+        named = {e.entity_id for e in analysis.entities if e.is_speaker} | {a_id}
+        if not all(r["is_speaker"] and r["subject_entity_id"] not in named for r in relevant):
             return False, None, False
         others = sorted({r["canonical_name"] for r in relevant})
         detail = f"question is about {analysis.subject_speaker_name}; relevant memories are about {', '.join(others)}"
