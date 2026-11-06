@@ -11,7 +11,7 @@ Ollama, small embedding and entailment models on the Apple GPU, SQLite for stora
 - [EVAL.md](EVAL.md): setup, every table, ablations, judge agreement, error analysis, limitations.
 - [SPEC.md](SPEC.md): the specification every part of the code follows.
 
-Results below come from: **quick_v1**: 96 answers from 2 systems, 96 scored, 48 questions in the manifest; judge calibration (Cohen's kappa) **not measured**; synthetic state probes: scripted.
+Results below come from: **quick50**: 568 answers from 5 systems, 568 scored, 50 questions in the manifest; **quick_v1**: 96 answers from 2 systems, 96 scored, 48 questions in the manifest; synthetic state probes: scripted.
 
 ## Setup (macOS, Apple silicon)
 
@@ -64,6 +64,35 @@ generation.
 Wall time of each step of `make eval-quick` on this machine, summed over every recorded segment (a resumed
 run adds its segments up):
 
+#### quick50
+
+| step | wall time |
+|---|---|
+| answer:A_retrieval/bm25_only | 4 min |
+| answer:A_retrieval/dense_only | 4 min |
+| answer:A_retrieval/dense_plus_bm25 | 4 min |
+| answer:A_retrieval/plus_1hop | 4 min |
+| answer:B1_sliding_window | 9 min |
+| answer:B2_full_context | 2 s |
+| answer:B3_chunk_rag | 15 min |
+| answer:B4_turns_plus_notes | 15 min |
+| answer:B5_append_only | 44 s |
+| answer:B_state/arrival_order | 5 min |
+| answer:C_gate/off | 3 min |
+| answer:C_gate/speaker_only | 19 s |
+| answer:D_budget/tokens_1000 | 14 min |
+| answer:D_budget/tokens_3000 | 27 min |
+| answer:D_budget/tokens_500 | 9 min |
+| answer:chronos | 16 min |
+| claim_recheck | 84 s |
+| ingest | 7 min |
+| judge | 25 s |
+| judge_calibration | 84 s |
+| replay:append_only | 49 s |
+| replay:arrival_order | 41 s |
+| state_probes:scripted | 1 s |
+| **total** | 2.4 h |
+
 #### quick_v1
 
 | step | wall time |
@@ -95,7 +124,7 @@ that are configured.
 | ablation C_gate (2 extra runs x n=339) | 4.2 h |
 | ablation A_retrieval (4 extra runs x n=100) | 2.5 h |
 | ablation B_state (1 extra runs x n=70) | 26 min |
-| judge (about 1,731 items) | 7 min; the daily token limit allows no less than 1.9 days |
+| judge (about 1,731 items) | 7 min; the daily token limit allows no less than 0.3 days |
 | **total (sequential)** | 40.2 h |
 
 ## Layout
