@@ -1,0 +1,103 @@
+{
+ "conversation_id": "demo-meera",
+ "description": "Part 3 demo: one user, five dated sessions (residence move, tool migration, late historical fact, in-turn correction).",
+ "speakers": [
+  "Meera",
+  "Assistant"
+ ],
+ "sessions": [
+  {
+   "ts": "2026-01-10T09:00:00",
+   "turns": [
+    {
+     "speaker": "Meera",
+     "text": "Hi! Quick intro so you can help me later. I'm based in Pune. Our auth service runs on Postgres."
+    },
+    {
+     "speaker": "Assistant",
+     "text": "Thanks, Meera. Noted: Pune, and an auth service on Postgres."
+    },
+    {
+     "speaker": "Meera",
+     "text": "I'm also trying to get into running before work."
+    },
+    {
+     "speaker": "Assistant",
+     "text": "Great habit. Start slow and build up."
+    }
+   ]
+  },
+  {
+   "ts": "2026-03-02T18:30:00",
+   "turns": [
+    {
+     "speaker": "Meera",
+     "text": "Work update: we moved our auth store to Redis last month."
+    },
+    {
+     "speaker": "Assistant",
+     "text": "How has the migration gone?"
+    },
+    {
+     "speaker": "Meera",
+     "text": "Smoother than expected, login latency dropped a lot."
+    }
+   ]
+  },
+  {
+   "ts": "2026-05-12T20:00:00",
+   "turns": [
+    {
+     "speaker": "Meera",
+     "text": "Sorry I've been quiet. We packed up and moved to Bengaluru last week."
+    },
+    {
+     "speaker": "Assistant",
+     "text": "Big change! How is the new place?"
+    },
+    {
+     "speaker": "Meera",
+     "text": "Chaotic, there are boxes everywhere."
+    }
+   ]
+  },
+  {
+   "ts": "2026-06-20T11:15:00",
+   "turns": [
+    {
+     "speaker": "Assistant",
+     "text": "How are you settling in?"
+    },
+    {
+     "speaker": "Meera",
+     "text": "Back in 2019 I lived in Delhi, loved it."
+    },
+    {
+     "speaker": "Meera",
+     "text": "My manager is Priya, sorry, I meant Priyanka."
+    },
+    {
+     "speaker": "Assistant",
+     "text": "Got it, Priyanka."
+    }
+   ]
+  },
+  {
+   "ts": "2026-07-15T08:45:00",
+   "turns": [
+    {
+     "speaker": "Meera",
+     "text": "I've been reading a lot of science fiction lately."
+    },
+    {
+     "speaker": "Assistant",
+     "text": "Any favorites so far?"
+    },
+    {
+     "speaker": "Meera",
+     "text": "The Left Hand of Darkness was wonderful."
+    }
+   ]
+  }
+ ]
+}
