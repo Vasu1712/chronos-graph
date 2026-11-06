@@ -30,7 +30,7 @@ from pydantic import BaseModel, ConfigDict
 from rapidfuzz import fuzz
 
 from chronos.config import IngestionConfig
-from chronos.ingestion.temporal import TimeExpr, session_date
+from chronos.ingestion.temporal import TimeExpr, session_date, span
 from chronos.ingestion.types import Session, Turn
 from chronos.ontology import Ontology, load_ontology
 
@@ -59,6 +59,11 @@ class EntityMention(_Strict):
     relation: str | None  # PERSON only: relation to the speaker ("brother", "coworker")
 
 
+class CorrectionOut(_Strict):
+    wrong: str  # the mistaken value, exactly as the speaker first said it ("Priya")
+    right: str  # the value that replaces it ("Priyanka")
+
+
 class ExtractedFact(_Strict):
     turn_index: int
     subject: str
@@ -70,6 +75,7 @@ class ExtractedFact(_Strict):
     entities_mentioned: list[EntityMention]
     time: TimeOut
     is_correction: bool
+    correction: CorrectionOut | None
     quote: str
 
 
@@ -99,6 +105,13 @@ class ValidFact:
     quote_start: int
     quote_end: int
     quote_fuzzy: bool
+    correction_wrong: str | None = None
+    correction_right: str | None = None
+    wrong_start: int | None = None  # span of the wrong value in turn.text, if it is there
+    wrong_end: int | None = None
+    recent_onset: bool = (
+        False  # quote only describes how a state recently began (see is_recent_onset)
+    )
 
 
 @dataclass
@@ -109,6 +122,8 @@ class ExtractionStats:
     kept: int = 0
     dropped: Counter = field(default_factory=Counter)  # reason -> count
     fuzzy_quotes: int = 0
+    turn_reassigned: int = 0  # quote found in a different target turn than turn_index said
+    tense_onset_fixed: int = 0  # PAST_ENDED "moved to X last week" read as a current state
     attribute_key_nulled: int = 0
     pronoun_in_fact_text: int = 0
 
@@ -124,6 +139,8 @@ class ExtractionStats:
             "kept": self.kept,
             "dropped": dict(self.dropped),
             "fuzzy_quotes": self.fuzzy_quotes,
+            "turn_reassigned": self.turn_reassigned,
+            "tense_onset_fixed": self.tense_onset_fixed,
             "attribute_key_nulled": self.attribute_key_nulled,
             "pronoun_in_fact_text": self.pronoun_in_fact_text,
         }
@@ -170,6 +187,37 @@ def match_quote(quote: str, text: str, threshold: float = 90.0) -> tuple[int, in
     return idx[al.dest_start], idx[al.dest_end - 1] + 1, True
 
 
+_ONSET = re.compile(
+    r"\b(moved (?:to|into|in)|relocated|settled (?:in|into)|joined|started (?:at|working|my|a|as)|"
+    r"became|switched (?:to|from)|got (?:engaged|married|promoted|a job)|enrolled|signed (?:a|the|up))\b",
+    re.IGNORECASE,
+)
+_ENDED = re.compile(
+    r"\b(used to|back in|back then|previously|no longer|anymore|until|before that|former|old (?:job|flat|place|house)|"
+    r"for (?:a|one|two|three|\d+) (?:year|month|week|while)s?|left|quit|moved (?:away|out))\b",
+    re.IGNORECASE,
+)
+RECENT_ONSET_DAYS = 183
+
+
+def is_recent_onset(time: TimeExpr, quote: str, session_ts: str) -> bool:
+    """A PAST_ENDED state whose quote only describes how it *began*, recently, is still current.
+
+    The 7B extractor reads "We moved to Bengaluru last week" as an ended past state despite the
+    prompt; that would store the new residence as history. Deterministic and narrow: needs an
+    onset verb, no ending cue, and an onset with no date or ending within RECENT_ONSET_DAYS of the
+    session (so "in 2015 I moved to Delhi" stays historical).
+    """
+    if time.tense != "PAST_ENDED" or not _ONSET.search(quote) or _ENDED.search(quote):
+        return False
+    if time.kind == "NONE":
+        return True
+    sp = span(time, session_ts)
+    if sp is None:
+        return False
+    return (session_date(session_ts) - sp[1]).days <= RECENT_ONSET_DAYS
+
+
 _PRONOUN = re.compile(r"\b(i|me|my|mine|myself|you|your|yours|we|us|our)\b", re.IGNORECASE)
 
 
@@ -185,6 +233,7 @@ Rules:
   `subject` is always a name (a speaker name or another entity's name), never a pronoun.
 - `fact_text`: one third-person sentence that makes sense on its own, using names, with no
   pronouns (write "Lena moved to Porto", not "I moved there").
+- `turn_index`: the number N of the TARGET line "[tN] ..." that contains the quote.
 - `quote`: copy the exact words from that turn that support the fact (a contiguous span).
 - `attribute_key`: one key from the list below if the fact is the subject's current value of
   that attribute, else null. Fill template slots with a short snake_case noun
@@ -194,7 +243,9 @@ Rules:
 - `is_event`: true for a one-off happening (went hiking, had surgery, attended a concert),
   false for a state that holds over time (lives in, works at, likes, owns, is married).
 - `is_correction`: true when the speaker corrects something they just said
-  ("sorry, I meant", "actually, no").
+  ("sorry, I meant", "actually, no"). Then also fill `correction` with the mistaken value as
+  first said (`wrong`) and the value replacing it (`right`), and still list the original
+  mistaken statement as its own fact if the speaker stated it. Otherwise `correction` is null.
 - `entities_mentioned`: people, organizations and places in the fact other than the subject's
   speaker self. For a PERSON give `relation` to the speaker (brother, coworker, friend...) when
   stated, else null.
@@ -204,8 +255,11 @@ Rules:
     last week -1 WEEK, two months ago -2 MONTH, last year -1 YEAR, next month 1 MONTH.
     Vague ("a while ago", "years ago"): kind RELATIVE, offset null, unit null, value = the words.
   kind NONE: no time words.
-  tense: CURRENT if true now, PAST_ENDED if it was true but has ended ("used to", "back then",
-    "previously"), FUTURE_PLAN if planned or intended.
+  tense: CURRENT if it is true now. A state that began in the past and still holds is CURRENT,
+    and its time is when it began ("moved to Porto last month", "joined a new team in May",
+    "started a pottery class two weeks ago" are all CURRENT). PAST_ENDED only if the state is
+    over: the speaker says or clearly implies it ended ("used to", "back then", "previously",
+    "my old flat", "until 2020"). FUTURE_PLAN if planned or intended.
 
 Attribute keys:
 {ontology}
@@ -244,6 +298,7 @@ def _f(
     corr=False,
     pol="POS",
     mode="EXPLICIT",
+    correction=None,
 ):
     return {
         "turn_index": turn,
@@ -256,6 +311,7 @@ def _f(
         "entities_mentioned": list(ents),
         "time": time or _t(),
         "is_correction": corr,
+        "correction": correction,
         "quote": quote,
     }
 
@@ -298,7 +354,8 @@ FEW_SHOT = [
             _f(2, "Omar", "Omar teaches at Riverside High.", "I'm teaching at Riverside High now",
                key="employer", ents=[_org("Riverside High")]),
             _f(4, "Omar", "Omar teaches at Hillcrest High.", "Sorry, I meant Hillcrest High",
-               key="employer", ents=[_org("Hillcrest High")], corr=True),
+               key="employer", ents=[_org("Hillcrest High")], corr=True,
+               correction={"wrong": "Riverside High", "right": "Hillcrest High"}),
         ],
     ),
     # 3. a past fact next to the current one
@@ -417,7 +474,7 @@ class Extractor:
             by_index = {t.turn_index: t for t in targets}
             for raw in out.facts:
                 stats.raw_facts += 1
-                vf = self._validate(raw, by_index, stats)
+                vf = self._validate(raw, by_index, stats, session.timestamp)
                 if vf is None:
                     continue
                 key = (vf.turn.turn_uid, vf.fact_text.casefold())
@@ -436,30 +493,67 @@ class Extractor:
         return facts, stats
 
     def _validate(
-        self, f: ExtractedFact, by_index: dict[int, Turn], stats: ExtractionStats
+        self,
+        f: ExtractedFact,
+        by_index: dict[int, Turn],
+        stats: ExtractionStats,
+        session_ts: str | None = None,
     ) -> ValidFact | None:
-        turn = by_index.get(f.turn_index)
-        if turn is None:
-            stats.dropped["bad_turn_index"] += 1
-            return None
         subject, fact_text = f.subject.strip(), f.fact_text.strip()
         if not subject or not fact_text:
             stats.dropped["empty"] += 1
             return None
-        span = match_quote(f.quote, turn.text, self.config.quote_fuzzy_threshold)
+        turn = by_index.get(f.turn_index)
+        span = match_quote(f.quote, turn.text, self.config.quote_fuzzy_threshold) if turn else None
         if span is None:
-            stats.dropped["quote_not_found"] += 1
-            return None
+            # The model sometimes names the wrong turn. Accept the fact only if its quote is found
+            # in exactly one other target turn of this chunk; otherwise drop it.
+            hits = [
+                (t, sp)
+                for t in by_index.values()
+                if t is not turn
+                and (sp := match_quote(f.quote, t.text, self.config.quote_fuzzy_threshold))
+            ]
+            if len(hits) != 1:
+                reason = (
+                    "ambiguous_turn"
+                    if hits
+                    else ("bad_turn_index" if turn is None else "quote_not_found")
+                )
+                stats.dropped[reason] += 1
+                return None
+            turn, span = hits[0]
+            stats.turn_reassigned += 1
         start, end, fuzzy = span
         stats.fuzzy_quotes += int(fuzzy)
         key = self.ontology.canonicalize(f.attribute_key)
         if f.attribute_key and key is None:
             stats.attribute_key_nulled += 1
         time = f.time.to_expr()
+        as_past = time.model_copy(update={"tense": "PAST_ENDED"})
+        onset = bool(
+            key and session_ts and is_recent_onset(as_past, turn.text[start:end], session_ts)
+        )
+        if onset and time.tense == "PAST_ENDED":
+            time = time.model_copy(update={"tense": "CURRENT"})
+            stats.tense_onset_fixed += 1
         if time.tense == "FUTURE_PLAN":
             key = None
         if _PRONOUN.search(fact_text):
             stats.pronoun_in_fact_text += 1
+        wrong = right = None
+        w_start = w_end = None
+        if (
+            f.is_correction
+            and f.correction
+            and f.correction.wrong.strip()
+            and f.correction.right.strip()
+        ):
+            wrong, right = f.correction.wrong.strip(), f.correction.right.strip()
+            if wrong.casefold() == right.casefold():
+                wrong = right = None
+            elif (m := re.search(rf"\b{re.escape(wrong)}\b", turn.text, re.IGNORECASE)) is not None:
+                w_start, w_end = m.start(), m.end()
         return ValidFact(
             turn=turn,
             ordinal_in_turn=0,
@@ -476,6 +570,11 @@ class Extractor:
             quote_start=start,
             quote_end=end,
             quote_fuzzy=fuzzy,
+            correction_wrong=wrong,
+            correction_right=right,
+            wrong_start=w_start,
+            wrong_end=w_end,
+            recent_onset=onset,
         )
 
 

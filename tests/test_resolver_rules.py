@@ -366,3 +366,125 @@ def test_classifier_prompt_shows_candidates_with_intervals(env):
         in user
     )
     assert 'Quote: "Priya lives in Bengaluru."' in user
+
+
+def correction(text, s, t, wrong, right, key="residence", wrong_quote=None):
+    from dataclasses import replace
+
+    return replace(fact(text, s, t, key=key, corr=True), correction_wrong=wrong, correction_right=right,
+                   wrong_quote=wrong_quote)  # fmt: skip
+
+
+def test_structured_correction_retracts_existing_original_without_llm(env):
+    db, res, llm = env
+    pune = fact("Priya lives in Pune.", 2, 2)
+    res.apply(pune)
+    d = res.apply(correction("Priya lives in Mumbai.", 2, 4, wrong="Pune", right="Mumbai"))
+    assert d.relation == "CORRECTS" and d.llm_relation is None and llm.calls == []
+    assert d.target_id == pune.memory_id and "retracted existing memory" in d.notes[0]
+    assert row(db, pune.memory_id)["status"] == "RETRACTED"
+
+
+def test_structured_correction_creates_missing_original_then_retracts_it(env):
+    db, res, llm = env
+    new = correction("Priya's manager is Priyanka.", 3, 3, wrong="Priya", right="Priyanka", key=None,
+                     wrong_quote=("Priya", 14, 19))  # fmt: skip
+    d = res.apply(new)
+    assert d.relation == "CORRECTS" and llm.calls == []
+    orig = row(db, new.memory_id + "-orig")
+    assert orig["fact_text"] == "Priya's manager is Priya." and orig["status"] == "RETRACTED"
+    assert (
+        orig["superseded_by_id"] == new.memory_id and row(db, new.memory_id)["status"] == "ACTIVE"
+    )
+    quotes = db.conn.execute("SELECT role, quote, quote_start FROM fact_sources WHERE memory_id = ? ORDER BY role",
+                             (orig["memory_id"],)).fetchall()  # fmt: skip
+    assert [tuple(q) for q in quotes] == [
+        ("ASSERTS", "Priya", 14),
+        ("RETRACTS", "Priya's manager is Priyanka.", 0),
+    ]
+
+
+def test_structured_correction_matches_whole_words_only(env):
+    db, res, llm = env
+    keep = fact("Priya's manager is Priyanka.", 2, 1, key=None)
+    res.apply(keep)  # mentions "Priyanka", must not be taken as the "Priya" being corrected
+    new = correction(
+        "Priya's manager is Priyanka.", 3, 3, wrong="Priya", right="Priyanka", key=None
+    )
+    new = new.__class__(**{**new.__dict__, "fact_text": "Priya's boss is Priyanka.", "quote": "x"})
+    res.apply(new)
+    assert row(db, keep.memory_id)["status"] == "ACTIVE"
+
+
+def test_correction_without_usable_values_falls_back_to_classifier(env):
+    db, res, llm = env
+    res.apply(fact("Priya lives in Pune.", 2, 2))
+    llm.say("CORRECTS")
+    d = res.apply(correction("Priya lives in Mumbai.", 2, 4, wrong="Nagpur", right="Chennai"))
+    assert d.llm_relation == "CORRECTS" and len(llm.calls) == 1
+
+
+def test_value_settled_by_correction_is_not_retracted_by_the_same_turn(env):
+    db, res, llm = env
+    pune = fact("Priya lives in Pune.", 2, 2)
+    res.apply(pune)
+    mumbai = correction("Priya lives in Mumbai.", 2, 4, wrong="Pune", right="Mumbai")
+    res.apply(mumbai)
+    # same turn: a structured "correction" back to Pune, and a classifier CORRECTS, are both refused
+    back = correction("Priya used to live in Pune.", 2, 4, wrong="Mumbai", right="Pune")
+    llm.say("NEW", None)
+    res.apply(back)
+    llm.say("CORRECTS", "C2")  # candidates: C1 = "used to live in Pune" (newest), C2 = Mumbai
+    d = res.apply(
+        fact("Priya eats cheese.", 2, 4, key="residence", corr=True)
+    )  # cue set: only the guard stops it
+    assert "Mumbai" in llm.calls[-1][1]["content"].split("C2: ")[1].split("\n")[0]
+    assert row(db, mumbai.memory_id)["status"] == "ACTIVE"
+    assert "established by a correction in this turn" in d.notes[-1]
+    # a later turn may still correct it
+    res.apply(correction("Priya lives in Nagpur.", 3, 1, wrong="Mumbai", right="Nagpur"))
+    assert row(db, mumbai.memory_id)["status"] == "RETRACTED"
+
+
+def test_corrects_without_correction_cue_is_downgraded(env):
+    db, res, llm = env
+    veg = fact("Priya is vegetarian.", 2, 1, key="diet")
+    res.apply(veg)
+    llm.say("CORRECTS")
+    d = res.apply(fact("Priya eats cheese.", 2, 3, key=None))  # no cue, different slot
+    assert d.relation == "NEW" and row(db, veg.memory_id)["status"] == "ACTIVE"
+    llm.say("CORRECTS")
+    d = res.apply(
+        fact("Priya is vegan.", 3, 1, key="diet")
+    )  # no cue, same slot: a change, not a retraction
+    assert d.relation == "UPDATES" and row(db, veg.memory_id)["status"] == "SUPERSEDED"
+
+
+def test_correction_established_value_needs_explicit_wrong_to_be_retracted(env):
+    db, res, llm = env
+    res.apply(fact("Priya is vegan.", 2, 1, key="diet"))
+    veg = correction("Priya is vegetarian.", 2, 1, wrong="vegan", right="vegetarian", key="diet")
+    res.apply(veg)  # the model put the correction on turn 1 as well
+    llm.say("CORRECTS")
+    d = res.apply(
+        fact("Priya still eats cheese.", 2, 3, key=None, corr=True)
+    )  # flagged, but names nothing
+    assert d.relation == "NEW" and row(db, veg.memory_id)["status"] == "ACTIVE"
+
+
+def test_historical_for_recent_onset_becomes_update(env):
+    from dataclasses import replace
+
+    db, res, llm = env
+    pune = fact("Priya lives in Pune.", 1, 1)
+    res.apply(pune)
+    llm.say("HISTORICAL")
+    moved = replace(fact("Priya moved to Bengaluru.", 2, 1, time=TimeExpr(kind="RELATIVE", offset=-1, unit="WEEK")),
+                    recent_onset=True)  # fmt: skip
+    d = res.apply(moved)
+    assert d.relation == "UPDATES" and "recently begun state" in " ".join(d.notes)
+    assert row(db, pune.memory_id)["status"] == "SUPERSEDED"
+    assert (row(db, moved.memory_id)["status"], row(db, moved.memory_id)["valid_to"]) == (
+        "ACTIVE",
+        None,
+    )

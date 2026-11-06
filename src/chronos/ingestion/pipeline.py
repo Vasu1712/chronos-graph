@@ -185,7 +185,13 @@ class IngestionPipeline:
                 return result
             ents = EntityResolver(tx.conn, conversation_id, self.embedder, self.config)
             state = StateResolver(tx.conn, self.llm, self.config)
-            for vf, vec in zip(facts, vecs, strict=True):
+            # a correction is applied after the other facts of its turn, so an original statement
+            # extracted from the same turn already exists when the correction looks for it
+            order = sorted(
+                range(len(facts)),
+                key=lambda i: (facts[i].turn.turn_index, facts[i].is_correction, i),
+            )
+            for vf, vec in ((facts[i], vecs[i]) for i in order):
                 nf = self._to_new_fact(conversation_id, session, vf, vec, ents)
                 if nf is None:
                     result.unresolved_subjects += 1
@@ -245,4 +251,12 @@ class IngestionPipeline:
             is_correction=vf.is_correction,
             mention_entity_ids=tuple(mention_ids),
             embedding=vec,
+            recent_onset=vf.recent_onset,
+            correction_wrong=vf.correction_wrong,
+            correction_right=vf.correction_right,
+            wrong_quote=(
+                (vf.turn.text[vf.wrong_start : vf.wrong_end], vf.wrong_start, vf.wrong_end)
+                if vf.wrong_start is not None
+                else None
+            ),
         )

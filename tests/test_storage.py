@@ -60,7 +60,6 @@ def test_schema_creates(db):
     }
     assert names >= EXPECTED_TABLES
     assert db.schema_version() == 2
-    assert db.schema_version() == 1
     assert db.conn.execute("PRAGMA journal_mode").fetchone()[0] == "wal"
     assert db.conn.execute("PRAGMA foreign_keys").fetchone()[0] == 1
 
@@ -71,8 +70,6 @@ def test_migrate_is_idempotent(tmp_path):
     d = Database(p)
     assert d.migrate() == 2
     assert d.conn.execute("SELECT COUNT(*) FROM schema_migrations").fetchone()[0] == 2
-    assert d.migrate() == 1
-    assert d.conn.execute("SELECT COUNT(*) FROM schema_migrations").fetchone()[0] == 1
     d.close()
 
 

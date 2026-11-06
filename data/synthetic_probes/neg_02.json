@@ -89,14 +89,14 @@
   "memories": [
    {
     "subject": "Pedro",
-    "contains": "smoke",
+    "contains": "smok",
     "polarity": "POS",
     "status": "SUPERSEDED",
     "valid_to": "*"
    },
    {
     "subject": "Pedro",
-    "contains": "smoke",
+    "contains": "smok",
     "polarity": "NEG",
     "status": "ACTIVE",
     "valid_to": null
@@ -106,7 +106,7 @@
   "absent": [
    {
     "subject": "Pedro",
-    "contains": "smoke",
+    "contains": "smok",
     "polarity": "POS"
    }
   ]

@@ -262,7 +262,7 @@ Decisions the sections above leave open. They refine the architecture; none chan
 
 **Extraction schema** (`chronos.ingestion.extractor`). Per fact: `turn_index, subject, fact_text,
 attribute_key, polarity, mode, is_event, entities_mentioned[{name, entity_type, relation}], time
-{kind, value, offset, unit, tense}, is_correction, quote`.
+{kind, value, offset, unit, tense}, is_correction, correction {wrong, right} | null, quote`.
 - `is_event` separates point events (stored in `event_date`) from states (stored in `valid_*`).
 - `entities_mentioned` are objects so a PERSON's relation to the speaker is available for the
   entity-merge guard.
@@ -289,7 +289,30 @@ returns all ACTIVE same-key facts (open first); UPDATES / CORRECTS / NEG closing
 6. target not open → the open same-key candidate, else NEW;
 7. UPDATES by a fact whose own interval is closed → HISTORICAL (an ended state never replaces the
    current one; needed because SESSION precision makes `compare` INCOMPARABLE);
-8. HISTORICAL with an open interval → the time is re-resolved as `PAST_ENDED`.
+8. HISTORICAL with an open interval → the time is re-resolved as `PAST_ENDED`, except for a
+   recently begun state (see below), where HISTORICAL → UPDATES;
+9. CORRECTS without the extractor's `is_correction` cue → UPDATES if both facts share an
+   attribute key, else NEW;
+10. a memory established by a correction cannot be retracted by another fact from the same turn,
+    nor later by a fact that does not name it as the wrong value.
+
+**Corrections** (added after the live probes). The extractor also returns
+`correction: {wrong, right} | null`. With it, CORRECTS is applied without a classifier call: the
+target is the latest open ACTIVE memory of the subject (same attribute key) mentioning `wrong` as a
+whole word and not `right`. If the original statement was never extracted (common when both values
+are in one turn: "Priya, sorry, I meant Priyanka"), it is created from the turn (fact_text with
+`right` → `wrong`, quote = the span of `wrong`) and immediately RETRACTED. Facts of one turn are
+applied with corrections last.
+
+**Turn index repair.** If a quote is not in the turn the model named but is found in exactly one
+other target turn of the chunk, the fact is moved to that turn (`turn_reassigned`); a quote found in
+several turns is dropped (`ambiguous_turn`).
+
+**Recently begun states.** A `PAST_ENDED` fact with an attribute key whose quote has an onset verb
+(moved to, relocated, settled in, joined, started at, became, switched to, got engaged/married,
+enrolled), no ending cue (used to, back in, previously, no longer, until, before that, left, ...),
+and an onset with no date or ending within 183 days of the session is read as CURRENT
+(`tense_onset_fixed`). "In 2015 I moved to Delhi" therefore stays historical.
 
 **Transactions.** Tier 1 commits first. The Tier 2 transaction (`BEGIN IMMEDIATE`) stays open
 during the classifier calls of that session so in-session facts see each other; a crash rolls the
