@@ -1,0 +1,49 @@
+system                  answerable  declined        gate/model/verifier   gold text shown   declined|shown  forced
+A_retrieval__bm25_only          12   75.0% (9/12)   1/8/0                  66.7% (8/12)      62.5% (5/8)    0
+A_retrieval__dense_only         12   91.7% (11/12)  4/7/0                  25.0% (3/12)      66.7% (2/3)    0
+A_retrieval__dense_plus_bm25        12   91.7% (11/12)  4/7/0                  58.3% (7/12)      85.7% (6/7)    0
+A_retrieval__plus_1hop          12   66.7% (8/12)   2/6/0                  33.3% (4/12)      75.0% (3/4)    0
+B1_sliding_window               43   97.7% (42/43)  0/41/1                   0.0% (0/43)         -           0
+B2_full_context                  0      -           0/0/0                     -                 -           0
+B3_chunk_rag                    43   69.8% (30/43)  0/27/3                  76.7% (33/43)     66.7% (22/33)  0
+B4_turns_plus_notes             43   76.7% (33/43)  0/31/2                  90.7% (39/43)     79.5% (31/39)  0
+B5_append_only                  43   86.0% (37/43)  11/26/0                  69.8% (30/43)     83.3% (25/30)  0
+B_state__arrival_order          19   84.2% (16/19)  2/14/0                  94.7% (18/19)     83.3% (15/18)  0
+C_gate__off                     43   86.0% (37/43)  0/37/0                  69.8% (30/43)     83.3% (25/30)  0
+C_gate__speaker_only            43   86.0% (37/43)  1/36/0                  69.8% (30/43)     83.3% (25/30)  0
+D_budget__tokens_1000           43   93.0% (40/43)  10/29/1                  69.8% (30/43)     90.0% (27/30)  0
+D_budget__tokens_3000           43   93.0% (40/43)  9/31/0                  74.4% (32/43)     90.6% (29/32)  0
+D_budget__tokens_500            43   79.1% (34/43)  15/17/2                  58.1% (25/43)     68.0% (17/25)  0
+chronos                         43   86.0% (37/43)  11/26/0                  69.8% (30/43)     83.3% (25/30)  0
+
+ChronosGraph declines with a gold turn shown: 25
+- [model] Would Calvin enjoy performing at the Hollywood Bowl?
+    gold: Yes; because he enjoys the rush of performing onstage to large crowds
+    reason: The context does not provide information about Calvin's feelings towards performing at the Hollywood Bowl specifically.
+- [model] Does Calvin wish to become more popular?
+    gold: Yes; he want's to grow his fanbase
+    reason: The context does not provide information about Calvin's desire to become more popular.
+- [model] When did Calvin record a podcast with his friends?
+    gold: 21 August, 2023
+    reason: The context does not provide information about Calvin recording a podcast with his friends.
+- [model] What was Dave doing in San Francisco?
+    gold: attending a car modification workshop
+    reason: The context does not provide information about Dave's activities in San Francisco.
+- [model] When did Calvin met with local artists in Boston?
+    gold: October 3, 2023
+    reason: The context does not provide information about Calvin meeting with local artists in Boston.
+- [gate] When did Calvin buy his second Ferrari?
+    gold: first week of October 2023
+    reason: not answerable: When and if Calvin bought his second Ferrari.
+- [model] When did Calvin visit some of the sights in Boston with a former high school friend?
+    gold: October 24, 2023
+    reason: The context does not provide a clear date for Calvin's visit to Boston with his former high school friend.
+- [model] How many Ferraris does Calvin own?
+    gold: two
+    reason: The context does not provide information about the number of Ferraris Calvin owns.
+- [gate] How long did Dave's work on the Ford Mustang take?
+    gold: nearly two months
+    reason: not answerable: the exact time period or completion date of Dave's work on the Ford Mustang
+- [model] What activities has Dave participated in with his friends?
+    gold: weekly visits to local parks, countryside roadtrip, celebration of the
+    reason: The context does not provide information about Dave's activities with his friends beyond hanging out at parks and going on a road trip.

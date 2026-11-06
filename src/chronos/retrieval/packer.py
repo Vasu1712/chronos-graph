@@ -171,8 +171,12 @@ class Packer:
             for r in rows
         ]
 
-    def _source_turns(self, memory_id: str) -> list[_Turn]:
-        """Source turns (with window) for a memory; honours expand_sources."""
+    def _source_turns(self, memory_id: str, *, detail: bool = True) -> list[_Turn]:
+        """Source turns for a memory; honours expand_sources.
+
+        detail=True: every source turn with its +-window neighbours. detail=False: only the first
+        source turn, centred on its quote, with no neighbours (the cheap first packing pass).
+        """
         if not self.config.expand_sources:
             return []
         out: list[_Turn] = []
@@ -181,7 +185,11 @@ class Packer:
             if uid in seen:
                 continue
             seen.add(uid)
-            out += self._window(uid, (qs, qe) if qs is not None and qe is not None else None)
+            focus = (qs, qe) if qs is not None and qe is not None else None
+            if detail:
+                out += self._window(uid, focus)
+            elif (t := self._turn(uid, focus)) is not None:
+                return [t]
         return out
 
     def chain(self, m: MemRow) -> list[MemRow]:
@@ -216,7 +224,7 @@ class Packer:
             bits.append("NEGATIVE")
         return f"- (memory {m.memory_id}) {m.fact_text} | {', '.join(bits)} | {describe(m.rt)} | sources: {', '.join(sources) or 'none'}"
 
-    def _memory_block(self, memory_id: str, intent: Intent) -> _Block | None:
+    def _memory_block(self, memory_id: str, intent: Intent, detail: bool = True) -> _Block | None:
         m = self._mem(memory_id)
         if m is None:
             return None
@@ -224,7 +232,7 @@ class Packer:
         head = [self._mem_line(m, sources)]
         ids = [m.memory_id]
         listed = list(sources)
-        turns = self._source_turns(m.memory_id)
+        turns = self._source_turns(m.memory_id, detail=detail)
         if m.conflict_set_id:
             for (other_id,) in self.conn.execute(
                 "SELECT memory_id FROM memories WHERE conflict_set_id = ? AND memory_id != ? ORDER BY rowid",
@@ -235,7 +243,7 @@ class Packer:
                 head.append("  conflicts with: " + self._mem_line(o, o_src)[2:])
                 ids.append(other_id)
                 listed += o_src
-                turns += self._source_turns(other_id)
+                turns += self._source_turns(other_id, detail=detail)
         if intent in _HISTORY_INTENTS:
             chain = self.chain(m)
             if len(chain) > 1:
@@ -248,11 +256,11 @@ class Packer:
                     if c.memory_id not in ids:
                         ids.append(c.memory_id)
                         listed += self._sources(c.memory_id)
-                        turns += self._source_turns(c.memory_id)
+                        turns += self._source_turns(c.memory_id, detail=detail)
         return _Block("memory", self._subject_name(m.subject_entity_id), head, ids, turns, listed)
 
-    def _episode_block(self, turn_uid: str) -> _Block | None:
-        turns = self._window(turn_uid) if self.config.expand_sources else []
+    def _episode_block(self, turn_uid: str, detail: bool = True) -> _Block | None:
+        turns = self._window(turn_uid) if self.config.expand_sources and detail else []
         if not turns and (t := self._turn(turn_uid)):
             turns = [t]
         return _Block("episode", None, [], [], turns) if turns else None
@@ -299,20 +307,34 @@ class Packer:
         return "\n".join(lines), mem_ids, turn_ids
 
     def pack(self, result: RetrievalResult, budget: int | None = None) -> PackedContext:
+        """Two passes over the fused ranking, so the budget buys breadth before detail.
+
+        Pass 1 adds, in rank order, each memory's line with its first source turn (or an episode's
+        turn alone). Pass 2 then upgrades the chosen blocks, in rank order, with every source turn
+        and its +-window neighbours while the budget lasts. One pass with full detail per block
+        (the earlier design) spent the budget on neighbours of the first few hits: in eval-50 the
+        full system kept the gold turn in context for 29% of multi-hop and single-hop questions
+        against 69% without expansion.
+        """
         budget = budget or self.config.token_budget
         intent = result.analysis.intent
         chosen: list[_Block] = []
+        keys: list[tuple[str, str]] = []  # (kind, id) of each chosen block
         best = ("", [], [], 0)
         truncated = False
         seen_mem: set[str] = set()
+
+        def make(kind: str, cid: str, detail: bool) -> _Block | None:
+            return (
+                self._memory_block(cid, intent, detail)
+                if kind == "memory"
+                else self._episode_block(cid, detail)
+            )
+
         for c in result.fused:
             if c.kind == "memory" and c.id in seen_mem:
                 continue  # already shown inside another block's chain or conflict set
-            b = (
-                self._memory_block(c.id, intent)
-                if c.kind == "memory"
-                else self._episode_block(c.id)
-            )
+            b = make(c.kind, c.id, detail=False)
             if b is None:
                 continue
             text, mids, tids = self.render([*chosen, b])
@@ -321,7 +343,21 @@ class Packer:
                 truncated = True
                 continue  # this block does not fit; a smaller, lower-ranked one still may
             chosen.append(b)
+            keys.append((c.kind, c.id))
             seen_mem.update(b.memory_ids)
+            best = (text, mids, tids, n)
+
+        for i, (kind, cid) in enumerate(keys):
+            fuller = make(kind, cid, detail=True)
+            if fuller is None or len(fuller.turns) <= len(chosen[i].turns):
+                continue
+            trial = [*chosen[:i], fuller, *chosen[i + 1 :]]
+            text, mids, tids = self.render(trial)
+            n = self.count_tokens(text)
+            if n > budget:
+                truncated = True
+                continue
+            chosen = trial
             best = (text, mids, tids, n)
         text, mids, tids, n = best
         return PackedContext(text, mids, tids, n, budget, truncated)

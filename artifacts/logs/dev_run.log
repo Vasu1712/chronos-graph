@@ -1,0 +1,67 @@
+W1107 01:32:09.384000 52707 torch/distributed/elastic/multiprocessing/redirects.py:35] NOTE: Redirects are currently not supported in MacOs.
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 6032.83it/s]
+  [chronos] 1/30 open-domain  46.9s eta  22.7m  [abstained] I don't know.
+  [chronos] 2/30 temporal     10.9s eta  13.5m  [abstained] I don't know.
+  [chronos] 3/30 multi-hop    33.7s eta  13.7m  [abstained] I don't know.
+  [chronos] 4/30 temporal     35.2s eta  13.7m  [abstained] I don't know.
+  [chronos] 5/30 temporal     33.0s eta  13.3m  [abstained] I don't know.
+/Users/vasu/Desktop/Projects/chronos-graph/.venv/lib/python3.11/site-packages/torch/jit/_script.py:1491: FutureWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+Loading weights:   0%|          | 0/202 [00:00<?, ?it/s]Loading weights: 100%|██████████| 202/202 [00:00<00:00, 6202.05it/s]
+  [chronos] 6/30 multi-hop    43.3s eta  13.5m  Melanie takes time each day for activities like running, reading, or p
+  [chronos] 7/30 temporal     36.8s eta  13.1m  [abstained] I don't know.
+  [chronos] 8/30 multi-hop    38.2s eta  12.7m  [abstained] I don't know.
+  [chronos] 9/30 open-domain  16.3s eta  11.4m  [abstained] I don't know.
+  [chronos] 10/30 multi-hop    37.7s eta  11.1m  [abstained] I don't know.
+  [chronos] 11/30 temporal     34.7s eta  10.6m  [abstained] I don't know.
+  [chronos] 12/30 open-domain  13.9s eta   9.5m  [abstained] I don't know.
+  [chronos] 13/30 temporal     10.4s eta   8.5m  [abstained] I don't know.
+  [chronos] 14/30 open-domain  10.6s eta   7.6m  [abstained] I don't know.
+  [chronos] 15/30 open-domain  11.3s eta   6.9m  [abstained] I don't know.
+  [chronos] 16/30 open-domain  12.2s eta   6.2m  [abstained] I don't know.
+  [chronos] 17/30 multi-hop     9.6s eta   5.5m  [abstained] I don't know.
+  [chronos] 18/30 multi-hop    11.1s eta   5.0m  [abstained] I don't know.
+  [chronos] 19/30 single-hop    9.8s eta   4.4m  [abstained] I don't know.
+  [chronos] 20/30 single-hop    9.6s eta   3.9m  [abstained] I don't know.
+  [chronos] 21/30 single-hop   41.8s eta   3.6m  Melanie's kids made pots, including a cup with a dog face on it, using
+  [chronos] 22/30 single-hop   33.3s eta   3.3m  [abstained] I don't know.
+  [chronos] 23/30 single-hop   10.9s eta   2.8m  [abstained] I don't know.
+  [chronos] 24/30 single-hop   34.1s eta   2.4m  [abstained] I don't know.
+  [chronos] 25/30 adversarial  11.4s eta   2.0m  [abstained] I don't know.
+  [chronos] 26/30 adversarial  10.2s eta   1.6m  [abstained] I don't know.
+  [chronos] 27/30 adversarial   9.7s eta   1.1m  [abstained] I don't know.
+  [chronos] 28/30 adversarial  10.9s eta   0.7m  [abstained] I don't know.
+  [chronos] 29/30 adversarial   9.8s eta   0.4m  [abstained] I don't know.
+  [chronos] 30/30 adversarial   9.5s eta   0.0m  [abstained] I don't know.
+chronos {'questions': 30, 'already_done': 0, 'answered': 30, 'skipped': 0, 'errors': 0}
+  [B3_chunk_rag] 1/30 open-domain  26.2s eta  12.7m  [abstained] I don't know.
+  [B3_chunk_rag] 2/30 temporal     12.5s eta   9.0m  Melanie plans to go camping next month.
+  [B3_chunk_rag] 3/30 multi-hop    17.1s eta   8.4m  [abstained] I don't know.
+  [B3_chunk_rag] 4/30 temporal     33.7s eta   9.7m  [abstained] I don't know.
+  [B3_chunk_rag] 5/30 temporal     31.8s eta  10.1m  Caroline has known her current group of friends for 4 years.
+  [B3_chunk_rag] 6/30 multi-hop    21.1s eta   9.5m  [abstained] I don't know.
+  [B3_chunk_rag] 7/30 temporal     12.7s eta   8.5m  Caroline is going to a transgender conference in July 2023.
+  [B3_chunk_rag] 8/30 multi-hop    23.8s eta   8.2m  [abstained] I don't know.
+  [B3_chunk_rag] 9/30 open-domain  24.8s eta   7.9m  [abstained] I don't know.
+  [B3_chunk_rag] 10/30 multi-hop    25.3s eta   7.6m  [abstained] I don't know.
+  [B3_chunk_rag] 11/30 temporal     30.4s eta   7.5m  [abstained] I don't know.
+  [B3_chunk_rag] 12/30 open-domain  26.3s eta   7.1m  [abstained] I don't know.
+  [B3_chunk_rag] 13/30 temporal     13.8s eta   6.5m  Caroline drew a self-portrait last week [= the week before 23 August 2
+  [B3_chunk_rag] 14/30 open-domain  23.7s eta   6.2m  [abstained] I don't know.
+  [B3_chunk_rag] 15/30 open-domain  17.8s eta   5.7m  [abstained] I don't know.
+  [B3_chunk_rag] 16/30 open-domain  24.7s eta   5.3m  Melanie says Caroline has a caring heart and is courageous.
+  [B3_chunk_rag] 17/30 multi-hop    18.3s eta   4.9m  [abstained] I don't know.
+  [B3_chunk_rag] 18/30 multi-hop    21.4s eta   4.5m  [abstained] I don't know.
+  [B3_chunk_rag] 19/30 single-hop   23.9s eta   4.1m  [abstained] I don't know.
+  [B3_chunk_rag] 20/30 single-hop   13.2s eta   3.7m  Caroline attended an LGBTQ+ counseling workshop recently.
+  [B3_chunk_rag] 21/30 single-hop   25.8s eta   3.3m  [abstained] I don't know.
+  [B3_chunk_rag] 22/30 single-hop   26.6s eta   3.0m  [abstained] I don't know.
+  [B3_chunk_rag] 23/30 single-hop   28.3s eta   2.7m  [abstained] I don't know.
+  [B3_chunk_rag] 24/30 single-hop   31.6s eta   2.3m  [abstained] I don't know.
+  [B3_chunk_rag] 25/30 adversarial  46.0s eta   2.0m  [abstained] I don't know.
+  [B3_chunk_rag] 26/30 adversarial  37.4s eta   1.6m  [abstained] I don't know.
+  [B3_chunk_rag] 27/30 adversarial  66.2s eta   1.3m  [abstained] I don't know.
+  [B3_chunk_rag] 28/30 adversarial  20.2s eta   0.9m  Melanie wants to create a safe and loving home for kids, where love an
+  [B3_chunk_rag] 29/30 adversarial  16.4s eta   0.4m  Caroline says running has been great for her mental health and destres
+  [B3_chunk_rag] 30/30 adversarial  13.5s eta   0.0m  Caroline saw a sign stating that someone is not being able to leave at
+B3_chunk_rag {'questions': 30, 'already_done': 0, 'answered': 30, 'skipped': 0, 'errors': 0}

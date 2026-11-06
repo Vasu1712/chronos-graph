@@ -1,0 +1,9 @@
+  judged 32/74
+  judged 64/74
+  judged 74/74
+cerebras 429; blocking 58s
+scored: {'flag': 493, 'exact': 1, 'judge': 74, 'skipped': 50, 'pending_no_judge': 0}
+calibration: {'status': 'measured', 'providers': ['groq', 'cerebras'], 'n': 74, 'kappa': 0.9694971145919209, 'agreement': 0.9864864864864865, 'positive_rate': {'groq': 0.6621621621621622, 'cerebras': 0.6756756756756757}}
+audit sheet: /Users/vasu/Desktop/Projects/chronos-graph/artifacts/judge_audit.csv
+claim re-check: {'n': 98, 'candidates': 98}
+manifests: ['quick50', 'quick_v1']; wrote artifacts/summary_metrics.json, README.md, EVAL.md, DESIGN.md

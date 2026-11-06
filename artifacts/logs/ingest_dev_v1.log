@@ -1,0 +1,27 @@
+locomo malformed evidence locomo:conv-42:q0058: 'D10:19' (no turn D10:19)
+locomo malformed evidence locomo:conv-42:q0088: 'D' (unparseable)
+locomo malformed evidence locomo:conv-47:q0038: 'D4:36' (no turn D4:36)
+ingesting 21 conversations of dev_v1 into /Users/vasu/Desktop/Projects/chronos-graph/artifacts/memory_dev_v1.sqlite
+[1/1] conv-26 (locomo, 19 sessions)
+W1107 00:54:24.978000 16958 .venv/lib/python3.11/site-packages/torch/distributed/elastic/multiprocessing/redirects.py:35] NOTE: Redirects are currently not supported in MacOs.
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 8479.28it/s]
+  conv-26:s01: 18 turns,   88.4s, 8 LLM calls (0 cached), 8 facts
+  conv-26:s02: 17 turns,  101.9s, 11 LLM calls (0 cached), 9 facts
+  conv-26:s03: 23 turns,  156.2s, 19 LLM calls (0 cached), 17 facts
+  conv-26:s04: 18 turns,  112.3s, 13 LLM calls (0 cached), 11 facts
+  conv-26:s05: 16 turns,   70.8s, 10 LLM calls (0 cached), 8 facts
+  conv-26:s06: 16 turns,   75.2s, 8 LLM calls (0 cached), 7 facts
+  conv-26:s07: 27 turns,  131.3s, 16 LLM calls (0 cached), 13 facts
+  conv-26:s08: 39 turns,  177.6s, 22 LLM calls (0 cached), 19 facts
+  conv-26:s09: 17 turns,   56.7s, 8 LLM calls (0 cached), 5 facts
+  conv-26:s10: 24 turns,  103.9s, 12 LLM calls (0 cached), 10 facts
+  conv-26:s11: 17 turns,   93.4s, 11 LLM calls (0 cached), 9 facts
+  conv-26:s12: 21 turns,  169.3s, 20 LLM calls (0 cached), 17 facts
+  conv-26:s13: 18 turns,  115.2s, 14 LLM calls (0 cached), 12 facts
+  conv-26:s14: 35 turns,  153.6s, 18 LLM calls (0 cached), 15 facts
+  conv-26:s15: 28 turns,  130.4s, 13 LLM calls (0 cached), 13 facts
+  conv-26:s16: 20 turns,  212.1s, 23 LLM calls (0 cached), 20 facts
+  conv-26:s17: 26 turns,   86.3s, 12 LLM calls (0 cached), 8 facts
+  conv-26:s18: 24 turns,  129.6s, 17 LLM calls (0 cached), 14 facts
+  conv-26:s19: 15 turns,   73.3s, 9 LLM calls (0 cached), 7 facts
+done: {'conversations': 1, 'sessions_ingested': 19, 'sessions_skipped': 0, 'seconds': 2237.6993953748606}

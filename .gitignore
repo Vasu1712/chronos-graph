@@ -6,11 +6,10 @@ data/raw/*
 !data/raw/CHECKSUMS
 !data/raw/.gitkeep
 
-# databases, except the shared LLM response cache
+# databases and the LLM response cache (too large for git); raw outputs and summaries are committed
 *.sqlite
 *.sqlite-wal
 *.sqlite-shm
-!artifacts/llm_cache.sqlite
 
 # python
 __pycache__/
@@ -26,4 +25,3 @@ build/
 .DS_Store
 .vscode/
 .idea/
-/artifacts

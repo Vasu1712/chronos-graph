@@ -64,9 +64,25 @@ Rules:
 - final_answer is a short direct answer that only combines your claims."""
 
 
+FORCE_ANSWER = """INSTRUCTION: Your previous attempt declined to answer, but the question is being asked \
+about this conversation and the CONTEXT was retrieved for it. Answer now: give the best answer the \
+CONTEXT supports, even if it is only partly stated or needs counting, adding, comparing dates or \
+combining turns. Write the claims that support it, citing ALLOWED TURN IDS. Set abstained to false."""
+
+
 class Generator:
+    """Builds the prompt and calls the model.
+
+    The model's own "abstained" flag is not trusted on its own. eval-50 showed a 7B model declining
+    86% of answerable questions in every system, even with the gold turn in the context (B4: 85% of
+    gold turns in context, 77% false abstention), so a decline with no claims gets exactly one
+    forced-answer retry. Whether to abstain is decided by the answerability gate, and by the
+    verifier when nothing citeable survives, not by the generator's reluctance.
+    """
+
     def __init__(self, llm: Any) -> None:
         self.llm = llm
+        self.forced_retries = 0  # forced-answer retries made (diagnostics)
 
     @staticmethod
     def messages(
@@ -78,6 +94,7 @@ class Generator:
         feedback: str | None = None,
         asker: str | None = None,
         question_type: str | None = None,
+        force_answer: bool = False,
     ) -> list[dict[str, str]]:
         parts = [f"QUESTION: {question}"]
         if question_type:
@@ -97,6 +114,8 @@ class Generator:
         parts += ["", "CONTEXT:", context or "(empty)", "", "ALLOWED TURN IDS: " + allowed]
         if feedback:
             parts += ["", "FEEDBACK ON YOUR PREVIOUS ANSWER:", feedback]
+        if force_answer:
+            parts += ["", FORCE_ANSWER]
         return [
             {"role": "system", "content": GENERATOR_SYSTEM},
             {"role": "user", "content": "\n".join(parts)},
@@ -113,16 +132,26 @@ class Generator:
         asker: str | None = None,
         question_type: str | None = None,
     ) -> GenerationOut:
-        msgs = self.messages(
-            question,
-            context,
-            allowed_turn_uids,
-            question_date=question_date,
-            feedback=feedback,
-            asker=asker,
-            question_type=question_type,
+        kw = dict(
+            question_date=question_date, feedback=feedback, asker=asker, question_type=question_type
         )
-        return self.llm.structured(msgs, GenerationOut)
+        out = self.llm.structured(
+            self.messages(question, context, allowed_turn_uids, **kw), GenerationOut
+        )
+        if out.abstained and out.claims:  # contradictory: it wrote claims, so it did answer
+            return out.model_copy(update={"abstained": False, "abstention_reason": None})
+        if out.abstained and context.strip():
+            self.forced_retries += 1
+            retry = self.llm.structured(
+                self.messages(question, context, allowed_turn_uids, force_answer=True, **kw),
+                GenerationOut,
+            )
+            if retry.claims:
+                return retry.model_copy(update={"abstained": False, "abstention_reason": None})
+            out = out.model_copy(
+                update={"abstention_reason": out.abstention_reason or retry.abstention_reason}
+            )
+        return out
 
 
 def question_type(analysis) -> str:

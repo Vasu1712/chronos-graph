@@ -151,3 +151,32 @@ def test_expand_sources_off_lists_source_ids_but_attaches_no_turns(db):
 def test_oversized_block_is_skipped_not_fatal(db):
     p = packed(db, "Tell me about Alice", budget=45)
     assert p.tokens <= 45 and p.truncated
+
+
+def test_budget_buys_breadth_before_detail(db):
+    """Pass 1 packs every hit's line with its first source turn; neighbours only come after, so a
+    tight budget keeps more distinct memories than one that is spent on windows around the top hits."""
+    q = "Tell me about Alice"
+    cfg = RetrievalConfig()
+    a = analyze(q, conn=db.conn, conversation_id=CONV, question_date=QDATE)
+    r = Retriever(db, HashingEmbedder(), cfg).retrieve(a, CONV)
+    pk = Packer(db, cfg, count_tokens=WORDS)
+    full = pk.pack(r, 10_000)
+    # primary-only cost of the same memories (no neighbours, first source only)
+    primary = pk.render(
+        [
+            b
+            for c in r.fused
+            if c.kind == "memory" and (b := pk._memory_block(c.id, a.intent, detail=False))
+        ]
+    )[0]
+    budget = WORDS(primary)  # exactly enough for pass 1, nothing for neighbours
+    tight = pk.pack(r, budget)
+    assert tight.tokens <= budget < full.tokens
+    assert len(tight.memory_ids) >= 0.8 * len(full.memory_ids)  # breadth survived the tight budget
+    # a detailed block never carries fewer turns than its primary block
+    for c in r.fused:
+        if c.kind == "memory":
+            d = pk._memory_block(c.id, a.intent, detail=True)
+            p1 = pk._memory_block(c.id, a.intent, detail=False)
+            assert d is None or len(d.turns) >= len(p1.turns)

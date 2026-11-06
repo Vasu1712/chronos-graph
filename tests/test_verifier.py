@@ -246,3 +246,42 @@ def test_long_turn_is_scored_in_windows(env, monkeypatch):
 def test_premise_resolves_relative_dates(env):
     db, ver = env
     assert "last month [= " in ver.premise([MILWAUKEE_TURN])
+
+
+class ScriptedLLM:
+    """Returns scripted GenerationOut values and records the prompts it was given."""
+
+    def __init__(self, *outs):
+        self.outs, self.prompts = list(outs), []
+
+    def structured(self, messages, response_model):
+        self.prompts.append(messages[1]["content"])
+        return self.outs.pop(0)
+
+
+def test_decline_gets_one_forced_answer_retry():
+    """eval-50: the model declined 86% of answerable questions in every system, even with the gold
+    turn in context. A decline with no claims is retried once with an instruction to answer."""
+    llm = ScriptedLLM(gen(abstained=True), gen(("Alice lives in Milwaukee.", ["t1"])))
+    out = Generator(llm).generate(
+        "Where does Alice live?", "[t1 | d | Alice] I live in Milwaukee", ["t1"]
+    )
+    assert not out.abstained and [c.text for c in out.claims] == ["Alice lives in Milwaukee."]
+    assert len(llm.prompts) == 2 and "INSTRUCTION: Your previous attempt declined" in llm.prompts[1]
+    assert "INSTRUCTION" not in llm.prompts[0]
+
+
+def test_decline_after_forced_retry_stays_a_decline():
+    llm = ScriptedLLM(gen(abstained=True), gen(abstained=True))
+    g = Generator(llm)
+    out = g.generate("q", "[t1 | d | Alice] unrelated", ["t1"])
+    assert out.abstained and g.forced_retries == 1 and len(llm.prompts) == 2
+
+
+def test_abstained_flag_with_claims_is_overridden_and_empty_context_not_retried():
+    llm = ScriptedLLM(gen(("Alice lives in Milwaukee.", ["t1"]), abstained=True))
+    out = Generator(llm).generate("q", "[t1 | d | Alice] x", ["t1"])
+    assert not out.abstained and len(llm.prompts) == 1
+    llm = ScriptedLLM(gen(abstained=True))
+    out = Generator(llm).generate("q", "", [])
+    assert out.abstained and len(llm.prompts) == 1  # nothing was retrieved: nothing to force

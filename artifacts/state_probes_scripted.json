@@ -1,0 +1,932 @@
+{
+ "label": "synthetic",
+ "mode": "scripted",
+ "details": [
+  {
+   "probe_id": "correction_01",
+   "case": "in_session_correction",
+   "policy": "append_only",
+   "passed": true,
+   "current_ok": true,
+   "failures": []
+  },
+  {
+   "probe_id": "correction_01",
+   "case": "in_session_correction",
+   "policy": "arrival_order",
+   "passed": true,
+   "current_ok": true,
+   "failures": []
+  },
+  {
+   "probe_id": "correction_01",
+   "case": "in_session_correction",
+   "policy": "bitemporal",
+   "passed": true,
+   "current_ok": true,
+   "failures": []
+  },
+  {
+   "probe_id": "correction_02",
+   "case": "in_session_correction",
+   "policy": "append_only",
+   "passed": true,
+   "current_ok": true,
+   "failures": []
+  },
+  {
+   "probe_id": "correction_02",
+   "case": "in_session_correction",
+   "policy": "arrival_order",
+   "passed": true,
+   "current_ok": true,
+   "failures": []
+  },
+  {
+   "probe_id": "correction_02",
+   "case": "in_session_correction",
+   "policy": "bitemporal",
+   "passed": true,
+   "current_ok": true,
+   "failures": []
+  },
+  {
+   "probe_id": "correction_03",
+   "case": "in_session_correction",
+   "policy": "append_only",
+   "passed": true,
+   "current_ok": true,
+   "failures": []
+  },
+  {
+   "probe_id": "correction_03",
+   "case": "in_session_correction",
+   "policy": "arrival_order",
+   "passed": true,
+   "current_ok": true,
+   "failures": []
+  },
+  {
+   "probe_id": "correction_03",
+   "case": "in_session_correction",
+   "policy": "bitemporal",
+   "passed": true,
+   "current_ok": true,
+   "failures": []
+  },
+  {
+   "probe_id": "correction_04",
+   "case": "in_session_correction",
+   "policy": "append_only",
+   "passed": true,
+   "current_ok": true,
+   "failures": []
+  },
+  {
+   "probe_id": "correction_04",
+   "case": "in_session_correction",
+   "policy": "arrival_order",
+   "passed": true,
+   "current_ok": true,
+   "failures": []
+  },
+  {
+   "probe_id": "correction_04",
+   "case": "in_session_correction",
+   "policy": "bitemporal",
+   "passed": true,
+   "current_ok": true,
+   "failures": []
+  },
+  {
+   "probe_id": "correction_05",
+   "case": "in_session_correction",
+   "policy": "append_only",
+   "passed": true,
+   "current_ok": true,
+   "failures": []
+  },
+  {
+   "probe_id": "correction_05",
+   "case": "in_session_correction",
+   "policy": "arrival_order",
+   "passed": true,
+   "current_ok": true,
+   "failures": []
+  },
+  {
+   "probe_id": "correction_05",
+   "case": "in_session_correction",
+   "policy": "bitemporal",
+   "passed": true,
+   "current_ok": true,
+   "failures": []
+  },
+  {
+   "probe_id": "late_mention_01",
+   "case": "late_mention",
+   "policy": "append_only",
+   "passed": true,
+   "current_ok": true,
+   "failures": []
+  },
+  {
+   "probe_id": "late_mention_01",
+   "case": "late_mention",
+   "policy": "arrival_order",
+   "passed": false,
+   "current_ok": true,
+   "failures": [
+    "memory Priya~'Delhi': valid_from=None (want '2019-01-01'); valid_from_precision='UNKNOWN' (want 'YEAR'); valid_to='2023-06-10' (want '2019-12-31'); valid_to_precision='BEFORE' (want 'YEAR')"
+   ]
+  },
+  {
+   "probe_id": "late_mention_01",
+   "case": "late_mention",
+   "policy": "bitemporal",
+   "passed": true,
+   "current_ok": true,
+   "failures": []
+  },
+  {
+   "probe_id": "late_mention_02",
+   "case": "late_mention",
+   "policy": "append_only",
+   "passed": true,
+   "current_ok": true,
+   "failures": []
+  },
+  {
+   "probe_id": "late_mention_02",
+   "case": "late_mention",
+   "policy": "arrival_order",
+   "passed": false,
+   "current_ok": true,
+   "failures": [
+    "memory Marco~'Brightline': valid_from=None (want '2018-01-01'); valid_to='2023-09-01' (want '2018-12-31'); valid_to_precision='BEFORE' (want 'YEAR')"
+   ]
+  },
+  {
+   "probe_id": "late_mention_02",
+   "case": "late_mention",
+   "policy": "bitemporal",
+   "passed": true,
+   "current_ok": true,
+   "failures": []
+  },
+  {
+   "probe_id": "late_mention_03",
+   "case": "late_mention",
+   "policy": "append_only",
+   "passed": true,
+   "current_ok": true,
+   "failures": []
+  },
+  {
+   "probe_id": "late_mention_03",
+   "case": "late_mention",
+   "policy": "arrival_order",
+   "passed": false,
+   "current_ok": true,
+   "failures": [
+    "memory Aisha~'Lakeside': valid_from=None (want '2016-01-01'); valid_to='2023-01-20' (want '2016-12-31')"
+   ]
+  },
+  {
+   "probe_id": "late_mention_03",
+   "case": "late_mention",
+   "policy": "bitemporal",
+   "passed": true,
+   "current_ok": true,
+   "failures": []
+  },
+  {
+   "probe_id": "late_mention_04",
+   "case": "late_mention",
+   "policy": "append_only",
+   "passed": true,
+   "current_ok": true,
+   "failures": []
+  },
+  {
+   "probe_id": "late_mention_04",
+   "case": "late_mention",
+   "policy": "arrival_order",
+   "passed": false,
+   "current_ok": true,
+   "failures": [
+    "memory Kenji~'barista': valid_from=None (want '2015-01-01'); valid_to='2023-07-30' (want '2015-12-31')"
+   ]
+  },
+  {
+   "probe_id": "late_mention_04",
+   "case": "late_mention",
+   "policy": "bitemporal",
+   "passed": true,
+   "current_ok": true,
+   "failures": []
+  },
+  {
+   "probe_id": "late_mention_05",
+   "case": "late_mention",
+   "policy": "append_only",
+   "passed": true,
+   "current_ok": true,
+   "failures": []
+  },
+  {
+   "probe_id": "late_mention_05",
+   "case": "late_mention",
+   "policy": "arrival_order",
+   "passed": false,
+   "current_ok": true,
+   "failures": [
+    "memory Sofia~'Montreal': valid_from=None (want '2020-03-01'); valid_from_precision='UNKNOWN' (want 'MONTH'); valid_to='2023-08-19' (want '2020-03-31')"
+   ]
+  },
+  {
+   "probe_id": "late_mention_05",
+   "case": "late_mention",
+   "policy": "bitemporal",
+   "passed": true,
+   "current_ok": true,
+   "failures": []
+  },
+  {
+   "probe_id": "neg_01",
+   "case": "neg_polarity",
+   "policy": "append_only",
+   "passed": false,
+   "current_ok": false,
+   "failures": [
+    "memory Arjun~'guitar': status='ACTIVE' (want 'SUPERSEDED'); valid_to=None (want '2023-06-18'); valid_to_precision=None (want 'SESSION')",
+    "must not be current: ['Arjun plays guitar in a band on weekends.']"
+   ]
+  },
+  {
+   "probe_id": "neg_01",
+   "case": "neg_polarity",
+   "policy": "arrival_order",
+   "passed": true,
+   "current_ok": true,
+   "failures": []
+  },
+  {
+   "probe_id": "neg_01",
+   "case": "neg_polarity",
+   "policy": "bitemporal",
+   "passed": true,
+   "current_ok": true,
+   "failures": []
+  },
+  {
+   "probe_id": "neg_02",
+   "case": "neg_polarity",
+   "policy": "append_only",
+   "passed": false,
+   "current_ok": false,
+   "failures": [
+    "memory Pedro~'smok': status='ACTIVE' (want 'SUPERSEDED'); valid_to=None (want '*')",
+    "must not be current: ['Pedro smokes about half a pack a day.']"
+   ]
+  },
+  {
+   "probe_id": "neg_02",
+   "case": "neg_polarity",
+   "policy": "arrival_order",
+   "passed": true,
+   "current_ok": true,
+   "failures": []
+  },
+  {
+   "probe_id": "neg_02",
+   "case": "neg_polarity",
+   "policy": "bitemporal",
+   "passed": true,
+   "current_ok": true,
+   "failures": []
+  },
+  {
+   "probe_id": "neg_03",
+   "case": "neg_polarity",
+   "policy": "append_only",
+   "passed": false,
+   "current_ok": false,
+   "failures": [
+    "memory Yusuf~'Delta': status='ACTIVE' (want 'SUPERSEDED'); valid_to=None (want '*')",
+    "must not be current: ['Yusuf works at Delta Print.']"
+   ]
+  },
+  {
+   "probe_id": "neg_03",
+   "case": "neg_polarity",
+   "policy": "arrival_order",
+   "passed": true,
+   "current_ok": true,
+   "failures": []
+  },
+  {
+   "probe_id": "neg_03",
+   "case": "neg_polarity",
+   "policy": "bitemporal",
+   "passed": true,
+   "current_ok": true,
+   "failures": []
+  },
+  {
+   "probe_id": "neg_04",
+   "case": "neg_polarity",
+   "policy": "append_only",
+   "passed": false,
+   "current_ok": false,
+   "failures": [
+    "memory Lily~'cat': status='ACTIVE' (want 'SUPERSEDED'); valid_to=None (want '*')",
+    "must not be current: ['Lily has a cat named Mochi.']"
+   ]
+  },
+  {
+   "probe_id": "neg_04",
+   "case": "neg_polarity",
+   "policy": "arrival_order",
+   "passed": true,
+   "current_ok": true,
+   "failures": []
+  },
+  {
+   "probe_id": "neg_04",
+   "case": "neg_polarity",
+   "policy": "bitemporal",
+   "passed": true,
+   "current_ok": true,
+   "failures": []
+  },
+  {
+   "probe_id": "neg_05",
+   "case": "neg_polarity",
+   "policy": "append_only",
+   "passed": false,
+   "current_ok": false,
+   "failures": [
+    "memory Sven~'espresso': status='ACTIVE' (want 'SUPERSEDED'); valid_to=None (want '*')",
+    "must not be current: ['Sven drinks three espressos every morning.']"
+   ]
+  },
+  {
+   "probe_id": "neg_05",
+   "case": "neg_polarity",
+   "policy": "arrival_order",
+   "passed": true,
+   "current_ok": true,
+   "failures": []
+  },
+  {
+   "probe_id": "neg_05",
+   "case": "neg_polarity",
+   "policy": "bitemporal",
+   "passed": true,
+   "current_ok": true,
+   "failures": []
+  },
+  {
+   "probe_id": "out_of_order_01",
+   "case": "out_of_order_dates",
+   "policy": "append_only",
+   "passed": false,
+   "current_ok": false,
+   "failures": [
+    "memory Ines~'Denver': valid_to=None (want '*')",
+    "current Ines.residence = ['Ines moved to Austin.', 'Ines moved to Denver.'] (want ['Austin'])"
+   ]
+  },
+  {
+   "probe_id": "out_of_order_01",
+   "case": "out_of_order_dates",
+   "policy": "arrival_order",
+   "passed": false,
+   "current_ok": false,
+   "failures": [
+    "memory Ines~'Austin': status='SUPERSEDED' (want 'ACTIVE'); valid_from='2023-07-10' (want '2022-06-01'); valid_to='2023-09-02' (want None)",
+    "memory Ines~'Denver': valid_from='2023-09-02' (want '2021-03-01'); valid_from_precision='SESSION' (want 'MONTH'); valid_to=None (want '*')",
+    "current Ines.residence = ['Ines moved to Denver.'] (want ['Austin'])"
+   ]
+  },
+  {
+   "probe_id": "out_of_order_01",
+   "case": "out_of_order_dates",
+   "policy": "bitemporal",
+   "passed": true,
+   "current_ok": true,
+   "failures": []
+  },
+  {
+   "probe_id": "out_of_order_02",
+   "case": "out_of_order_dates",
+   "policy": "append_only",
+   "passed": false,
+   "current_ok": false,
+   "failures": [
+    "memory Owen~'Summit': valid_to=None (want '*')",
+    "current Owen.employer = ['Owen works at Fairway Logistics.', 'Owen started working at Summit Foods.'] (want ['Fairway'])"
+   ]
+  },
+  {
+   "probe_id": "out_of_order_02",
+   "case": "out_of_order_dates",
+   "policy": "arrival_order",
+   "passed": false,
+   "current_ok": false,
+   "failures": [
+    "memory Owen~'Fairway': status='SUPERSEDED' (want 'ACTIVE'); valid_from='2023-04-01' (want '2023-01-01'); valid_to='2023-06-15' (want None)",
+    "memory Owen~'Summit': valid_from='2023-06-15' (want '2020-01-01'); valid_from_precision='SESSION' (want 'YEAR'); valid_to=None (want '*')",
+    "current Owen.employer = ['Owen started working at Summit Foods.'] (want ['Fairway'])"
+   ]
+  },
+  {
+   "probe_id": "out_of_order_02",
+   "case": "out_of_order_dates",
+   "policy": "bitemporal",
+   "passed": true,
+   "current_ok": true,
+   "failures": []
+  },
+  {
+   "probe_id": "out_of_order_03",
+   "case": "out_of_order_dates",
+   "policy": "append_only",
+   "passed": false,
+   "current_ok": false,
+   "failures": [
+    "memory Lucia~'software engineer': valid_to=None (want '*')",
+    "current Lucia.job_title = ['Lucia works as a team lead.', 'Lucia works as a software engineer.'] (want ['team lead'])"
+   ]
+  },
+  {
+   "probe_id": "out_of_order_03",
+   "case": "out_of_order_dates",
+   "policy": "arrival_order",
+   "passed": false,
+   "current_ok": false,
+   "failures": [
+    "memory Lucia~'team lead': status='SUPERSEDED' (want 'ACTIVE'); valid_from='2023-05-05' (want '2023-04-01'); valid_to='2023-08-08' (want None)",
+    "memory Lucia~'software engineer': valid_from='2023-08-08' (want '2019-01-01'); valid_to=None (want '*')",
+    "current Lucia.job_title = ['Lucia works as a software engineer.'] (want ['team lead'])"
+   ]
+  },
+  {
+   "probe_id": "out_of_order_03",
+   "case": "out_of_order_dates",
+   "policy": "bitemporal",
+   "passed": true,
+   "current_ok": true,
+   "failures": []
+  },
+  {
+   "probe_id": "out_of_order_04",
+   "case": "out_of_order_dates",
+   "policy": "append_only",
+   "passed": false,
+   "current_ok": false,
+   "failures": [
+    "memory Arun~'Hyderabad': valid_to=None (want '2023-10-01')",
+    "current Arun.residence = ['Arun lives in Chennai.', 'Arun moved to Hyderabad.'] (want ['Chennai'])"
+   ]
+  },
+  {
+   "probe_id": "out_of_order_04",
+   "case": "out_of_order_dates",
+   "policy": "arrival_order",
+   "passed": false,
+   "current_ok": false,
+   "failures": [
+    "memory Arun~'Chennai': status='SUPERSEDED' (want 'ACTIVE'); valid_from='2023-10-20' (want '2023-10-01'); valid_from_precision='SESSION' (want 'DAY'); valid_to='2023-11-05' (want None)",
+    "memory Arun~'Hyderabad': valid_from='2023-11-05' (want '2023-05-02'); valid_from_precision='SESSION' (want 'DAY'); valid_to=None (want '2023-10-01')",
+    "current Arun.residence = ['Arun moved to Hyderabad.'] (want ['Chennai'])"
+   ]
+  },
+  {
+   "probe_id": "out_of_order_04",
+   "case": "out_of_order_dates",
+   "policy": "bitemporal",
+   "passed": true,
+   "current_ok": true,
+   "failures": []
+  },
+  {
+   "probe_id": "out_of_order_05",
+   "case": "out_of_order_dates",
+   "policy": "append_only",
+   "passed": false,
+   "current_ok": false,
+   "failures": [
+    "memory Tara~'Elmwood': valid_to=None (want '*')",
+    "current Tara.school = ['Tara studies at Kingsbridge University.', 'Tara studied at Elmwood College.'] (want ['Kingsbridge'])"
+   ]
+  },
+  {
+   "probe_id": "out_of_order_05",
+   "case": "out_of_order_dates",
+   "policy": "arrival_order",
+   "passed": false,
+   "current_ok": false,
+   "failures": [
+    "memory Tara~'Kingsbridge': status='SUPERSEDED' (want 'ACTIVE'); valid_from='2023-09-12' (want '2023-09-01'); valid_to='2023-10-30' (want None)",
+    "memory Tara~'Elmwood': valid_from='2023-10-30' (want '2018-01-01'); valid_to=None (want '*')",
+    "current Tara.school = ['Tara studied at Elmwood College.'] (want ['Kingsbridge'])"
+   ]
+  },
+  {
+   "probe_id": "out_of_order_05",
+   "case": "out_of_order_dates",
+   "policy": "bitemporal",
+   "passed": true,
+   "current_ok": true,
+   "failures": []
+  },
+  {
+   "probe_id": "temporary_01",
+   "case": "temporary_vs_move",
+   "policy": "append_only",
+   "passed": true,
+   "current_ok": true,
+   "failures": []
+  },
+  {
+   "probe_id": "temporary_01",
+   "case": "temporary_vs_move",
+   "policy": "arrival_order",
+   "passed": true,
+   "current_ok": true,
+   "failures": []
+  },
+  {
+   "probe_id": "temporary_01",
+   "case": "temporary_vs_move",
+   "policy": "bitemporal",
+   "passed": true,
+   "current_ok": true,
+   "failures": []
+  },
+  {
+   "probe_id": "temporary_02",
+   "case": "temporary_vs_move",
+   "policy": "append_only",
+   "passed": true,
+   "current_ok": true,
+   "failures": []
+  },
+  {
+   "probe_id": "temporary_02",
+   "case": "temporary_vs_move",
+   "policy": "arrival_order",
+   "passed": true,
+   "current_ok": true,
+   "failures": []
+  },
+  {
+   "probe_id": "temporary_02",
+   "case": "temporary_vs_move",
+   "policy": "bitemporal",
+   "passed": true,
+   "current_ok": true,
+   "failures": []
+  },
+  {
+   "probe_id": "temporary_03",
+   "case": "temporary_vs_move",
+   "policy": "append_only",
+   "passed": false,
+   "current_ok": false,
+   "failures": [
+    "memory Rosa~'Madrid': status='ACTIVE' (want 'SUPERSEDED'); valid_to=None (want '2023-06-01')",
+    "current Rosa.residence = ['Rosa lives in Madrid.', 'Rosa relocated to Valencia.'] (want ['Valencia'])"
+   ]
+  },
+  {
+   "probe_id": "temporary_03",
+   "case": "temporary_vs_move",
+   "policy": "arrival_order",
+   "passed": false,
+   "current_ok": true,
+   "failures": [
+    "memory Rosa~'Madrid': valid_to='2023-07-07' (want '2023-06-01')",
+    "memory Rosa~'Valencia': valid_from='2023-07-07' (want '2023-06-01'); valid_from_precision='SESSION' (want 'MONTH')"
+   ]
+  },
+  {
+   "probe_id": "temporary_03",
+   "case": "temporary_vs_move",
+   "policy": "bitemporal",
+   "passed": true,
+   "current_ok": true,
+   "failures": []
+  },
+  {
+   "probe_id": "temporary_04",
+   "case": "temporary_vs_move",
+   "policy": "append_only",
+   "passed": true,
+   "current_ok": true,
+   "failures": []
+  },
+  {
+   "probe_id": "temporary_04",
+   "case": "temporary_vs_move",
+   "policy": "arrival_order",
+   "passed": true,
+   "current_ok": true,
+   "failures": []
+  },
+  {
+   "probe_id": "temporary_04",
+   "case": "temporary_vs_move",
+   "policy": "bitemporal",
+   "passed": true,
+   "current_ok": true,
+   "failures": []
+  },
+  {
+   "probe_id": "temporary_05",
+   "case": "temporary_vs_move",
+   "policy": "append_only",
+   "passed": false,
+   "current_ok": false,
+   "failures": [
+    "memory Mira~'Boston': status='ACTIVE' (want 'SUPERSEDED'); valid_to=None (want '2023-09-01')",
+    "current Mira.residence = ['Mira lives in Boston.', 'Mira lives in Denver.'] (want ['Denver'])"
+   ]
+  },
+  {
+   "probe_id": "temporary_05",
+   "case": "temporary_vs_move",
+   "policy": "arrival_order",
+   "passed": false,
+   "current_ok": true,
+   "failures": [
+    "memory Mira~'Boston': valid_to='2023-10-01' (want '2023-09-01')",
+    "memory Mira~'Denver': valid_from='2023-10-01' (want '2023-09-01')"
+   ]
+  },
+  {
+   "probe_id": "temporary_05",
+   "case": "temporary_vs_move",
+   "policy": "bitemporal",
+   "passed": true,
+   "current_ok": true,
+   "failures": []
+  },
+  {
+   "probe_id": "update_01",
+   "case": "update_across_sessions",
+   "policy": "append_only",
+   "passed": false,
+   "current_ok": false,
+   "failures": [
+    "memory Jordan~'Austin': status='ACTIVE' (want 'SUPERSEDED'); valid_to=None (want '2023-04-01'); valid_to_precision=None (want 'MONTH')",
+    "current Jordan.residence = ['Jordan lives in Austin.', 'Jordan moved to Seattle.'] (want ['Seattle'])"
+   ]
+  },
+  {
+   "probe_id": "update_01",
+   "case": "update_across_sessions",
+   "policy": "arrival_order",
+   "passed": false,
+   "current_ok": true,
+   "failures": [
+    "memory Jordan~'Austin': valid_to='2023-05-17' (want '2023-04-01'); valid_to_precision='SESSION' (want 'MONTH')",
+    "memory Jordan~'Seattle': valid_from='2023-05-17' (want '2023-04-01'); valid_from_precision='SESSION' (want 'MONTH')"
+   ]
+  },
+  {
+   "probe_id": "update_01",
+   "case": "update_across_sessions",
+   "policy": "bitemporal",
+   "passed": true,
+   "current_ok": true,
+   "failures": []
+  },
+  {
+   "probe_id": "update_02",
+   "case": "update_across_sessions",
+   "policy": "append_only",
+   "passed": false,
+   "current_ok": false,
+   "failures": [
+    "memory Hana~'Orbit': status='ACTIVE' (want 'SUPERSEDED'); valid_to=None (want '*')",
+    "current Hana.employer = ['Hana works at Orbit Labs.', 'Hana joined Quanta.'] (want ['Quanta'])"
+   ]
+  },
+  {
+   "probe_id": "update_02",
+   "case": "update_across_sessions",
+   "policy": "arrival_order",
+   "passed": false,
+   "current_ok": true,
+   "failures": [
+    "memory Hana~'Quanta': valid_from='2023-03-09' (want '2023-02-01'); valid_from_precision='SESSION' (want 'MONTH')"
+   ]
+  },
+  {
+   "probe_id": "update_02",
+   "case": "update_across_sessions",
+   "policy": "bitemporal",
+   "passed": true,
+   "current_ok": true,
+   "failures": []
+  },
+  {
+   "probe_id": "update_03",
+   "case": "update_across_sessions",
+   "policy": "append_only",
+   "passed": false,
+   "current_ok": false,
+   "failures": [
+    "memory Maya~'single': status='ACTIVE' (want 'SUPERSEDED'); valid_to=None (want '2023-02-04'); valid_to_precision=None (want 'WEEK')",
+    "current Maya.relationship_status = ['Maya is single.', 'Maya is engaged.'] (want ['engaged'])"
+   ]
+  },
+  {
+   "probe_id": "update_03",
+   "case": "update_across_sessions",
+   "policy": "arrival_order",
+   "passed": false,
+   "current_ok": true,
+   "failures": [
+    "memory Maya~'single': valid_to='2023-02-11' (want '2023-02-04'); valid_to_precision='SESSION' (want 'WEEK')",
+    "memory Maya~'engaged': valid_from='2023-02-11' (want '2023-02-04')"
+   ]
+  },
+  {
+   "probe_id": "update_03",
+   "case": "update_across_sessions",
+   "policy": "bitemporal",
+   "passed": true,
+   "current_ok": true,
+   "failures": []
+  },
+  {
+   "probe_id": "update_04",
+   "case": "update_across_sessions",
+   "policy": "append_only",
+   "passed": false,
+   "current_ok": false,
+   "failures": [
+    "memory Felix~'Evernote': status='ACTIVE' (want 'SUPERSEDED'); valid_to=None (want '2023-06-06'); valid_to_precision=None (want 'WEEK')",
+    "current Felix.primary_tool:note_taking = ['Felix uses Evernote for notes.', 'Felix uses Obsidian for notes.'] (want ['Obsidian'])"
+   ]
+  },
+  {
+   "probe_id": "update_04",
+   "case": "update_across_sessions",
+   "policy": "arrival_order",
+   "passed": false,
+   "current_ok": true,
+   "failures": [
+    "memory Felix~'Evernote': valid_to='2023-06-20' (want '2023-06-06'); valid_to_precision='SESSION' (want 'WEEK')",
+    "memory Felix~'Obsidian': valid_from='2023-06-20' (want '2023-06-06'); valid_from_precision='SESSION' (want 'WEEK')"
+   ]
+  },
+  {
+   "probe_id": "update_04",
+   "case": "update_across_sessions",
+   "policy": "bitemporal",
+   "passed": true,
+   "current_ok": true,
+   "failures": []
+  },
+  {
+   "probe_id": "update_05",
+   "case": "update_across_sessions",
+   "policy": "append_only",
+   "passed": false,
+   "current_ok": false,
+   "failures": [
+    "memory Zoe~'Leeds': status='ACTIVE' (want 'SUPERSEDED'); valid_to=None (want '2022-10-01')",
+    "memory Zoe~'Bristol': status='ACTIVE' (want 'SUPERSEDED'); valid_to=None (want '2023-05-01')",
+    "current Zoe.residence = ['Zoe lives in Leeds.', 'Zoe moved to Bristol.', 'Zoe lives in Cardiff.'] (want ['Cardiff'])"
+   ]
+  },
+  {
+   "probe_id": "update_05",
+   "case": "update_across_sessions",
+   "policy": "arrival_order",
+   "passed": false,
+   "current_ok": true,
+   "failures": [
+    "memory Zoe~'Leeds': valid_to='2022-12-01' (want '2022-10-01')",
+    "memory Zoe~'Bristol': valid_from='2022-12-01' (want '2022-10-01'); valid_to='2023-07-15' (want '2023-05-01')",
+    "memory Zoe~'Cardiff': valid_from='2023-07-15' (want '2023-05-01')"
+   ]
+  },
+  {
+   "probe_id": "update_05",
+   "case": "update_across_sessions",
+   "policy": "bitemporal",
+   "passed": true,
+   "current_ok": true,
+   "failures": []
+  }
+ ],
+ "per_policy_case": {
+  "append_only": {
+   "in_session_correction": {
+    "passed": 5,
+    "total": 5,
+    "current_ok": 5
+   },
+   "late_mention": {
+    "passed": 5,
+    "total": 5,
+    "current_ok": 5
+   },
+   "neg_polarity": {
+    "passed": 0,
+    "total": 5,
+    "current_ok": 0
+   },
+   "out_of_order_dates": {
+    "passed": 0,
+    "total": 5,
+    "current_ok": 0
+   },
+   "temporary_vs_move": {
+    "passed": 3,
+    "total": 5,
+    "current_ok": 3
+   },
+   "update_across_sessions": {
+    "passed": 0,
+    "total": 5,
+    "current_ok": 0
+   }
+  },
+  "arrival_order": {
+   "in_session_correction": {
+    "passed": 5,
+    "total": 5,
+    "current_ok": 5
+   },
+   "late_mention": {
+    "passed": 0,
+    "total": 5,
+    "current_ok": 5
+   },
+   "neg_polarity": {
+    "passed": 5,
+    "total": 5,
+    "current_ok": 5
+   },
+   "out_of_order_dates": {
+    "passed": 0,
+    "total": 5,
+    "current_ok": 0
+   },
+   "temporary_vs_move": {
+    "passed": 3,
+    "total": 5,
+    "current_ok": 5
+   },
+   "update_across_sessions": {
+    "passed": 0,
+    "total": 5,
+    "current_ok": 5
+   }
+  },
+  "bitemporal": {
+   "in_session_correction": {
+    "passed": 5,
+    "total": 5,
+    "current_ok": 5
+   },
+   "late_mention": {
+    "passed": 5,
+    "total": 5,
+    "current_ok": 5
+   },
+   "neg_polarity": {
+    "passed": 5,
+    "total": 5,
+    "current_ok": 5
+   },
+   "out_of_order_dates": {
+    "passed": 5,
+    "total": 5,
+    "current_ok": 5
+   },
+   "temporary_vs_move": {
+    "passed": 5,
+    "total": 5,
+    "current_ok": 5
+   },
+   "update_across_sessions": {
+    "passed": 5,
+    "total": 5,
+    "current_ok": 5
+   }
+  }
+ },
+ "summary": {
+  "append_only": "13/30",
+  "arrival_order": "13/30",
+  "bitemporal": "30/30"
+ }
+}

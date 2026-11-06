@@ -48,6 +48,14 @@ def test_no_mismatch_when_question_matches_speaker(db):
     assert not g.speaker_mismatch and not g.abstain
 
 
+def test_question_naming_both_speakers_is_not_a_mismatch(db):
+    a, p = ctx(
+        db, "Where do Alice and Bob live?"
+    )  # Alice's residence answers a question about both
+    g = AnswerabilityGate(db, None, "speaker").check(a, p)
+    assert not g.speaker_mismatch and not g.abstain
+
+
 def test_contrary_turn_evidence_prevents_abstention(db):
     a, p = ctx(
         db, "Is Bob still running?"

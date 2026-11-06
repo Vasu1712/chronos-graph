@@ -1,0 +1,107 @@
+locomo malformed evidence locomo:conv-42:q0058: 'D10:19' (no turn D10:19)
+locomo malformed evidence locomo:conv-42:q0088: 'D' (unparseable)
+locomo malformed evidence locomo:conv-47:q0038: 'D4:36' (no turn D4:36)
+ingesting 21 conversations of quick_v1 into /Users/vasu/Desktop/Projects/chronos-graph/artifacts/memory_quick_v1.sqlite
+[1/21] conv-50 (locomo, 30 sessions)
+W1106 13:34:25.812000 94539 .venv/lib/python3.11/site-packages/torch/distributed/elastic/multiprocessing/redirects.py:35] NOTE: Redirects are currently not supported in MacOs.
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 4987.37it/s]
+  conv-50:s01: 19 turns,  124.2s, 12 LLM calls (0 cached), 12 facts
+  conv-50:s02: 21 turns,   47.0s, 5 LLM calls (0 cached), 5 facts
+  conv-50:s03: 18 turns,   87.8s, 12 LLM calls (0 cached), 9 facts
+  conv-50:s04: 28 turns,   66.1s, 7 LLM calls (0 cached), 7 facts
+  conv-50:s05: 15 turns,  108.2s, 12 LLM calls (0 cached), 12 facts
+  conv-50:s06: 18 turns,   99.6s, 12 LLM calls (0 cached), 9 facts
+  conv-50:s07: 19 turns,  148.5s, 17 LLM calls (0 cached), 14 facts
+  conv-50:s08: 14 turns,   51.4s, 7 LLM calls (0 cached), 5 facts
+  conv-50:s09: 21 turns,   91.9s, 12 LLM calls (0 cached), 9 facts
+  conv-50:s10: 17 turns,   96.6s, 12 LLM calls (0 cached), 9 facts
+  conv-50:s11: 14 turns,   48.7s, 7 LLM calls (0 cached), 5 facts
+  conv-50:s12: 17 turns,   70.6s, 10 LLM calls (0 cached), 7 facts
+  conv-50:s13: 19 turns,   64.2s, 9 LLM calls (0 cached), 6 facts
+  conv-50:s14: 16 turns,   74.9s, 9 LLM calls (0 cached), 7 facts
+  conv-50:s15: 15 turns,   70.9s, 8 LLM calls (0 cached), 7 facts
+  conv-50:s16: 25 turns,   94.5s, 9 LLM calls (0 cached), 6 facts
+  conv-50:s17: 10 turns,   54.8s, 5 LLM calls (0 cached), 3 facts
+  conv-50:s18: 16 turns,   62.6s, 7 LLM calls (0 cached), 5 facts
+  conv-50:s19: 12 turns,   92.5s, 6 LLM calls (0 cached), 4 facts
+  conv-50:s20: 17 turns,  242.0s, 13 LLM calls (0 cached), 10 facts
+  conv-50:s21: 18 turns,   87.0s, 9 LLM calls (0 cached), 6 facts
+  conv-50:s22: 14 turns,  101.4s, 10 LLM calls (0 cached), 8 facts
+  conv-50:s23: 18 turns,  122.5s, 14 LLM calls (0 cached), 13 facts
+  conv-50:s24: 23 turns,   96.5s, 11 LLM calls (0 cached), 9 facts
+  conv-50:s25: 31 turns,  165.6s, 19 LLM calls (0 cached), 16 facts
+  conv-50:s26: 15 turns,   75.8s, 9 LLM calls (0 cached), 8 facts
+  conv-50:s27: 13 turns,   65.1s, 9 LLM calls (0 cached), 7 facts
+  conv-50:s28: 43 turns,  234.4s, 29 LLM calls (0 cached), 24 facts
+  conv-50:s29: 18 turns,   75.3s, 10 LLM calls (0 cached), 7 facts
+  conv-50:s30: 24 turns,   91.4s, 12 LLM calls (0 cached), 9 facts
+[2/21] 6aeb4375 (longmemeval, 11 sessions)
+  6aeb4375:s01: 8 turns,    2.0s, 1 LLM calls (0 cached), 0 facts
+  6aeb4375:s09: 2 turns,    0.9s, 1 LLM calls (0 cached), 0 facts
+  6aeb4375:s10: 12 turns,   42.5s, 4 LLM calls (0 cached), 4 facts
+  6aeb4375:s21: 12 turns,    3.5s, 1 LLM calls (0 cached), 0 facts
+  6aeb4375:s24: 12 turns,   50.5s, 6 LLM calls (0 cached), 5 facts
+  6aeb4375:s26: 14 turns,    3.2s, 1 LLM calls (0 cached), 0 facts
+  6aeb4375:s36: 12 turns,   52.5s, 7 LLM calls (0 cached), 6 facts
+  6aeb4375:s37: 10 turns,    2.1s, 1 LLM calls (0 cached), 0 facts
+  6aeb4375:s41: 12 turns,   55.3s, 6 LLM calls (0 cached), 5 facts
+  6aeb4375:s45: 12 turns,   51.0s, 7 LLM calls (0 cached), 6 facts
+  6aeb4375:s47: 12 turns,   64.0s, 8 LLM calls (0 cached), 7 facts
+[3/21] 852ce960 (longmemeval, 13 sessions)
+  852ce960:s01: 12 turns,    2.4s, 1 LLM calls (0 cached), 0 facts
+  852ce960:s03: 12 turns,   46.4s, 5 LLM calls (0 cached), 5 facts
+  852ce960:s10: 12 turns,   20.4s, 3 LLM calls (0 cached), 2 facts
+  852ce960:s13: 0 turns,    0.0s, 0 LLM calls (0 cached), 0 facts
+  852ce960:s16: 10 turns,    2.5s, 1 LLM calls (0 cached), 0 facts
+  852ce960:s20: 2 turns,    1.1s, 1 LLM calls (0 cached), 0 facts
+  852ce960:s21: 12 turns,   71.5s, 9 LLM calls (0 cached), 8 facts
+  852ce960:s22: 0 turns,    0.0s, 0 LLM calls (0 cached), 0 facts
+  852ce960:s26: 14 turns,    4.3s, 1 LLM calls (0 cached), 0 facts
+  852ce960:s27: 6 turns,    1.6s, 1 LLM calls (0 cached), 0 facts
+  852ce960:s31: 12 turns,   11.4s, 2 LLM calls (0 cached), 1 facts
+  852ce960:s37: 12 turns,   70.1s, 9 LLM calls (0 cached), 8 facts
+  852ce960:s39: 12 turns,   65.8s, 7 LLM calls (0 cached), 7 facts
+[4/21] 945e3d21 (longmemeval, 13 sessions)
+  945e3d21:s04: 12 turns,   86.7s, 10 LLM calls (0 cached), 10 facts
+  945e3d21:s05: 8 turns,   27.7s, 4 LLM calls (0 cached), 3 facts
+  945e3d21:s07: 12 turns,   66.7s, 8 LLM calls (0 cached), 7 facts
+  945e3d21:s15: 0 turns,    0.0s, 0 LLM calls (0 cached), 0 facts
+  945e3d21:s17: 12 turns,   65.4s, 8 LLM calls (0 cached), 8 facts
+  945e3d21:s21: 12 turns,   71.8s, 9 LLM calls (0 cached), 8 facts
+  945e3d21:s25: 12 turns,   86.7s, 10 LLM calls (0 cached), 9 facts
+  945e3d21:s32: 14 turns,    2.5s, 1 LLM calls (0 cached), 0 facts
+  945e3d21:s35: 12 turns,   74.1s, 8 LLM calls (0 cached), 7 facts
+  945e3d21:s42: 0 turns,    0.0s, 0 LLM calls (0 cached), 0 facts
+  945e3d21:s43: 0 turns,    0.0s, 0 LLM calls (0 cached), 0 facts
+  945e3d21:s46: 4 turns,    1.9s, 1 LLM calls (0 cached), 0 facts
+  945e3d21:s51: 12 turns,   41.6s, 5 LLM calls (0 cached), 4 facts
+[5/21] d7c942c3 (longmemeval, 12 sessions)
+  d7c942c3:s01: 12 turns,   57.0s, 6 LLM calls (0 cached), 6 facts
+  d7c942c3:s02: 12 turns,   55.4s, 7 LLM calls (0 cached), 6 facts
+  d7c942c3:s05: 10 turns,   40.5s, 5 LLM calls (0 cached), 5 facts
+  d7c942c3:s07: 6 turns,    2.0s, 1 LLM calls (0 cached), 0 facts
+  d7c942c3:s15: 4 turns,    2.4s, 1 LLM calls (0 cached), 0 facts
+  d7c942c3:s17: 12 turns,   66.3s, 7 LLM calls (0 cached), 6 facts
+  d7c942c3:s20: 12 turns,   15.3s, 2 LLM calls (0 cached), 1 facts
+  d7c942c3:s33: 12 turns,   66.5s, 7 LLM calls (0 cached), 6 facts
+  d7c942c3:s37: 12 turns,   32.7s, 4 LLM calls (0 cached), 3 facts
+  d7c942c3:s43: 10 turns,   15.7s, 2 LLM calls (0 cached), 1 facts
+  d7c942c3:s46: 6 turns,    2.3s, 1 LLM calls (0 cached), 0 facts
+  d7c942c3:s48: 12 turns,   35.7s, 4 LLM calls (0 cached), 3 facts
+[6/21] ce6d2d27 (longmemeval, 12 sessions)
+  ce6d2d27:s01: 2 turns,    1.3s, 1 LLM calls (0 cached), 0 facts
+  ce6d2d27:s02: 12 turns,   45.3s, 5 LLM calls (0 cached), 5 facts
+  ce6d2d27:s07: 12 turns,   60.4s, 6 LLM calls (0 cached), 5 facts
+  ce6d2d27:s17: 12 turns,   56.3s, 6 LLM calls (0 cached), 7 facts
+  ce6d2d27:s18: 12 turns,   55.6s, 7 LLM calls (0 cached), 6 facts
+  ce6d2d27:s23: 12 turns,   72.2s, 8 LLM calls (0 cached), 7 facts
+  ce6d2d27:s26: 12 turns,   61.5s, 6 LLM calls (0 cached), 5 facts
+  ce6d2d27:s27: 10 turns,    3.1s, 1 LLM calls (0 cached), 0 facts
+  ce6d2d27:s32: 10 turns,    2.0s, 1 LLM calls (0 cached), 0 facts
+  ce6d2d27:s43: 12 turns,    1.9s, 1 LLM calls (0 cached), 0 facts
+  ce6d2d27:s44: 10 turns,    2.1s, 1 LLM calls (0 cached), 0 facts
+  ce6d2d27:s45: 4 turns,    0.9s, 1 LLM calls (0 cached), 0 facts
+[7/21] 184da446 (longmemeval, 8 sessions)
+  184da446:s02: 12 turns,   60.1s, 7 LLM calls (0 cached), 7 facts
+/opt/homebrew/Cellar/python@3.11/3.11.14_2/Frameworks/Python.framework/Versions/3.11/lib/python3.11/multiprocessing/resource_tracker.py:254: UserWarning: resource_tracker: There appear to be 1 leaked semaphore objects to clean up at shutdown
+  warnings.warn('resource_tracker: There appear to be %d '

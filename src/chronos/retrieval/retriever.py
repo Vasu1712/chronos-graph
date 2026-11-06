@@ -11,7 +11,8 @@ Ranked lists, top `top_k_per_list` each, every one switchable for ablations:
 
 All lists are fused with Reciprocal Rank Fusion, score = sum 1 / (k + rank), rank from 1, over
 items keyed (kind, id) so memories and episodes compete in one ranking. The temporal filter by
-intent is then applied to memory items:
+intent is then applied to memory items, and (balance_kinds) the ranking is interleaved by kind so
+turns are not buried under memories, which appear in more lists:
   CURRENT                    ACTIVE or CONFLICTED with open valid_to
   AS_OF [lo, hi]             not RETRACTED and the interval overlaps [lo, hi]
                              (a SESSION/UNKNOWN/BEFORE start counts as "unknown", i.e. unbounded;
@@ -76,6 +77,22 @@ def rrf(lists: dict[str, list[tuple[str, str]]], k: int = 60) -> list[Candidate]
             c.score += 1.0 / (k + rank)
             c.ranks[name] = rank
     return sorted(cands.values(), key=lambda c: (-c.score, order[(c.kind, c.id)]))
+
+
+def interleave_kinds(fused: list[Candidate]) -> list[Candidate]:
+    """Alternate memories and episodes, each kind in its own fused order, memory first.
+
+    Plain RRF favours memories: three of the five lists rank memories, so a memory can collect
+    three reciprocal-rank terms and a turn at most two. On dev_v1 (conv-26) the top ten fused items
+    were memories for 22 of 24 answerable questions, while turns ranked first in both turn lists
+    fell to fused rank 15 or lower and were packed out of the budget.
+    """
+    mems = [c for c in fused if c.kind == "memory"]
+    eps = [c for c in fused if c.kind != "memory"]
+    out: list[Candidate] = []
+    for i in range(max(len(mems), len(eps))):
+        out += [c[i] for c in (mems, eps) if i < len(c)]
+    return out
 
 
 def expansion_entities(analysis: QueryAnalysis) -> list[str]:
@@ -256,6 +273,8 @@ class Retriever:
                 else:
                     keep.append(c)
             fused = keep
+        if cfg.balance_kinds:
+            fused = interleave_kinds(fused)
         timings["fuse_filter"] = time.perf_counter() - t
         return RetrievalResult(analysis, fused, lists, filtered_out, timings)
 
