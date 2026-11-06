@@ -17,6 +17,7 @@ EXPECTED_TABLES = {
     "fact_entities",
     "answer_log",
     "schema_migrations",
+    "episode_embeddings",
 }
 
 
@@ -58,6 +59,7 @@ def test_schema_creates(db):
         r[0] for r in db.conn.execute("SELECT name FROM sqlite_master WHERE type IN ('table')")
     }
     assert names >= EXPECTED_TABLES
+    assert db.schema_version() == 2
     assert db.schema_version() == 1
     assert db.conn.execute("PRAGMA journal_mode").fetchone()[0] == "wal"
     assert db.conn.execute("PRAGMA foreign_keys").fetchone()[0] == 1
@@ -67,6 +69,8 @@ def test_migrate_is_idempotent(tmp_path):
     p = tmp_path / "m.sqlite"
     Database(p).close()
     d = Database(p)
+    assert d.migrate() == 2
+    assert d.conn.execute("SELECT COUNT(*) FROM schema_migrations").fetchone()[0] == 2
     assert d.migrate() == 1
     assert d.conn.execute("SELECT COUNT(*) FROM schema_migrations").fetchone()[0] == 1
     d.close()
@@ -151,3 +155,26 @@ def test_enum_checks(db):
             "status, recorded_session_ordinal, recorded_turn_index) "
             "VALUES ('m3','conv-1','conv-1:e:caroline','x','MAYBE',1,0)"
         )
+
+
+def test_v1_database_upgrades_to_v2(tmp_path):
+    import sqlite3
+
+    from chronos.storage.db import MIGRATIONS, _split_sql
+
+    p = tmp_path / "old.sqlite"
+    conn = sqlite3.connect(p)
+    conn.execute(
+        "CREATE TABLE schema_migrations (version INTEGER PRIMARY KEY, name TEXT NOT NULL, applied_at TEXT)"
+    )
+    for stmt in _split_sql(MIGRATIONS[0][2]):
+        conn.execute(stmt)
+    conn.execute("INSERT INTO schema_migrations(version, name) VALUES (1, 'initial_schema')")
+    conn.commit()
+    conn.close()
+    d = Database(p)
+    assert d.schema_version() == 2
+    assert d.conn.execute(
+        "SELECT name FROM sqlite_master WHERE name = 'episode_embeddings'"
+    ).fetchone()
+    d.close()

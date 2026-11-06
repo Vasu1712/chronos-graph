@@ -1,0 +1,134 @@
+{
+ "llm_cache": "disabled",
+ "questions": [
+  {
+   "question": "Where do I live now?",
+   "answer": "I don't know.",
+   "abstained": true,
+   "abstained_at": "model",
+   "llm_calls": 2,
+   "timings": {
+    "analyze": 0.002045291941612959,
+    "retrieve": 1.2861256659962237,
+    "pack": 0.41180754196830094,
+    "gate": 8.488249790854752,
+    "generate": 2.9850055840797722,
+    "verify": 0.0011343329679220915,
+    "regenerate": 0,
+    "total": 13.554175291908905
+   }
+  },
+  {
+   "question": "Where did I live before Bengaluru?",
+   "answer": "I don't know.",
+   "abstained": true,
+   "abstained_at": "model",
+   "llm_calls": 2,
+   "timings": {
+    "analyze": 0.0014763751532882452,
+    "retrieve": 0.5327640830073506,
+    "pack": 0.08503912505693734,
+    "gate": 8.825410709017888,
+    "generate": 3.6007587080821395,
+    "verify": 0.0011582081206142902,
+    "regenerate": 0,
+    "total": 13.048415290890262
+   }
+  },
+  {
+   "question": "Where did I live in 2019?",
+   "answer": "Meera lived in Delhi in 2019.",
+   "abstained": false,
+   "abstained_at": null,
+   "llm_calls": 2,
+   "timings": {
+    "analyze": 0.0014464170671999454,
+    "retrieve": 0.4685701250564307,
+    "pack": 0.03891137498430908,
+    "gate": 7.992125333985314,
+    "generate": 5.933419041801244,
+    "verify": 4.710923833074048,
+    "regenerate": 0,
+    "total": 19.223546416964382
+   }
+  },
+  {
+   "question": "What does our auth service use now?",
+   "answer": "Meera's auth service runs on Postgres.",
+   "abstained": false,
+   "abstained_at": null,
+   "llm_calls": 3,
+   "timings": {
+    "analyze": 0.0005121668800711632,
+    "retrieve": 0.0237317499704659,
+    "pack": 0.015419958159327507,
+    "gate": 8.660166292218491,
+    "generate": 5.261037125019357,
+    "verify": 2.026116458931938,
+    "regenerate": 4.039786790963262,
+    "total": 20.027492583030835
+   }
+  },
+  {
+   "question": "Who is my manager?",
+   "answer": "My manager is Priyanka.",
+   "abstained": false,
+   "abstained_at": null,
+   "llm_calls": 2,
+   "timings": {
+    "analyze": 0.000587542075663805,
+    "retrieve": 0.15452416706830263,
+    "pack": 0.0325827500782907,
+    "gate": 7.845651708077639,
+    "generate": 4.7317069170530885,
+    "verify": 0.5389390410855412,
+    "regenerate": 0,
+    "total": 13.306819666875526
+   }
+  },
+  {
+   "question": "What have I been reading lately?",
+   "answer": "Meera has been reading science fiction lately.",
+   "abstained": false,
+   "abstained_at": null,
+   "llm_calls": 2,
+   "timings": {
+    "analyze": 0.0005491669289767742,
+    "retrieve": 0.0338702080771327,
+    "pack": 0.020510416943579912,
+    "gate": 8.734703875146806,
+    "generate": 5.660392959136516,
+    "verify": 2.3567816249560565,
+    "regenerate": 0,
+    "total": 16.81059208395891
+   }
+  },
+  {
+   "question": "What does my sister do?",
+   "answer": "I don't know.",
+   "abstained": true,
+   "abstained_at": "gate",
+   "llm_calls": 1,
+   "timings": {
+    "analyze": 0.008188292151317,
+    "retrieve": 0.05658787512220442,
+    "pack": 0.029171374859288335,
+    "gate": 8.5901816659607,
+    "generate": 0.0,
+    "verify": 0.0,
+    "regenerate": 0.0,
+    "total": 8.7036147499457
+   }
+  }
+ ],
+ "mean_seconds": {
+  "analyze": 0.00211503602830427,
+  "retrieve": 0.36516769632830154,
+  "pack": 0.0904917917214334,
+  "gate": 8.448069910751656,
+  "generate": 4.024617190738874,
+  "verify": 1.3764362141623028,
+  "regenerate": 0.5771123987090375,
+  "total": 14.953522297653503
+ }
+}

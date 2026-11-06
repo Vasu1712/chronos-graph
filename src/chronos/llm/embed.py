@@ -29,6 +29,10 @@ class Embedder:
         self._model = model
 
     @property
+    def name(self) -> str:
+        return self.config.embed_model
+
+    @property
     def model(self) -> Any:
         if self._model is None:
             from sentence_transformers import SentenceTransformer
@@ -82,6 +86,7 @@ class HashingEmbedder:
 
     def __init__(self, dim: int = 256) -> None:
         self.dim = dim
+        self.name = f"hashing-{dim}"
 
     def _vec(self, text: str) -> np.ndarray:
         import hashlib

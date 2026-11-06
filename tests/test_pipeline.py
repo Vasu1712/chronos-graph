@@ -16,6 +16,22 @@ DEMO = REPO_ROOT / "data" / "demo_sessions" / "demo.json"
 
 def test_cli_ingest_scripted_probe(tmp_path):
     probe = REPO_ROOT / "data" / "synthetic_probes" / "late_mention_01.json"
+    args = [
+        "ingest",
+        str(probe),
+        "--db",
+        str(tmp_path / "x.sqlite"),
+        "--scripted",
+        "--embedder",
+        "hash",
+    ]
+    res = CliRunner().invoke(app, args, env={"COLUMNS": "250"})
+    assert res.exit_code == 0, res.output
+    bengaluru = next(ln for ln in res.output.splitlines() if "Priya lives in Bengaluru." in ln)
+    assert "ACTIVE" in bengaluru and "residence" in bengaluru and "to now" in bengaluru
+    delhi = next(ln for ln in res.output.splitlines() if "Priya lived in Delhi in 2019." in ln)
+    assert "from 2019-01-01 (YEAR) to 2019-12-31 (YEAR)" in delhi
+    again = CliRunner().invoke(app, args, env={"COLUMNS": "250"})
     res = CliRunner().invoke(
         app,
         [

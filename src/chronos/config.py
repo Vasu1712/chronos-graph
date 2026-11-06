@@ -115,6 +115,23 @@ class Paths:
 @dataclass(frozen=True)
 class RetrievalConfig:
     rrf_k: int = 60
+    top_k_per_list: int = 50
+    token_budget: int = 1500
+    episode_window: int = 1  # +-N turns around each source turn
+    # every list can be switched off for ablations
+    use_dense_memories: bool = True
+    use_bm25_memories: bool = True
+    use_dense_episodes: bool = True
+    use_bm25_episodes: bool = True
+    use_entity_expansion: bool = True
+    use_temporal_filter: bool = True
+
+
+@dataclass(frozen=True)
+class AgentConfig:
+    answerability: str = "full"  # off | speaker | full
+    nli_threshold: float = 0.5  # entailment probability needed per claim; tune on dev
+    regenerate_once: bool = True
     candidate_top_k: int = 5
     token_budget: int = 1500
     episode_window: int = 1

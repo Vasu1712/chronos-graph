@@ -300,3 +300,42 @@ by `[shares a photo: <blip_caption>]`, so the caption is searchable and quotable
 
 **Known limitation.** Short-lived states ("in Pune this week") stay open-ended; nothing closes them
 when the week is over.
+
+---
+
+## 9. Implementation notes (Part 3, retrieval and answering)
+
+Decisions the Tier 3 description leaves open. They refine the architecture; none changes it.
+
+**Schema v2.** Dense retrieval over episodes needs vectors, and `episodes` is immutable, so
+migration 2 adds `episode_embeddings(turn_uid PK FK episodes, model, embedding BLOB)`. The
+pipeline writes it in the Tier 1 transaction; the retriever backfills rows missing for databases
+ingested before v2. `model` records the embedder so a mismatched query embedder is rejected.
+
+**Query analysis** (`chronos.retrieval.query`). Intent precedence: TEMPORAL_ORDER > HISTORY >
+AS_OF (explicit time, "back when", or `as_of`) > CURRENT (cue words or present-tense auxiliary)
+> OPEN. A month without a year means its most recent occurrence before the question date. The
+asker defaults to the conversation's first speaker; first-person questions are about the asker.
+
+**Fusion.** One RRF ranking over items keyed `(kind, id)`, so memories and episodes compete
+directly. 1-hop expansion uses the named entities plus the speaker that "I"/"you" resolves to.
+
+**Temporal filter.** AS_OF uses interval *overlap* with the question's span. `valid_to` is
+exclusive (a superseding fact starts on it). A `valid_from` with SESSION / UNKNOWN / BEFORE
+precision is treated as an unknown start (no lower bound). CURRENT keeps ACTIVE and CONFLICTED
+facts with an open `valid_to`; every other intent drops only RETRACTED. Episodes are never filtered.
+
+**Packing.** Memory lines are written `- (memory <id>) fact | status, attribute | interval |
+sources: …` so they cannot be confused with turn lines `[turn_uid | date | speaker] text`.
+Version chains are shown for HISTORY, TEMPORAL_ORDER and AS_OF; conflict partners always.
+
+**Generation.** The generator takes `(question, context, allowed_turn_uids)` plus optional hints
+`asker` and `question_type` (`CURRENT`, `AS_OF lo..hi`, …) that baselines may omit.
+
+**Verification.** Citations are normalized before checking: a string starting with a turn id → that
+turn; a memory id → moved to the memory citations; a pasted `[…] text` line whose text equals
+exactly one allowed turn → that turn. Each repair is logged. The NLI premise is the cited turns as
+`On <date>, <speaker> said: <text>`. If any claim was removed, `final_answer` becomes the
+concatenation of the surviving claims.
+
+**Question date.** Defaults to the latest session timestamp of the conversation.

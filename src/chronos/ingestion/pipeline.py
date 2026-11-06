@@ -27,6 +27,7 @@ from chronos.ingestion.extractor import ExtractionStats, Extractor, ValidFact
 from chronos.ingestion.resolver import Decision, NewFact, StateResolver
 from chronos.ingestion.temporal import resolve
 from chronos.ingestion.types import Conversation, Session, Turn
+from chronos.llm.embed import to_blob
 from chronos.ontology import Ontology
 from chronos.storage.db import Database
 
@@ -57,6 +58,29 @@ class IngestResult:
             "unresolved_subjects": self.unresolved_subjects,
             "llm_classifications": self.llm_classifications,
         }
+
+
+def embedder_name(embedder: Any) -> str:
+    return getattr(embedder, "name", None) or type(embedder).__name__
+
+
+def store_episode_embeddings(conn: Any, embedder: Any, items: list[tuple[str, str]]) -> int:
+    """Embed and store (turn_uid, text) pairs that have no vector yet. Returns rows written."""
+    if embedder is None or not items:
+        return 0
+    marks = ",".join("?" * len(items))
+    have = {r[0] for r in conn.execute(f"SELECT turn_uid FROM episode_embeddings WHERE turn_uid IN ({marks})",
+                                       [uid for uid, _ in items])}  # fmt: skip
+    todo = [(uid, text) for uid, text in items if uid not in have]
+    if not todo:
+        return 0
+    vecs = embedder.encode_passages([text for _, text in todo])
+    name = embedder_name(embedder)
+    conn.executemany(
+        "INSERT INTO episode_embeddings(turn_uid, model, embedding) VALUES (?, ?, ?)",
+        [(uid, name, to_blob(v)) for (uid, _), v in zip(todo, vecs, strict=True)],
+    )
+    return len(todo)
 
 
 def memory_id_for(conversation_id: str, vf: ValidFact) -> str:
@@ -140,6 +164,7 @@ class IngestionPipeline:
                         "source_ref": t.source_ref,
                     }  # fmt: skip
                 )
+            store_episode_embeddings(conn, self.embedder, [(t.turn_uid, t.text) for t in turns])
 
         # 2. no-op if already ingested
         if self._ingested(session.session_id):
