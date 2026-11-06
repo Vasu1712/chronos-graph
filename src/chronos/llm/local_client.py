@@ -13,6 +13,8 @@ from __future__ import annotations
 import json
 import logging
 import time
+from collections.abc import Callable
+from dataclasses import asdict, dataclass
 from typing import Any, TypeVar
 
 import httpx
@@ -22,6 +24,7 @@ from pydantic import BaseModel, ValidationError
 from chronos.config import LocalLLMConfig
 from chronos.llm.cache import ResponseCache, cache_key
 from chronos.llm.schema_utils import json_schema_for
+from chronos.llm.tokens import count_chat_tokens, count_tokens
 
 log = logging.getLogger(__name__)
 
@@ -41,6 +44,27 @@ class StructuredOutputError(RuntimeError):
     """The model produced invalid output even after the validation-feedback retry."""
 
 
+class CacheMiss(RuntimeError):
+    """Raised in cache_only mode when a call would need the model (replays must never ingest anew)."""
+
+
+@dataclass
+class CallRecord:
+    """One logical LLM call. `latency_s` is the original model latency, replayed from the cache on
+    a hit; `wall_s` is what this run actually waited."""
+
+    purpose: str  # response model name, or "text"
+    prompt_tokens: int
+    completion_tokens: int
+    latency_s: float | None
+    wall_s: float
+    cached: bool
+    attempts: int = 1
+
+    def as_dict(self) -> dict[str, Any]:
+        return asdict(self)
+
+
 class LocalLLM:
     provider = "ollama"
 
@@ -51,6 +75,8 @@ class LocalLLM:
         client: Any | None = None,
         *,
         sleep=time.sleep,
+        cache_only: bool = False,
+        prompt_counter: Callable[[list[dict[str, str]]], int] | None = None,
     ) -> None:
         self.config = config or LocalLLMConfig()
         self.cache = cache
@@ -62,6 +88,9 @@ class LocalLLM:
         )
         self._sleep = sleep
         self.calls = 0  # network calls actually made (cache misses)
+        self.cache_only = cache_only
+        self._prompt_counter = prompt_counter or count_chat_tokens
+        self.records: list[CallRecord] = []  # every logical call, in order; slice by index to scope
 
     # ------------------------------------------------------------------ params
     @property
@@ -100,16 +129,28 @@ class LocalLLM:
         )
 
     # ------------------------------------------------------------------ transport
-    def _call(self, kwargs: dict[str, Any]) -> str:
+    def _call(self, kwargs: dict[str, Any]) -> tuple[str, dict[str, Any]]:
+        """One chat completion -> (content, usage). Usage counts prompt tokens with our own tokenizer
+        (Ollama's reported prompt count excludes tokens served from its prompt cache)."""
+        if self.cache_only:
+            raise CacheMiss("cache_only LLM asked to call the model")
         last: Exception | None = None
         for attempt in range(self.config.max_retries + 1):
             try:
                 self.calls += 1
+                started = time.perf_counter()
                 resp = self.client.chat.completions.create(**kwargs)
+                latency = time.perf_counter() - started
                 content = resp.choices[0].message.content
                 if content is None:
                     raise StructuredOutputError("empty completion")
-                return content
+                reported = getattr(getattr(resp, "usage", None), "completion_tokens", None)
+                usage = {
+                    "prompt_tokens": self._prompt_counter(kwargs["messages"]),
+                    "completion_tokens": int(reported) if reported else count_tokens(content),
+                    "latency_s": latency,
+                }
+                return content, usage
             except _TRANSIENT as exc:
                 last = exc
                 delay = min(2**attempt, 30)
@@ -121,11 +162,15 @@ class LocalLLM:
     def complete(self, messages: list[Message]) -> str:
         """Free-text completion (cached)."""
         key = self._key(messages, None)
-        if self.cache is not None and (hit := self.cache.get(key)) is not None:
-            return hit
-        text = self._call(self._request_kwargs(messages, None, "text"))
+        started = time.perf_counter()
+        if self.cache is not None and (hit := self.cache.get_entry(key)) is not None:
+            self._record_hit("text", messages, hit[1], started)
+            return hit[0]
+        text, usage = self._call(self._request_kwargs(messages, None, "text"))
+        self._record_miss("text", [usage], started)
         if self.cache is not None:
-            self.cache.put(key, text, provider=self.provider, model=self.config.model)
+            self.cache.put(key, text, provider=self.provider, model=self.config.model,
+                           meta=self.records[-1].as_dict() | {"cached": False})  # fmt: skip
         return text
 
     def structured(self, messages: list[Message], response_model: type[T]) -> T:
@@ -136,11 +181,15 @@ class LocalLLM:
         schema = json_schema_for(response_model)
         name = response_model.__name__
         key = self._key(messages, schema)
-        if self.cache is not None and (hit := self.cache.get(key)) is not None:
-            return response_model.model_validate(hit)
+        started = time.perf_counter()
+        if self.cache is not None and (hit := self.cache.get_entry(key)) is not None:
+            self._record_hit(name, messages, hit[1], started)
+            return response_model.model_validate(hit[0])
 
+        usages: list[dict[str, Any]] = []
         attempt_messages = list(messages)
-        raw = self._call(self._request_kwargs(attempt_messages, schema, name))
+        raw, usage = self._call(self._request_kwargs(attempt_messages, schema, name))
+        usages.append(usage)
         try:
             obj = _parse(raw, response_model)
         except (ValidationError, ValueError) as err:
@@ -157,7 +206,8 @@ class LocalLLM:
                     ),
                 },
             ]
-            raw = self._call(self._request_kwargs(attempt_messages, schema, name))
+            raw, usage = self._call(self._request_kwargs(attempt_messages, schema, name))
+            usages.append(usage)
             try:
                 obj = _parse(raw, response_model)
             except (ValidationError, ValueError) as err2:
@@ -165,11 +215,44 @@ class LocalLLM:
                     f"{name}: invalid output after feedback retry: {_short_error(err2)}"
                 ) from err2
 
+        self._record_miss(name, usages, started)
         if self.cache is not None:
             self.cache.put(
-                key, obj.model_dump(mode="json"), provider=self.provider, model=self.config.model
+                key,
+                obj.model_dump(mode="json"),
+                provider=self.provider,
+                model=self.config.model,
+                meta=self.records[-1].as_dict() | {"cached": False},
             )
         return obj
+
+    # ------------------------------------------------------------------ usage records
+    def _record_hit(
+        self, purpose: str, messages: list[Message], meta: dict[str, Any], t0: float
+    ) -> None:
+        """A cache hit replays the original call's tokens and latency (entries from before usage
+        tracking have no meta: prompt tokens are recounted, latency is unknown)."""
+        prompt = meta.get("prompt_tokens")
+        self.records.append(CallRecord(
+            purpose=purpose,
+            prompt_tokens=int(prompt) if prompt is not None else self._prompt_counter(messages),
+            completion_tokens=int(meta.get("completion_tokens") or 0),
+            latency_s=meta.get("latency_s"),
+            wall_s=time.perf_counter() - t0,
+            cached=True,
+            attempts=int(meta.get("attempts", 1)),
+        ))  # fmt: skip
+
+    def _record_miss(self, purpose: str, usages: list[dict[str, Any]], t0: float) -> None:
+        self.records.append(CallRecord(
+            purpose=purpose,
+            prompt_tokens=sum(u["prompt_tokens"] for u in usages),
+            completion_tokens=sum(u["completion_tokens"] for u in usages),
+            latency_s=sum(u["latency_s"] for u in usages),
+            wall_s=time.perf_counter() - t0,
+            cached=False,
+            attempts=len(usages),
+        ))  # fmt: skip
 
     def verify_context(self) -> int | None:
         """Return the served model's num_ctx via Ollama's native /api/show (None if unset)."""

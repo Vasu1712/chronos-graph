@@ -38,6 +38,7 @@ class ScriptedLLM:
             self.facts.append((f["turn_index"], texts[(session, f["turn_index"])], f))
         self.relations: dict[str, dict[str, Any]] = scripted.get("relations", {})
         self.extraction_calls = 0
+        self.records: list = []  # LocalLLM call records; scripted calls have none
         self.classification_calls = 0
 
     def structured(self, messages: list[dict[str, str]], response_model: type[Any]) -> Any:

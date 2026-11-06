@@ -262,3 +262,32 @@ def test_recent_onset_applied_only_to_attribute_facts():
         "CURRENT",
         "PAST_ENDED",
     ] and stats.tense_onset_fixed == 1
+
+
+def test_target_speakers_restrict_targets_but_keep_context_and_clip_prompt():
+    from chronos.config import IngestionConfig
+
+    texts = ["user one", "assistant " + "x" * 400, "user two", "assistant reply", "user three"]
+    sess = session(texts)  # speakers alternate Priya (odd turns) / Rahul (even turns)
+    cfg = IngestionConfig(target_speakers=("Priya",), max_prompt_turn_chars=100)
+    llm = FakeLLM([[]])
+    ex = Extractor(llm, config=cfg)
+    assert [[t.turn_index for t in tg] for _, tg in ex.chunks(sess.turns)] == [[1, 3, 5]]
+    ex.extract_session(sess, ["Priya", "Rahul"])
+    prompt = llm.calls[0][1]["content"]
+    assert (
+        "TARGET turns:\n[t1] Priya: user one\n[t3] Priya: user two\n[t5] Priya: user three"
+        in prompt
+    )
+    assert "[t2]" not in prompt  # in-chunk assistant turns are not shown
+    # default config is unchanged: every turn is a target
+    assert [[t.turn_index for t in tg] for _, tg in Extractor(llm).chunks(sess.turns)] == [
+        [1, 2, 3, 4, 5]
+    ]
+    long = session(["y" * 500])
+    ex2 = Extractor(FakeLLM([[]]), config=IngestionConfig(max_prompt_turn_chars=50))
+    ex2.extract_session(long, ["Priya", "Rahul"])
+    assert (
+        "y" * 50 + " [...]" in ex2.llm.calls[0][1]["content"]
+        and "y" * 51 not in ex2.llm.calls[0][1]["content"]
+    )

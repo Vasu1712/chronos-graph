@@ -73,6 +73,18 @@ class ResponseCache:
         self.hits += 1
         return json.loads(row[0])
 
+    def get_entry(self, key: str) -> tuple[Any, dict[str, Any]] | None:
+        """(response, meta) for a key, or None. `meta` carries the original call's usage/latency."""
+        with self._lock:
+            row = self._conn.execute(
+                "SELECT response, meta FROM llm_cache WHERE key = ?", (key,)
+            ).fetchone()
+        if row is None:
+            self.misses += 1
+            return None
+        self.hits += 1
+        return json.loads(row[0]), json.loads(row[1] or "{}")
+
     def put(
         self,
         key: str,

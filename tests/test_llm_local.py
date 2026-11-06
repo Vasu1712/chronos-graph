@@ -107,3 +107,33 @@ def test_cache_key_depends_on_every_component():
         assert cache_key(**{**base, field: val}) != k, field
     # dict ordering does not matter
     assert cache_key(**{**base, "params": {"temperature": 0}}) == k
+
+
+def test_call_records_track_tokens_latency_and_replay_from_cache(cache):
+    from chronos.llm.local_client import CacheMiss
+
+    client = scripted(GOOD)
+    llm = LocalLLM(cache=cache, client=client, prompt_counter=lambda msgs: 123)
+    llm.structured(MSGS, Facts)
+    [rec] = llm.records
+    assert (rec.purpose, rec.prompt_tokens, rec.cached, rec.attempts) == ("Facts", 123, False, 1)
+    assert rec.completion_tokens > 0 and rec.latency_s is not None and rec.latency_s >= 0
+
+    again = LocalLLM(cache=cache, client=None, prompt_counter=lambda msgs: 999, cache_only=True)
+    again.structured(MSGS, Facts)  # served from cache: original usage is replayed, not recounted
+    [hit] = again.records
+    assert (
+        hit.cached and hit.prompt_tokens == 123 and hit.completion_tokens == rec.completion_tokens
+    )
+    assert hit.latency_s == pytest.approx(rec.latency_s) and hit.wall_s < 0.5
+
+    with pytest.raises(CacheMiss):
+        again.structured([{"role": "user", "content": "never seen"}], Facts)
+
+
+def test_retry_records_both_attempts_as_one_call(cache):
+    client = scripted('{"facts": "oops"}', GOOD)
+    llm = LocalLLM(cache=cache, client=client, prompt_counter=lambda msgs: 100)
+    llm.structured(MSGS, Facts)
+    [rec] = llm.records
+    assert rec.attempts == 2 and rec.prompt_tokens == 200

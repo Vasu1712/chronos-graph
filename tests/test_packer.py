@@ -101,3 +101,53 @@ def test_real_qwen_tokenizer_budget(db):
         pytest.skip(f"Qwen tokenizer unavailable: {exc}")
     p = packed(db, "Where does Alice live now?", budget=300, counter=None)
     assert 0 < p.tokens <= 300 and qwen_token_count(p.text) == p.tokens
+
+
+def test_clip_centres_on_the_quote_and_marks_both_ends():
+    from chronos.retrieval.packer import clip
+
+    text = "a" * 500 + "NEEDLE" + "b" * 500
+    out = clip(text, 100, focus=(500, 506))
+    assert "NEEDLE" in out and out.startswith("[…] ") and out.endswith(" […]") and len(out) < 130
+    assert clip("short", 100) == "short"
+    assert clip("x" * 300, 100).endswith(" […]") and clip("x" * 300, 100).startswith("x")
+    assert clip(text, 100, focus=(0, 5)).startswith("a") and not clip(
+        text, 100, focus=(0, 5)
+    ).startswith("[…]")
+
+
+def test_long_source_turn_is_clipped_around_its_quote_and_neighbours_harder(tmp_path):
+    from chronos.config import RetrievalConfig
+
+    db = ingested_demo(tmp_path / "clip.sqlite")
+    uid = "synthetic:demo-alice-bob:s03:t002"
+    long_text = "filler " * 300 + "we moved to Milwaukee last month. " + "tail " * 300
+    db.conn.execute("DROP TRIGGER episodes_no_update")
+    db.conn.execute("UPDATE episodes SET text = ? WHERE turn_uid = ?", (long_text, uid))
+    start = long_text.index("we moved to Milwaukee last month")
+    db.conn.execute("UPDATE fact_sources SET quote_start = ?, quote_end = ? WHERE turn_uid = ? AND role = 'ASSERTS'",
+                    (start, start + 32, uid))  # fmt: skip
+    db.conn.execute(
+        "UPDATE episodes SET text = ? WHERE turn_uid = ?", ("neighbour " * 200, uid[:-1] + "3")
+    )
+    cfg = RetrievalConfig(max_source_turn_chars=200, max_neighbor_turn_chars=50)
+    p = packed(db, "Where does Alice live now?", config=cfg)
+    src = next(ln for ln in p.text.splitlines() if uid in ln and ln.startswith("  ["))
+    assert "we moved to Milwaukee last month" in src and len(src) < 330
+    nb = next(ln for ln in p.text.splitlines() if "s03:t003" in ln and ln.startswith("  ["))
+    assert nb.count("neighbour") <= 6 and nb.endswith("[…]")
+
+
+def test_expand_sources_off_lists_source_ids_but_attaches_no_turns(db):
+    from chronos.config import RetrievalConfig
+
+    cfg = RetrievalConfig(expand_sources=False, use_dense_episodes=False, use_bm25_episodes=False)
+    p = packed(db, "Where does Alice live now?", config=cfg)
+    assert "synthetic:demo-alice-bob:s03:t002" in p.turn_uids  # allowed: named on the memory line
+    assert not any(TURN_LINE.match(ln) for ln in p.text.splitlines())  # but no turn text
+    assert "sources: synthetic:demo-alice-bob:s03:t002" in p.text
+
+
+def test_oversized_block_is_skipped_not_fatal(db):
+    p = packed(db, "Tell me about Alice", budget=45)
+    assert p.tokens <= 45 and p.truncated

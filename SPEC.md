@@ -362,3 +362,41 @@ exactly one allowed turn → that turn. Each repair is logged. The NLI premise i
 concatenation of the surviving claims.
 
 **Question date.** Defaults to the latest session timestamp of the conversation.
+
+---
+
+## 10. Implementation notes (Part 4, evaluation)
+
+**Schema v3.** `resolver_log(memory_id PK, conversation_id, session_ordinal, turn_index, llm_relation,
+llm_target_id, applied_relation, applied_target_id, n_candidates, notes)` records, for every extracted fact,
+what the classifier answered and what the deterministic normalization applied. It is what makes the state
+ablation replayable without new LLM calls.
+
+**State policies** (`StateResolver(policy=...)`): `bitemporal` (the system), `arrival_order` (the fact's
+time expression is discarded, tense kept; every UPDATES supersedes forward; rule 7 is off) and
+`append_only` (UPDATES / NEGATES / CONFLICT / HISTORICAL / EXTENDS insert a new ACTIVE memory; DUPLICATE
+still reaffirms, CORRECTS still retracts). A policy database is built by re-running ingestion from the
+cached extraction with `recorded` classifier decisions (`LocalLLM(cache_only=True)`: a cache miss is an
+error). Baseline B5 is ChronosGraph over the `append_only` database.
+
+**LongMemEval ingestion.** Only the user's turns are extraction targets (`IngestionConfig.target_speakers`)
+and prompt turns are clipped (`max_prompt_turn_chars`); assistant turns are still stored, embedded and
+retrievable. Assistant answers are an order of magnitude longer than user turns and carry no facts about the
+user.
+
+**Packing.** Source turns are clipped to `max_source_turn_chars` around their supporting quote, window
+neighbours to `max_neighbor_turn_chars`; a block that does not fit is skipped and packing continues with
+smaller ones. `expand_sources=False` (retrieval ablation) attaches no turn text; the source ids named on
+memory lines remain allowed citations.
+
+**Usage records.** Every LLM call is recorded (purpose, prompt tokens counted with the Qwen chat template,
+completion tokens, latency, cached). The cache stores the original usage, so a cached rerun reports the
+cost the call had when it was made.
+
+**Shared answering.** `chronos.agent.answering.generate_and_verify` is the single generate -> verify ->
+repair path used by ChronosGraph and every baseline. The generator replaces the allowed-id list by a
+sentence when it has more than 150 entries (whole-history contexts).
+
+**Judge.** LongMemEval's released prompts (`eval/prompts/lme_judge.py`, vendored verbatim with their
+source commit) applied in batches of 8; the pool routes over the providers whose keys are set
+(`available_only`) and records the provider on every verdict; calibration needs two providers.

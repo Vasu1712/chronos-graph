@@ -12,6 +12,8 @@ from typing import Any
 
 from pydantic import BaseModel, ConfigDict
 
+ALLOWED_IDS_LISTED_MAX = 150
+
 
 class Claim(BaseModel):
     model_config = ConfigDict(extra="forbid")
@@ -76,13 +78,15 @@ class Generator:
             parts.append(f'ASKED BY: {asker} ("I", "me", "my" in the question mean {asker})')
         if question_date:
             parts.append(f"QUESTION DATE: {question_date[:10]}")
-        parts += [
-            "",
-            "CONTEXT:",
-            context or "(empty)",
-            "",
-            "ALLOWED TURN IDS: " + (", ".join(allowed_turn_uids) or "(none)"),
-        ]
+        if len(allowed_turn_uids) > ALLOWED_IDS_LISTED_MAX:
+            # a whole-history context (baseline B2) would spend thousands of tokens repeating ids
+            allowed = (
+                f"every turn id that starts a context line, inside [...] "
+                f"({len(allowed_turn_uids)} turns)"
+            )
+        else:
+            allowed = ", ".join(allowed_turn_uids) or "(none)"
+        parts += ["", "CONTEXT:", context or "(empty)", "", "ALLOWED TURN IDS: " + allowed]
         if feedback:
             parts += ["", "FEEDBACK ON YOUR PREVIOUS ANSWER:", feedback]
         return [

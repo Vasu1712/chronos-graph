@@ -1,0 +1,18 @@
+# Ablation D: token budget for the packed context.
+id: D_budget
+title: Context budget ablation
+question: How does accuracy scale with the context budget?
+filter: {}
+reference: tokens_1500
+variants:
+  tokens_500:
+    system: chronos
+    budget: 500
+  tokens_1000:
+    system: chronos
+    budget: 1000
+  tokens_1500:
+    alias_of: chronos
+  tokens_3000:
+    system: chronos
+    budget: 3000

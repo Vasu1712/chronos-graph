@@ -175,3 +175,51 @@ def test_duplicate_item_ids_rejected():
     q = qid_for(0)[0]
     with pytest.raises(ValueError):
         pool.judge([item(q), item(q)])
+
+
+def test_items_with_different_rubrics_never_share_a_batch():
+    pool, groq, _, _ = make_pool()
+    qs = qid_for(0, 4)
+    items = [
+        item(q).model_copy(update={"rubric": "RUBRIC A" if i % 2 else None})
+        for i, q in enumerate(qs)
+    ]
+    pool.judge(items)
+    systems = [r["messages"][0]["content"] for r in groq.requests]
+    assert len(groq.requests) == 2 and sorted(systems)[0] == "RUBRIC A" and systems[0] != systems[1]
+    assert set(systems) == {"RUBRIC A", pool.rubric}  # one batch per rubric
+
+
+def test_rubric_is_part_of_the_cache_key(tmp_path):
+    pool, groq, _, _ = make_pool(tmp_path)
+    q = qid_for(0)[0]
+    pool.judge([item(q)])
+    pool.judge([item(q).model_copy(update={"rubric": "other"})])
+    assert len(groq.requests) == 2  # same item, different instructions: not a cache hit
+
+
+def test_available_only_drops_providers_without_keys_and_routes_everything_to_the_rest(monkeypatch):
+    monkeypatch.delenv("X", raising=False)
+    monkeypatch.setenv("Y", "key")
+    groq = FakeChatClient(judge_responder())
+    pool = JudgePool(providers=providers(), clients={"cerebras": groq}, available_only=True)
+    assert [p.config.name for p in pool.providers] == ["cerebras"] and pool.unavailable == ["groq"]
+    verdicts = pool.judge([item(q) for q in qid_for(0, 2) + qid_for(1, 2)])
+    assert {v.provider for v in verdicts} == {"cerebras"}
+    monkeypatch.delenv("Y")
+    with pytest.raises(RuntimeError, match="no judge provider"):
+        JudgePool(providers=providers(), available_only=True)
+
+
+def test_forced_provider_judges_the_same_items_on_each_provider():
+    pool, groq, cerebras, _ = make_pool()
+    [q] = qid_for(0, 1)
+    a = pool.judge([item(q)], provider="cerebras")
+    b = pool.judge([item(q)], provider="groq")
+    assert (
+        a[0].provider == "cerebras"
+        and b[0].provider == "groq"
+        and len(cerebras.requests) == len(groq.requests) == 1
+    )
+    with pytest.raises(ValueError, match="not available"):
+        pool.judge([item(q)], provider="nope")

@@ -1,0 +1,16 @@
+# Ablation C: answerability gate. Everything else identical to ChronosGraph.
+# off = never abstain at the gate; speaker = deterministic speaker-mismatch check only; full = + LLM verdict.
+id: C_gate
+title: Answerability gate ablation
+question: What does each gate level buy in abstention quality, and what does it cost in false abstentions?
+filter: {}   # all questions: LoCoMo category 5, LongMemEval _abs, and the answerable rest
+reference: full
+variants:
+  "off":   # quoted: bare off is a YAML boolean
+    system: chronos
+    agent: {answerability: "off"}
+  speaker_only:
+    system: chronos
+    agent: {answerability: "speaker"}
+  full:
+    alias_of: chronos

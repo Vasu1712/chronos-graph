@@ -399,8 +399,13 @@ def system_prompt(ontology: Ontology) -> str:
     return "\n".join(parts)
 
 
-def _fmt_turn(t: Turn) -> str:
-    return f"[t{t.turn_index}] {t.speaker}: {t.text}"
+def _fmt_turn(t: Turn, max_chars: int | None = None) -> str:
+    text = t.text
+    if max_chars is not None and len(text) > max_chars:
+        text = (
+            text[:max_chars] + " [...]"
+        )  # display only: quotes are still validated against t.text
+    return f"[t{t.turn_index}] {t.speaker}: {text}"
 
 
 def user_prompt(
@@ -409,6 +414,7 @@ def user_prompt(
     known_entities: Sequence[str],
     context: Sequence[Turn],
     targets: Sequence[Turn],
+    max_chars: int | None = None,
 ) -> str:
     d: date = session_date(session_ts)
     lines = [
@@ -416,9 +422,9 @@ def user_prompt(
         f"Session date: {d.isoformat()} ({d.strftime('%A')})",
         f"Known entities: {'; '.join(known_entities) if known_entities else '(none)'}",
         "CONTEXT turns:" + ("" if context else " (none)"),
-        *[_fmt_turn(t) for t in context],
+        *[_fmt_turn(t, max_chars) for t in context],
         "TARGET turns:",
-        *[_fmt_turn(t) for t in targets],
+        *[_fmt_turn(t, max_chars) for t in targets],
         "Output:",
     ]
     return "\n".join(lines)
@@ -438,11 +444,17 @@ class Extractor:
         self._system = system_prompt(self.ontology)
 
     def chunks(self, turns: Sequence[Turn]) -> list[tuple[list[Turn], list[Turn]]]:
+        """(context, targets) pairs. Targets are the turns of `target_speakers` (all turns by default),
+        up to `chunk_turns` per call; context is the `context_turns` turns just before the first
+        target, whoever spoke them."""
         n, c = self.config.chunk_turns, self.config.context_turns
-        return [
-            (list(turns[max(0, i - c) : i]), list(turns[i : i + n]))
-            for i in range(0, len(turns), n)
-        ]
+        wanted = self.config.target_speakers
+        idx = [i for i, t in enumerate(turns) if wanted is None or t.speaker in wanted]
+        out = []
+        for k in range(0, len(idx), n):
+            group = idx[k : k + n]
+            out.append((list(turns[max(0, group[0] - c) : group[0]]), [turns[i] for i in group]))
+        return out
 
     def extract_session(
         self,
@@ -461,7 +473,12 @@ class Extractor:
                 {
                     "role": "user",
                     "content": user_prompt(
-                        speakers, session.timestamp or "", known_entities, context, targets
+                        speakers,
+                        session.timestamp or "",
+                        known_entities,
+                        context,
+                        targets,
+                        self.config.max_prompt_turn_chars,
                     ),
                 },
             ]

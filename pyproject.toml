@@ -18,6 +18,7 @@ dependencies = [
     "huggingface-hub>=0.23",
     "typer>=0.12",
     "rapidfuzz>=3.14.6",
+    "matplotlib>=3.11.2",
 ]
 
 [dependency-groups]

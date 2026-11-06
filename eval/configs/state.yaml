@@ -1,0 +1,19 @@
+# Ablation B (headline): how memory state is maintained. All variants read the same extracted facts;
+# only the write policy differs (see chronos.ingestion.resolver.POLICIES). Databases for the two
+# replayed policies are built from the full run's recorded classifier decisions: no new LLM call.
+id: B_state
+title: State-model ablation
+question: Does bi-temporal state beat arrival-order supersession and an append-only store?
+filter:
+  dataset: longmemeval
+  categories: [knowledge-update]
+probes: true   # also report the 30 synthetic probes, labelled synthetic
+reference: bitemporal
+variants:
+  append_only:
+    alias_of: B5_append_only
+  arrival_order:
+    system: chronos
+    db: arrival_order
+  bitemporal:
+    alias_of: chronos

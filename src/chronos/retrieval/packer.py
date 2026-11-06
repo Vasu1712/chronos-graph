@@ -14,36 +14,31 @@ Per memory: status, attribute, interval with precision, conflict partners, the v
 the intent needs history (HISTORY, TEMPORAL_ORDER, AS_OF), and its source turns plus a
 +-`episode_window` turn window. Turns are printed once; later blocks reference them by id.
 The result lists exactly the memory_ids and turn_uids that appear in the text.
+
+Long turns are clipped for display (LongMemEval assistant answers run to 1000+ tokens): a memory's
+source turn keeps `max_source_turn_chars`, centred on the supporting quote; ±window neighbours keep
+`max_neighbor_turn_chars`. With `expand_sources=False` (retrieval ablation) memory lines list their
+source turn ids but no turn text is attached; those ids are still allowed citations.
 """
 
 from __future__ import annotations
 
 import sqlite3
 from collections.abc import Callable
-from dataclasses import dataclass
-from functools import lru_cache
+from dataclasses import dataclass, field
 
 from chronos.config import RetrievalConfig
 from chronos.ingestion.resolver import MemRow
 from chronos.ingestion.temporal import describe
+from chronos.llm.tokens import count_tokens
 from chronos.retrieval.query import Intent
 from chronos.retrieval.retriever import RetrievalResult
 from chronos.storage.db import Database
 
-TOKENIZER_REPO = "Qwen/Qwen2.5-7B-Instruct"
+qwen_token_count = count_tokens  # name kept for callers and tests
+
 _HISTORY_INTENTS = {Intent.HISTORY, Intent.TEMPORAL_ORDER, Intent.AS_OF}
 _MEM_COLS = ", ".join(MemRow.__dataclass_fields__)
-
-
-@lru_cache(maxsize=1)
-def _qwen_tokenizer():
-    from transformers import AutoTokenizer
-
-    return AutoTokenizer.from_pretrained(TOKENIZER_REPO)
-
-
-def qwen_token_count(text: str) -> int:
-    return len(_qwen_tokenizer()(text, add_special_tokens=False).input_ids)
 
 
 @dataclass
@@ -60,12 +55,28 @@ class PackedContext:
         return self.turn_uids
 
 
+def clip(text: str, limit: int, focus: tuple[int, int] | None = None) -> str:
+    """Shorten `text` to about `limit` chars, centred on `focus` (a char span) when given."""
+    if len(text) <= limit:
+        return text
+    if focus is None:
+        return text[:limit].rstrip() + " […]"
+    mid = (focus[0] + focus[1]) // 2
+    start = max(0, min(mid - limit // 2, len(text) - limit))
+    end = start + limit
+    return (
+        ("[…] " if start > 0 else "")
+        + text[start:end].strip()
+        + (" […]" if end < len(text) else "")
+    )
+
+
 @dataclass
 class _Turn:
     turn_uid: str
     date: str
     speaker: str
-    text: str
+    text: str  # already clipped for display
     session_id: str
     turn_index: int
 
@@ -80,6 +91,7 @@ class _Block:
     lines_head: list[str]  # memory lines (no turns)
     memory_ids: list[str]
     turns: list[_Turn]  # in display order
+    listed_turn_uids: list[str] = field(default_factory=list)  # source ids named on memory lines
 
 
 class Packer:
@@ -110,31 +122,65 @@ class Packer:
         ).fetchone()
         return r[0] if r else entity_id
 
-    def _sources(self, memory_id: str) -> list[str]:
+    def _source_rows(self, memory_id: str) -> list[tuple[str, int | None, int | None]]:
         return [
-            r[0]
+            (r[0], r[1], r[2])
             for r in self.conn.execute(
-                "SELECT s.turn_uid FROM fact_sources s JOIN episodes e USING(turn_uid) WHERE s.memory_id = ? "
-                "ORDER BY e.session_ordinal, e.turn_index",
+                "SELECT s.turn_uid, s.quote_start, s.quote_end FROM fact_sources s "
+                "JOIN episodes e USING(turn_uid) WHERE s.memory_id = ? "
+                "ORDER BY e.session_ordinal, e.turn_index, s.rowid",
                 (memory_id,),
             )
         ]
 
-    def _turn(self, turn_uid: str) -> _Turn | None:
+    def _sources(self, memory_id: str) -> list[str]:
+        return list(dict.fromkeys(uid for uid, _, _ in self._source_rows(memory_id)))
+
+    def _make_turn(
+        self, r: sqlite3.Row | tuple, *, source: bool, focus: tuple[int, int] | None
+    ) -> _Turn:
+        cfg = self.config
+        limit = cfg.max_source_turn_chars if source else cfg.max_neighbor_turn_chars
+        return _Turn(
+            r[0], (r[1] or "")[:10], r[2], clip(r[3], limit, focus if source else None), r[4], r[5]
+        )
+
+    def _turn(self, turn_uid: str, focus: tuple[int, int] | None = None) -> _Turn | None:
+        """A turn shown as a source (clipped around `focus`, the supporting quote, if known)."""
         r = self.conn.execute(
             "SELECT turn_uid, session_ts, speaker, text, session_id, turn_index FROM episodes WHERE turn_uid = ?",
             (turn_uid,),
         ).fetchone()
-        return _Turn(r[0], (r[1] or "")[:10], r[2], r[3], r[4], r[5]) if r else None
+        return self._make_turn(r, source=True, focus=focus) if r else None
 
-    def _window(self, turn: _Turn) -> list[_Turn]:
+    def _window(self, turn_uid: str, focus: tuple[int, int] | None = None) -> list[_Turn]:
+        """The source turn plus +-`episode_window` neighbours (neighbours are clipped harder)."""
+        center = self._turn(turn_uid, focus)
+        if center is None:
+            return []
         w = self.config.episode_window
         rows = self.conn.execute(
             "SELECT turn_uid, session_ts, speaker, text, session_id, turn_index FROM episodes "
             "WHERE session_id = ? AND turn_index BETWEEN ? AND ? ORDER BY turn_index",
-            (turn.session_id, turn.turn_index - w, turn.turn_index + w),
+            (center.session_id, center.turn_index - w, center.turn_index + w),
         ).fetchall()
-        return [_Turn(r[0], (r[1] or "")[:10], r[2], r[3], r[4], r[5]) for r in rows]
+        return [
+            center if r[0] == turn_uid else self._make_turn(r, source=False, focus=None)
+            for r in rows
+        ]
+
+    def _source_turns(self, memory_id: str) -> list[_Turn]:
+        """Source turns (with window) for a memory; honours expand_sources."""
+        if not self.config.expand_sources:
+            return []
+        out: list[_Turn] = []
+        seen: set[str] = set()
+        for uid, qs, qe in self._source_rows(memory_id):
+            if uid in seen:
+                continue
+            seen.add(uid)
+            out += self._window(uid, (qs, qe) if qs is not None and qe is not None else None)
+        return out
 
     def chain(self, m: MemRow) -> list[MemRow]:
         """Full version chain through supersedes_id / superseded_by_id, oldest first."""
@@ -175,11 +221,8 @@ class Packer:
         sources = self._sources(m.memory_id)
         head = [self._mem_line(m, sources)]
         ids = [m.memory_id]
-        turns: list[_Turn] = []
-        for uid in sources:
-            t = self._turn(uid)
-            if t:
-                turns += self._window(t)
+        listed = list(sources)
+        turns = self._source_turns(m.memory_id)
         if m.conflict_set_id:
             for (other_id,) in self.conn.execute(
                 "SELECT memory_id FROM memories WHERE conflict_set_id = ? AND memory_id != ? ORDER BY rowid",
@@ -189,7 +232,8 @@ class Packer:
                 o_src = self._sources(other_id)
                 head.append("  conflicts with: " + self._mem_line(o, o_src)[2:])
                 ids.append(other_id)
-                turns += [t for uid in o_src if (t := self._turn(uid))]
+                listed += o_src
+                turns += self._source_turns(other_id)
         if intent in _HISTORY_INTENTS:
             chain = self.chain(m)
             if len(chain) > 1:
@@ -201,14 +245,15 @@ class Packer:
                 for c in chain:
                     if c.memory_id not in ids:
                         ids.append(c.memory_id)
-                        turns += [t for uid in self._sources(c.memory_id) if (t := self._turn(uid))]
-        return _Block("memory", self._subject_name(m.subject_entity_id), head, ids, turns)
+                        listed += self._sources(c.memory_id)
+                        turns += self._source_turns(c.memory_id)
+        return _Block("memory", self._subject_name(m.subject_entity_id), head, ids, turns, listed)
 
     def _episode_block(self, turn_uid: str) -> _Block | None:
-        t = self._turn(turn_uid)
-        if t is None:
-            return None
-        return _Block("episode", None, [], [], self._window(t))
+        turns = self._window(turn_uid) if self.config.expand_sources else []
+        if not turns and (t := self._turn(turn_uid)):
+            turns = [t]
+        return _Block("episode", None, [], [], turns) if turns else None
 
     # ------------------------------------------------------------------ render
     @staticmethod
@@ -245,6 +290,10 @@ class Packer:
                 lines.append("## Other relevant turns")
                 for b in eps:
                     emit_turns(b)
+        for b in blocks:  # ids named on memory lines are allowed citations even without turn text
+            for uid in b.listed_turn_uids:
+                if uid not in turn_ids:
+                    turn_ids.append(uid)
         return "\n".join(lines), mem_ids, turn_ids
 
     def pack(self, result: RetrievalResult, budget: int | None = None) -> PackedContext:
@@ -268,7 +317,7 @@ class Packer:
             n = self.count_tokens(text)
             if n > budget:
                 truncated = True
-                break
+                continue  # this block does not fit; a smaller, lower-ranked one still may
             chosen.append(b)
             seen_mem.update(b.memory_ids)
             best = (text, mids, tids, n)

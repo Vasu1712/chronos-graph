@@ -125,6 +125,9 @@ class RetrievalConfig:
     use_bm25_episodes: bool = True
     use_entity_expansion: bool = True
     use_temporal_filter: bool = True
+    expand_sources: bool = True  # attach each memory's source turns (+-window); False = ablation
+    max_source_turn_chars: int = 1200  # display clip for a source turn, centred on its quote
+    max_neighbor_turn_chars: int = 300  # display clip for +-window neighbours
 
 
 @dataclass(frozen=True)
@@ -142,6 +145,10 @@ class IngestionConfig:
     candidate_top_k: int = 5  # same-subject ACTIVE memories for multi-valued facts
     candidate_min_similarity: float = 0.0  # 0 = take the top-k regardless (SPEC); tune on dev
     entity_similarity_threshold: float = 0.80  # tie-breaker only; tune on dev
+    # Dataset-specific extraction settings (None = the defaults of SPEC §3: every turn is a target and
+    # prompts show whole turns). LongMemEval sets target_speakers=("user",) and a prompt clip.
+    target_speakers: tuple[str, ...] | None = None
+    max_prompt_turn_chars: int | None = None
 
 
 SEED = 42

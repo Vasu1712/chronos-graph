@@ -28,6 +28,7 @@ def _load_sql(name: str) -> str:
 MIGRATIONS: list[tuple[int, str, str]] = [
     (1, "initial_schema", _load_sql("schema.sql")),
     (2, "episode_embeddings", _load_sql("schema_v2_episode_embeddings.sql")),
+    (3, "resolver_log", _load_sql("schema_v3_resolver_log.sql")),
 ]
 
 

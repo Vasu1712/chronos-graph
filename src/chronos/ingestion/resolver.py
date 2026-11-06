@@ -34,6 +34,7 @@ is decided here, deterministically:
 
 from __future__ import annotations
 
+import json
 import logging
 import re
 import sqlite3
@@ -59,6 +60,7 @@ from chronos.llm.embed import from_blob, to_blob
 
 log = logging.getLogger(__name__)
 
+APPEND_ONLY_AS_NEW = {"UPDATES", "NEGATES", "CONFLICT", "HISTORICAL", "EXTENDS"}
 RELATIONS = ("NEW", "DUPLICATE", "EXTENDS", "UPDATES", "CORRECTS", "HISTORICAL", "CONFLICT")
 
 
@@ -147,6 +149,7 @@ class Decision:
     target_id: str | None
     candidates: int
     notes: list[str] = field(default_factory=list)
+    llm_target_id: str | None = None  # candidate memory the classifier named (before normalization)
 
 
 class RelationOut(BaseModel):
@@ -203,13 +206,40 @@ def classify_messages(f: NewFact, cands: Sequence[MemRow]) -> list[dict[str, str
 
 
 # ------------------------------------------------------------------------------ resolver
+POLICIES = ("bitemporal", "arrival_order", "append_only")
+
+
 class StateResolver:
+    """Applies the write rules. `policy` selects the state model (ablation B):
+
+    bitemporal     the full system (default)
+    arrival_order  supersession by arrival only: the fact's time expression is discarded (only its
+                   tense is kept), so every UPDATES supersedes forward and "an ended state never
+                   replaces the current one" (normalization rule 7) never fires
+    append_only    nothing is ever superseded, closed or conflicted: UPDATES / NEGATES / CONFLICT /
+                   HISTORICAL / EXTENDS all insert a new ACTIVE memory; DUPLICATE still only
+                   reaffirms and CORRECTS still retracts
+
+    `recorded` maps memory_id -> (classifier relation, classifier target memory_id) from a previous
+    run's resolver_log; with it no LLM is called, which is how a policy is replayed.
+    """
+
     def __init__(
-        self, conn: sqlite3.Connection, llm: Any, config: IngestionConfig | None = None
+        self,
+        conn: sqlite3.Connection,
+        llm: Any,
+        config: IngestionConfig | None = None,
+        *,
+        policy: str = "bitemporal",
+        recorded: dict[str, tuple[str | None, str | None]] | None = None,
     ) -> None:
+        if policy not in POLICIES:
+            raise ValueError(f"policy must be one of {POLICIES}")
         self.conn = conn
         self.llm = llm
         self.config = config or IngestionConfig()
+        self.policy = policy
+        self.recorded = recorded
         self.llm_calls = 0
 
     # ------------------------------------------------------------------ candidates
@@ -254,8 +284,27 @@ class StateResolver:
 
     # ------------------------------------------------------------------ main entry
     def apply(self, f: NewFact) -> Decision:
+        dec = self._apply(f)
+        if dec.relation != "SKIPPED_EXISTS":
+            self._log(f, dec)
+        return dec
+
+    def _log(self, f: NewFact, dec: Decision) -> None:
+        self.conn.execute(
+            "INSERT OR REPLACE INTO resolver_log(memory_id, conversation_id, session_ordinal, turn_index, "
+            "llm_relation, llm_target_id, applied_relation, applied_target_id, n_candidates, notes) "
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            (
+                f.memory_id, f.conversation_id, f.session_ordinal, f.turn_index, dec.llm_relation,
+                dec.llm_target_id, dec.relation, dec.target_id, dec.candidates, json.dumps(dec.notes),
+            ),
+        )  # fmt: skip
+
+    def _apply(self, f: NewFact) -> Decision:
         if self.get(f.memory_id) is not None:
             return Decision(f.memory_id, f.fact_text, None, "SKIPPED_EXISTS", None, 0)
+        if self.policy == "arrival_order":
+            f = self._ignore_event_time(f)
         if f.is_correction and f.correction_wrong:
             dec = self._structured_correction(f)
             if dec is not None:
@@ -265,15 +314,47 @@ class StateResolver:
             self._insert(f, "ACTIVE")
             return Decision(f.memory_id, f.fact_text, None, "NEW", None, 0)
 
-        self.llm_calls += 1
-        out: RelationOut = self.llm.structured(classify_messages(f, cands), RelationOut)
         labels = {f"C{i}": m for i, m in enumerate(cands, start=1)}
+        notes: list[str] = []
+        if self.recorded is not None:
+            out = self._recorded_relation(f, labels, notes)
+        else:
+            self.llm_calls += 1
+            out = self.llm.structured(classify_messages(f, cands), RelationOut)
         target = labels.get((out.target or "").strip().upper())
-        dec = Decision(f.memory_id, f.fact_text, out.relation, out.relation, None, len(cands))
+        dec = Decision(
+            f.memory_id, f.fact_text, out.relation, out.relation, None, len(cands), notes
+        )
+        dec.llm_target_id = target.memory_id if target else None
+        if self.recorded is not None and f.memory_id not in self.recorded:
+            dec.llm_relation = None  # nothing was recorded for this fact in the source run
         rel, target, f = self._normalize(out.relation, target, f, cands, dec)
+        if self.policy == "append_only" and rel in APPEND_ONLY_AS_NEW:
+            dec.notes.append(f"append-only: {rel} -> NEW")
+            rel, target = "NEW", None
         dec.relation, dec.target_id = rel, target.memory_id if target else None
         self._write(rel, f, target)
         return dec
+
+    def _recorded_relation(
+        self, f: NewFact, labels: dict[str, MemRow], notes: list[str]
+    ) -> RelationOut:
+        """The classifier's answer from the source run, mapped onto this run's candidate labels."""
+        rec = self.recorded.get(f.memory_id)
+        if rec is None or rec[0] is None or rec[0] == "NEW":
+            return RelationOut(reason="replay", relation="NEW", target=None)
+        relation, target_id = rec
+        if target_id is None:
+            return RelationOut(reason="replay", relation=relation, target=None)
+        label = next((lab for lab, m in labels.items() if m.memory_id == target_id), None)
+        if label is None:
+            notes.append("replay: recorded target is not a candidate under this policy -> NEW")
+            return RelationOut(reason="replay", relation="NEW", target=None)
+        return RelationOut(reason="replay", relation=relation, target=label)
+
+    def _ignore_event_time(self, f: NewFact) -> NewFact:
+        expr = TimeExpr(kind="NONE", tense=f.time_expr.tense)
+        return replace(f, time_expr=expr, rt=resolve(expr, f.session_ts, is_event=f.is_event))
 
     # ------------------------------------------------------------------ structured corrections
     def _structured_correction(self, f: NewFact) -> Decision | None:
@@ -438,7 +519,7 @@ class StateResolver:
         if rel == "HISTORICAL" and f.recent_onset and not f.rt.is_closed:
             note("HISTORICAL for a recently begun state -> UPDATES")
             rel = "UPDATES"
-        if rel == "UPDATES" and f.rt.is_closed:
+        if rel == "UPDATES" and f.rt.is_closed and self.policy != "arrival_order":
             note("UPDATES by a closed-interval fact -> HISTORICAL")
             rel = "HISTORICAL"
         if rel == "HISTORICAL" and not f.rt.is_closed and not f.is_event:

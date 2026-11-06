@@ -16,8 +16,9 @@ from dataclasses import asdict, dataclass, field
 from typing import Any
 
 from chronos.agent.answerability import AnswerabilityGate, GateResult
-from chronos.agent.generator import Claim, GenerationOut, Generator, question_type
-from chronos.agent.verifier import AnswerLog, Verifier, verify_and_repair
+from chronos.agent.answering import generate_and_verify
+from chronos.agent.generator import Claim, GenerationOut, question_type
+from chronos.agent.verifier import AnswerLog, Verifier
 from chronos.config import AgentConfig, RetrievalConfig
 from chronos.retrieval.packer import PackedContext, Packer
 from chronos.retrieval.query import QueryAnalysis, analyze
@@ -41,6 +42,8 @@ class AgentAnswer:
     gate: GateResult
     timings: dict[str, float] = field(default_factory=dict)
     llm_calls: int = 0
+    calls: list[dict[str, Any]] = field(default_factory=list)  # LLM call records of this answer
+    verifier_record: dict[str, Any] = field(default_factory=dict)
 
     def summary(self) -> dict[str, Any]:
         a = self.analysis
@@ -62,21 +65,6 @@ class AgentAnswer:
             "timings": self.timings,
             "llm_calls": self.llm_calls,
         }  # fmt: skip
-
-
-class _TimedGenerator(Generator):
-    """Generator that records the wall time of every call (first call = generate, rest = regenerate)."""
-
-    def __init__(self, llm: Any) -> None:
-        super().__init__(llm)
-        self.durations: list[float] = []
-
-    def generate(self, *args: Any, **kwargs: Any) -> GenerationOut:
-        t = time.perf_counter()
-        try:
-            return super().generate(*args, **kwargs)
-        finally:
-            self.durations.append(time.perf_counter() - t)
 
 
 class MemoryAgent:
@@ -118,7 +106,7 @@ class MemoryAgent:
     ) -> AgentAnswer:
         timings: dict[str, float] = dict.fromkeys(STEPS, 0.0)
         t_all = time.perf_counter()
-        calls_before = getattr(self.llm, "calls", None)
+        mark = len(getattr(self.llm, "records", ()))
         qdate = question_date or as_of or self.default_question_date(conversation_id)
 
         t = time.perf_counter()
@@ -152,39 +140,27 @@ class MemoryAgent:
             )
             stage = "gate"
         else:
-            gen = _TimedGenerator(self.llm)
-            qtype = question_type(analysis)
-            first = gen.generate(
-                question,
-                packed.text,
-                packed.turn_uids,
+            answered = generate_and_verify(
+                llm=self.llm,
+                verifier=self.verifier,
+                query_id=query_id,
+                question=question,
+                context=packed.text,
+                allowed_turn_uids=packed.turn_uids,
                 question_date=qdate,
                 asker=analysis.asker_name,
-                question_type=qtype,
-            )
-            t = time.perf_counter()
-            final, record = verify_and_repair(
-                query_id=query_id, question=question, context=packed.text, allowed_turn_uids=packed.turn_uids,
-                generator=gen, verifier=self.verifier, first=first, question_date=qdate,
+                question_type=question_type(analysis),
                 regenerate_once=self.agent_config.regenerate_once,
-                asker=analysis.asker_name,
-                question_type=qtype,
-            )  # fmt: skip
-            timings["generate"] = gen.durations[0]
-            timings["regenerate"] = sum(gen.durations[1:])
-            timings["verify"] = time.perf_counter() - t - timings["regenerate"]
-            stage = None
-            if final.abstained:
-                stage = (
-                    "model"
-                    if first.abstained
-                    or (record["rounds"] and record["rounds"][-1].get("abstained_by_model"))
-                    else "verifier"
-                )
+            )
+            final, record, stage = answered.final, answered.record, answered.stage
+            timings |= answered.timings
 
         timings["total"] = time.perf_counter() - t_all
-        calls = (getattr(self.llm, "calls", 0) - calls_before) if calls_before is not None else 0
-        ans = AgentAnswer(query_id, question, final.final_answer, final.claims, final.abstained,
-                          final.abstention_reason, stage, analysis, packed, gate, timings, calls)  # fmt: skip
+        records = getattr(self.llm, "records", None)
+        calls = [r.as_dict() for r in records[mark:]] if records is not None else []
+        ans = AgentAnswer(
+            query_id, question, final.final_answer, final.claims, final.abstained,
+            final.abstention_reason, stage, analysis, packed, gate, timings, len(calls), calls, record,
+        )  # fmt: skip
         self.log.finish(query_id, ans.summary(), record)
         return ans

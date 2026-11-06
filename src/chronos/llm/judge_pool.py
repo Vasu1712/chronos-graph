@@ -54,6 +54,7 @@ class JudgeItem(BaseModel):
     question: str
     reference: str
     response: str
+    rubric: str | None = None  # per-item grading instructions; None = the pool's default rubric
 
 
 class _VerdictOut(BaseModel):
@@ -220,6 +221,7 @@ class JudgePool:
         sleep: Callable[[float], None] = time.sleep,
         limiter_state_path: str | Path | None = None,
         max_rate_limit_waits: int = 1000,
+        available_only: bool = False,
     ) -> None:
         if not 1 <= batch_size <= MAX_BATCH:
             raise ValueError(f"batch_size must be in 1..{MAX_BATCH}")
@@ -232,16 +234,24 @@ class JudgePool:
         self.schema = json_schema_for(_BatchOut)
         clients = clients or {}
         self.providers: list[_Provider] = []
+        self.unavailable: list[str] = []  # providers dropped because their API key is not set
         for cfg in providers or judge_providers():
             client = clients.get(cfg.name)
             if client is None:
                 if not cfg.api_key:
+                    if available_only:
+                        self.unavailable.append(cfg.name)
+                        continue
                     raise RuntimeError(f"{cfg.api_key_env} is not set")
                 client = openai.OpenAI(base_url=cfg.base_url, api_key=cfg.api_key, max_retries=0)
             limiter = ProviderLimiter(
                 cfg.name, cfg.limits, clock=clock, sleep=sleep, state_path=limiter_state_path
             )
             self.providers.append(_Provider(cfg, client, limiter))
+        if not self.providers:
+            raise RuntimeError(
+                "no judge provider is available: set GROQ_API_KEY and/or CEREBRAS_API_KEY"
+            )
 
     # ------------------------------------------------------------------ routing
     def route(self, question_id: str) -> str:
@@ -257,7 +267,7 @@ class JudgePool:
             model=p.config.model,
             quantization=None,
             prompt={
-                "rubric": self.rubric,
+                "rubric": item.rubric or self.rubric,
                 "question_id": item.question_id,
                 "question": item.question,
                 "reference": item.reference,
@@ -268,14 +278,25 @@ class JudgePool:
         )
 
     # ------------------------------------------------------------------ public API
-    def judge(self, items: Sequence[JudgeItem]) -> list[Verdict]:
-        """Judge items, preserving input order. item_ids must be unique."""
+    def judge(self, items: Sequence[JudgeItem], *, provider: str | None = None) -> list[Verdict]:
+        """Judge items, preserving input order. item_ids must be unique.
+
+        Items are routed by sha256(question_id) over the available providers; `provider` forces
+        every item to one provider (used to compare providers on the same items).
+        """
         ids = [it.item_id for it in items]
         if len(set(ids)) != len(ids):
             raise ValueError("item_id values must be unique")
         by_provider: dict[int, list[JudgeItem]] = {}
-        for it in items:
-            by_provider.setdefault(route_index(it.question_id, len(self.providers)), []).append(it)
+        if provider is not None:
+            names = [p.config.name for p in self.providers]
+            if provider not in names:
+                raise ValueError(f"provider {provider!r} is not available (have {names})")
+            by_provider[names.index(provider)] = list(items)
+        else:
+            for it in items:
+                idx = route_index(it.question_id, len(self.providers))
+                by_provider.setdefault(idx, []).append(it)
 
         results: dict[str, Verdict] = {}
         with ThreadPoolExecutor(max_workers=max(1, len(by_provider))) as pool:
@@ -302,12 +323,19 @@ class JudgePool:
             else:
                 pending.append(it)
 
-        for start in range(0, len(pending), self.batch_size):
-            chunk = pending[start : start + self.batch_size]
-            got = self._judge_chunk(p, chunk)
+        groups: dict[str, list[JudgeItem]] = {}
+        for it in pending:  # one batch never mixes grading instructions
+            groups.setdefault(it.rubric or self.rubric, []).append(it)
+        chunks = [
+            (rubric, group[i : i + self.batch_size])
+            for rubric, group in groups.items()
+            for i in range(0, len(group), self.batch_size)
+        ]
+        for rubric, chunk in chunks:
+            got = self._judge_chunk(p, chunk, rubric)
             missing = [it for it in chunk if it.item_id not in got]
             for it in missing:  # model dropped some items: re-ask one at a time
-                got.update(self._judge_chunk(p, [it]))
+                got.update(self._judge_chunk(p, [it], rubric))
             for it in chunk:
                 if it.item_id not in got:
                     raise RuntimeError(f"{p.config.name}: no verdict for {it.item_id}")
@@ -325,7 +353,7 @@ class JudgePool:
                     )
         return out
 
-    def _messages(self, chunk: list[JudgeItem]) -> list[dict[str, str]]:
+    def _messages(self, chunk: list[JudgeItem], rubric: str | None = None) -> list[dict[str, str]]:
         payload = [
             {
                 "item_id": it.item_id,
@@ -336,7 +364,7 @@ class JudgePool:
             for it in chunk
         ]
         return [
-            {"role": "system", "content": self.rubric},
+            {"role": "system", "content": rubric or self.rubric},
             {
                 "role": "user",
                 "content": (
@@ -348,8 +376,10 @@ class JudgePool:
             },
         ]
 
-    def _judge_chunk(self, p: _Provider, chunk: list[JudgeItem]) -> dict[str, _VerdictOut]:
-        messages = self._messages(chunk)
+    def _judge_chunk(
+        self, p: _Provider, chunk: list[JudgeItem], rubric: str | None = None
+    ) -> dict[str, _VerdictOut]:
+        messages = self._messages(chunk, rubric)
         max_out = 400 + 250 * len(chunk)
         est = sum(len(m["content"]) for m in messages) // 4 + max_out
         kwargs = {

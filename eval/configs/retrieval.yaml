@@ -1,0 +1,25 @@
+# Ablation A: retrieval. ChronosGraph with fewer retrieval stages, on LoCoMo multi-hop and single-hop.
+# "dense" = dense over memories and episodes, "BM25" = FTS5 over both. Variants below plus_episodic
+# attach no source turns (memory lines only); plus_episodic is the full system.
+id: A_retrieval
+title: Retrieval ablation
+question: Which retrieval stages carry the accuracy?
+filter:
+  dataset: locomo
+  categories: [multi-hop, single-hop]
+reference: plus_episodic
+variants:
+  dense_only:
+    system: chronos
+    retrieval: {use_bm25_memories: false, use_bm25_episodes: false, use_entity_expansion: false, expand_sources: false}
+  bm25_only:
+    system: chronos
+    retrieval: {use_dense_memories: false, use_dense_episodes: false, use_entity_expansion: false, expand_sources: false}
+  dense_plus_bm25:
+    system: chronos
+    retrieval: {use_entity_expansion: false, expand_sources: false}
+  plus_1hop:
+    system: chronos
+    retrieval: {expand_sources: false}
+  plus_episodic:
+    alias_of: chronos

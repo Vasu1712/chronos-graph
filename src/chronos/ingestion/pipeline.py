@@ -104,11 +104,15 @@ class IngestionPipeline:
         *,
         ontology: Ontology | None = None,
         config: IngestionConfig | None = None,
+        policy: str = "bitemporal",
+        recorded: dict[str, tuple[str | None, str | None]] | None = None,
     ) -> None:
         self.db = db
         self.llm = llm
         self.embedder = embedder
         self.config = config or IngestionConfig()
+        self.policy = policy
+        self.recorded = recorded
         self.extractor = Extractor(llm, ontology, self.config)
 
     # ------------------------------------------------------------------ registration
@@ -184,7 +188,9 @@ class IngestionPipeline:
                 result.skipped = True
                 return result
             ents = EntityResolver(tx.conn, conversation_id, self.embedder, self.config)
-            state = StateResolver(tx.conn, self.llm, self.config)
+            state = StateResolver(
+                tx.conn, self.llm, self.config, policy=self.policy, recorded=self.recorded
+            )
             # a correction is applied after the other facts of its turn, so an original statement
             # extracted from the same turn already exists when the correction looks for it
             order = sorted(
@@ -260,3 +266,16 @@ class IngestionPipeline:
                 else None
             ),
         )
+
+
+def recorded_decisions(
+    conn: Any, conversation_id: str | None = None
+) -> dict[str, tuple[str | None, str | None]]:
+    """memory_id -> (classifier relation, classifier target memory_id) from a finished run's
+    resolver_log; feed it to IngestionPipeline(recorded=...) to replay under another policy."""
+    sql = "SELECT memory_id, llm_relation, llm_target_id FROM resolver_log"
+    params: tuple = ()
+    if conversation_id is not None:
+        sql += " WHERE conversation_id = ?"
+        params = (conversation_id,)
+    return {r[0]: (r[1], r[2]) for r in conn.execute(sql, params)}
