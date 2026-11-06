@@ -6,6 +6,10 @@ is decided here, deterministically:
   normalization of the LLM's choice
     - no usable target                       -> NEW (unless there is exactly one candidate)
     - is_correction and UPDATES              -> CORRECTS
+    - CORRECTS without is_correction         -> UPDATES (same attribute key) or NEW
+    - CORRECTS of a value settled by a correction in the same turn -> NEW
+    - CORRECTS of a value established by a correction, by a fact that does not name it as the
+      wrong value                            -> NEW
     - CONFLICT with a target from another turn -> UPDATES (the later statement wins)
     - DUPLICATE with opposite polarity       -> UPDATES
     - NEG fact against a POS target via UPDATES/DUPLICATE -> NEGATES (close the target)
@@ -13,6 +17,7 @@ is decided here, deterministically:
       candidate is used, else NEW
     - UPDATES by a fact whose own interval is closed -> HISTORICAL (an ended state never
       replaces the current one)
+    - HISTORICAL for a recently begun state ("moved to X last week") -> UPDATES
     - HISTORICAL with an open interval       -> time re-resolved as PAST_ENDED
 
   write rules, order key = (session_ordinal, turn_index)
@@ -30,6 +35,7 @@ is decided here, deterministically:
 from __future__ import annotations
 
 import logging
+import re
 import sqlite3
 from collections.abc import Sequence
 from dataclasses import dataclass, field, replace
@@ -80,6 +86,11 @@ class NewFact:
     is_correction: bool
     mention_entity_ids: tuple[str, ...] = ()
     embedding: np.ndarray | None = field(default=None, compare=False)
+    # structured correction from the extractor ("Priya, sorry, I meant Priyanka")
+    correction_wrong: str | None = None
+    correction_right: str | None = None
+    wrong_quote: tuple[str, int, int] | None = None  # verbatim span of the wrong value in the turn
+    recent_onset: bool = False  # extractor: the quote only says how this state recently began
 
     @property
     def key(self) -> tuple[int, int]:
@@ -245,6 +256,10 @@ class StateResolver:
     def apply(self, f: NewFact) -> Decision:
         if self.get(f.memory_id) is not None:
             return Decision(f.memory_id, f.fact_text, None, "SKIPPED_EXISTS", None, 0)
+        if f.is_correction and f.correction_wrong:
+            dec = self._structured_correction(f)
+            if dec is not None:
+                return dec
         cands = self.candidates(f)
         if not cands:
             self._insert(f, "ACTIVE")
@@ -259,6 +274,103 @@ class StateResolver:
         dec.relation, dec.target_id = rel, target.memory_id if target else None
         self._write(rel, f, target)
         return dec
+
+    # ------------------------------------------------------------------ structured corrections
+    def _structured_correction(self, f: NewFact) -> Decision | None:
+        """CORRECTS without a classifier call when the extractor named the wrong value.
+
+        Target: the latest open ACTIVE memory of the same subject (and attribute key, if any),
+        recorded no later than this fact, that mentions the wrong value but not the right one.
+        If the model never extracted that original statement (common when both values are in
+        one turn), it is created from this turn (fact_text with right -> wrong, quote = the wrong
+        value's span) and then retracted, so the record of what was said survives.
+        """
+        target = self._correction_target(f)
+        note = "structured correction: retracted existing memory"
+        if target is None and self._wrong_value_was_just_settled(f):
+            return None  # it would undo this turn's own correction: let the guarded classifier path decide
+        if target is None:
+            target = self._synthesize_original(f)
+            note = "structured correction: original statement created from the turn, then retracted"
+        if target is None:
+            return None
+        self._write("CORRECTS", f, target)
+        return Decision(f.memory_id, f.fact_text, None, "CORRECTS", target.memory_id, 0, [note])
+
+    def _correction_target(self, f: NewFact) -> MemRow | None:
+        wrong = re.compile(rf"\b{re.escape(f.correction_wrong)}\b", re.IGNORECASE)
+        right = (
+            re.compile(rf"\b{re.escape(f.correction_right)}\b", re.IGNORECASE)
+            if f.correction_right
+            else None
+        )
+        where = ("conversation_id = ? AND subject_entity_id = ? AND status = 'ACTIVE' AND valid_to IS NULL "
+                 "AND memory_id != ?")  # fmt: skip
+        params: list[Any] = [f.conversation_id, f.subject_entity_id, f.memory_id]
+        if f.attribute_key:
+            where += " AND attribute_key = ?"
+            params.append(f.attribute_key)
+        rows = self._rows(
+            where + " ORDER BY recorded_session_ordinal DESC, recorded_turn_index DESC, rowid DESC",
+            params,
+        )
+        for r in rows:
+            if (
+                r.key <= f.key
+                and not self._settled_by_correction_in_turn(r, f)
+                and wrong.search(r.fact_text)
+                and not (right and right.search(r.fact_text))
+            ):
+                return r
+        return None
+
+    def _wrong_value_was_just_settled(self, f: NewFact) -> bool:
+        wrong = re.compile(rf"\b{re.escape(f.correction_wrong)}\b", re.IGNORECASE)
+        rows = self._rows(
+            "memory_id IN (SELECT memory_id FROM fact_sources WHERE turn_uid = ? AND role = 'CORRECTS') "
+            "AND subject_entity_id = ?",
+            (f.turn_uid, f.subject_entity_id),
+        )
+        return any(wrong.search(r.fact_text) for r in rows)
+
+    def _established_by_correction(self, m: MemRow) -> bool:
+        return bool(self.conn.execute(
+            "SELECT 1 FROM fact_sources WHERE memory_id = ? AND role = 'CORRECTS'", (m.memory_id,)
+        ).fetchone())  # fmt: skip
+
+    @staticmethod
+    def _names_wrong(f: NewFact, m: MemRow) -> bool:
+        return (
+            bool(f.correction_wrong)
+            and re.search(rf"\b{re.escape(f.correction_wrong)}\b", m.fact_text, re.IGNORECASE)
+            is not None
+        )
+
+    def _settled_by_correction_in_turn(self, m: MemRow, f: NewFact) -> bool:
+        """True if `m` is the value a speaker settled on by correcting themselves in f's turn.
+
+        Another fact from the same turn must not retract it ("Pune, sorry, I meant Mumbai" may
+        also yield "Neha used to live in Pune"); a correction in a later turn still can.
+        """
+        return bool(self.conn.execute(
+            "SELECT 1 FROM fact_sources WHERE memory_id = ? AND turn_uid = ? AND role = 'CORRECTS'",
+            (m.memory_id, f.turn_uid),
+        ).fetchone())  # fmt: skip
+
+    def _synthesize_original(self, f: NewFact) -> MemRow | None:
+        if not f.correction_right:
+            return None
+        m = re.search(rf"\b{re.escape(f.correction_right)}\b", f.fact_text, re.IGNORECASE)
+        if m is None:
+            return None
+        text = f.fact_text[: m.start()] + f.correction_wrong + f.fact_text[m.end() :]
+        quote, qs, qe = f.wrong_quote if f.wrong_quote else (f.quote, f.quote_start, f.quote_end)
+        orig = replace(f, memory_id=f"{f.memory_id}-orig", fact_text=text, is_correction=False, quote=quote,
+                       quote_start=qs, quote_end=qe, mention_entity_ids=(), correction_wrong=None,
+                       correction_right=None, wrong_quote=None)  # fmt: skip
+        if self.get(orig.memory_id) is None:
+            self._insert(orig, "ACTIVE")
+        return self.get(orig.memory_id)
 
     # ------------------------------------------------------------------ deterministic rules
     def _normalize(
@@ -278,6 +390,26 @@ class StateResolver:
         if f.is_correction and rel == "UPDATES":
             rel = "CORRECTS"
             note("correction cue: UPDATES -> CORRECTS")
+        if rel == "CORRECTS" and not f.is_correction:
+            # CORRECTS means the speaker took a statement back; without the extractor's correction
+            # cue it is at most a change of the same single-valued attribute
+            same_slot = f.attribute_key is not None and f.attribute_key == target.attribute_key
+            note(f"CORRECTS without a correction cue -> {'UPDATES' if same_slot else 'NEW'}")
+            if not same_slot:
+                return "NEW", None, f
+            rel = "UPDATES"
+        if rel == "CORRECTS" and self._settled_by_correction_in_turn(target, f):
+            note("target was itself established by a correction in this turn -> NEW")
+            return "NEW", None, f
+        if (
+            rel == "CORRECTS"
+            and self._established_by_correction(target)
+            and not self._names_wrong(f, target)
+        ):
+            note(
+                "target was established by a correction and this fact does not name it as wrong -> NEW"
+            )
+            return "NEW", None, f
         if rel == "CONFLICT" and target.key != f.key:
             rel = "UPDATES"
             note("CONFLICT across turns -> UPDATES")
@@ -303,6 +435,9 @@ class StateResolver:
                 note(f"{rel} target not open -> NEW")
                 return "NEW", None, f
 
+        if rel == "HISTORICAL" and f.recent_onset and not f.rt.is_closed:
+            note("HISTORICAL for a recently begun state -> UPDATES")
+            rel = "UPDATES"
         if rel == "UPDATES" and f.rt.is_closed:
             note("UPDATES by a closed-interval fact -> HISTORICAL")
             rel = "HISTORICAL"

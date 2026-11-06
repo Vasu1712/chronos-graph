@@ -68,33 +68,6 @@ def _interval(r: Any) -> str:
 
 def _memory_table(db, conversation_id: str) -> list[str]:
     """Plain-text memory listing (also used by eval/probes.py reports)."""
-"""Command-line entry point (`chronos` / `python -m chronos.cli`)."""
-
-from __future__ import annotations
-
-import logging
-from pathlib import Path
-
-"""Command-line entry point (`chronos`)."""
-
-from __future__ import annotations
-
-import typer
-
-app = typer.Typer(no_args_is_help=True, add_completion=False)
-
-
-@app.command("init-db")
-def init_db(path: str = typer.Option(None, help="SQLite path (defaults to config)")) -> None:
-    """Create or migrate the ChronosGraph database."""
-    from chronos.config import Paths
-    from chronos.storage.db import Database
-
-    db = Database(path or Paths().db)
-    typer.echo(f"schema version {db.schema_version()} at {db.path}")
-
-
-def _memory_table(db, conversation_id: str) -> list[str]:
     rows = db.conn.execute(
         "SELECT m.memory_id, e.canonical_name, m.attribute_key, m.status, m.polarity, m.fact_text, "
         "m.valid_from, m.valid_from_precision, m.valid_to, m.valid_to_precision, m.event_date, "
@@ -196,9 +169,6 @@ def init_db(path: str = typer.Option(None, help="SQLite path (defaults to config
 @app.command("ingest")
 def ingest(
     path: Path = typer.Argument(
-@app.command("ingest")
-def ingest(
-    file: Path = typer.Argument(
         ..., exists=True, help="Conversation JSON (see chronos.ingestion.files)"
     ),
     db: Path = typer.Option(None, help="SQLite path (default: artifacts/chronos.sqlite)"),
@@ -212,13 +182,11 @@ def ingest(
     from chronos.config import Paths
     from chronos.ingestion.files import load_conversation_file
     from chronos.ingestion.pipeline import IngestionPipeline
-    from chronos.storage.db import Database
 
     logging.basicConfig(
         level=logging.INFO if verbose else logging.WARNING, format="%(levelname)s %(message)s"
     )
     conv, data = load_conversation_file(path)
-    conv, data = load_conversation_file(file)
     if scripted:
         from chronos.ingestion.scripted import ScriptedLLM
 
@@ -540,22 +508,6 @@ def stats(db: Path = typer.Option(None)) -> None:
         console.print(
             f"answers: {len(totals)}, mean latency {sum(totals) / len(totals):.2f}s, max {max(totals):.2f}s"
         )
-    database = Database(db or Paths().db)
-    pipe = IngestionPipeline(database, llm, emb)
-    results = pipe.ingest_conversation(conv)
-    for r in results:
-        s = r.summary()
-        if r.skipped:
-            typer.echo(f"{r.session_id}: already ingested (no-op)")
-            continue
-        ex = s["extraction"]
-        typer.echo(
-            f"{r.session_id}: {ex['kept']}/{ex['raw_facts']} facts kept, dropped {ex['dropped'] or 0}, "
-            f"relations {s['relations']}"
-        )
-    typer.echo("")
-    for line in _memory_table(database, conv.conversation_id):
-        typer.echo(line)
     database.close()
 
 
@@ -566,9 +518,6 @@ def ingest_demo(
     ),
 ) -> None:
     """Ingest the demo into a fresh artifacts/demo.sqlite (live: user_story.json; --scripted: demo.json)."""
-    scripted: bool = typer.Option(False, help="Use the demo's scripted outputs (offline)"),
-) -> None:
-    """Ingest data/demo_sessions/demo.json into a fresh artifacts/demo.sqlite."""
     from chronos.config import REPO_ROOT
 
     path = REPO_ROOT / "artifacts" / "demo.sqlite"
@@ -577,21 +526,12 @@ def ingest_demo(
     name = "demo.json" if scripted else "user_story.json"
     ingest(REPO_ROOT / "data" / "demo_sessions" / name, db=path, scripted=scripted,
            embedder="hash" if scripted else "bge", verbose=False)  # fmt: skip
-    ingest(REPO_ROOT / "data" / "demo_sessions" / "demo.json", db=path, scripted=scripted,
-           embedder="hash" if scripted else "bge", verbose=False)  # fmt: skip
-@app.command("ingest-demo")
-def ingest_demo() -> None:
-    """Ingest data/demo_sessions (implemented in Part 2)."""
-    typer.echo("ingest-demo: not implemented yet (Part 2)", err=True)
-    raise typer.Exit(1)
 
 
 @app.command("eval")
 def eval_cmd(manifest: str = typer.Option(..., help="Path to a manifest JSON")) -> None:
     """Run an evaluation manifest (implemented in Part 4)."""
     console.print(f"eval {manifest}: not implemented yet")
-    """Run an evaluation manifest (implemented in Part 3)."""
-    typer.echo(f"eval {manifest}: not implemented yet (Part 3)", err=True)
     raise typer.Exit(1)
 
 
@@ -599,7 +539,6 @@ def eval_cmd(manifest: str = typer.Option(..., help="Path to a manifest JSON")) 
 def report() -> None:
     """Build the results report (implemented in Part 4)."""
     console.print("report: not implemented yet")
-    typer.echo("report: not implemented yet (Part 4)", err=True)
     raise typer.Exit(1)
 
 

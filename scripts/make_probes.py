@@ -1334,10 +1334,10 @@ P.append(
         ],
         {"Pedro no longer smokes.": ("UPDATES", "smokes")},
         [
-            M("Pedro", "smoke", polarity="POS", status="SUPERSEDED", valid_to="*"),
-            M("Pedro", "smoke", polarity="NEG", status="ACTIVE", valid_to=None),
+            M("Pedro", "smok", polarity="POS", status="SUPERSEDED", valid_to="*"),
+            M("Pedro", "smok", polarity="NEG", status="ACTIVE", valid_to=None),
         ],
-        absent=[ABSENT("Pedro", "smoke", polarity="POS")],
+        absent=[ABSENT("Pedro", "smok", polarity="POS")],
     )
 )
 P.append(

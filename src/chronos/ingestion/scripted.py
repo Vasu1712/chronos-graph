@@ -33,6 +33,7 @@ class ScriptedLLM:
         }
         for f in scripted.get("extraction", []):
             f = dict(f)
+            f.setdefault("correction", None)  # older scripted files predate this field
             session = f.pop("session")
             self.facts.append((f["turn_index"], texts[(session, f["turn_index"])], f))
         self.relations: dict[str, dict[str, Any]] = scripted.get("relations", {})

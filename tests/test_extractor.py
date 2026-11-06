@@ -32,7 +32,8 @@ def fact(
         "is_event": kw.get("is_event", False),
         "entities_mentioned": [],
         "time": {"kind": "NONE", "value": None, "offset": None, "unit": None, "tense": tense},
-        "is_correction": False,
+        "is_correction": kw.get("corr", False),
+        "correction": kw.get("correction"),
         "quote": quote,
     }
 
@@ -167,4 +168,97 @@ def test_output_schema_has_no_refs():
     assert "$ref" not in str(schema)
     props = schema["properties"]["facts"]["items"]["properties"]
     assert {"turn_index", "subject", "fact_text", "attribute_key", "polarity", "mode",
-            "entities_mentioned", "time", "is_correction", "quote", "is_event"} == set(props)  # fmt: skip
+            "entities_mentioned", "time", "is_correction", "correction", "quote", "is_event"} == set(props)  # fmt: skip
+
+
+def test_wrong_turn_index_is_repaired_only_when_unambiguous():
+    texts = [
+        "I live in Pune now.",
+        "Pune, nice!",
+        "Pune, sorry, I meant Mumbai.",
+        "Mumbai is great.",
+    ]
+    replies = [[
+        fact(1, "sorry, I meant Mumbai", text="Priya lives in Mumbai."),  # really in t3: reassigned
+        fact(2, "Mumbai", text="Mumbai is mentioned."),  # in t3 and t4: ambiguous -> dropped
+        fact(9, "nowhere in this chunk", text="Ghost."),  # bad index, no match -> dropped
+    ]]  # fmt: skip
+    facts, stats = Extractor(FakeLLM(replies)).extract_session(session(texts), ["Priya", "Rahul"])
+    assert [(f.fact_text, f.turn.turn_index) for f in facts] == [("Priya lives in Mumbai.", 3)]
+    assert stats.turn_reassigned == 1
+    assert stats.dropped == {"ambiguous_turn": 1, "bad_turn_index": 1}
+
+
+def test_correction_values_and_wrong_span():
+    texts = ["My manager is Priya, sorry, I meant Priyanka."]
+    replies = [[fact(1, "sorry, I meant Priyanka", text="Priya's manager is Priyanka.", key=None, corr=True,
+                     correction={"wrong": "Priya", "right": "Priyanka"})]]  # fmt: skip
+    [f], _ = Extractor(FakeLLM(replies)).extract_session(session(texts), ["Priya", "Rahul"])
+    assert (f.correction_wrong, f.correction_right) == ("Priya", "Priyanka")
+    assert (
+        texts[0][f.wrong_start : f.wrong_end] == "Priya" and f.wrong_start == 14
+    )  # word match, not inside "Priyanka"
+
+
+def test_tense_rule_and_correction_rule_in_prompt():
+    from chronos.ingestion.extractor import system_prompt
+    from chronos.ontology import load_ontology
+
+    sp = system_prompt(load_ontology())
+    assert "A state that began in the past and still holds is CURRENT" in sp
+    assert "`correction`" in sp and '"wrong": "Riverside High"' in sp
+
+
+@pytest.mark.parametrize(
+    "quote, kind, value, offset, unit, expected",
+    [
+        ("We packed up and moved to Bengaluru last week", "RELATIVE", None, -1, "WEEK", True),
+        ("I joined Quanta in February", "ABSOLUTE", "2023-02", None, None, True),
+        ("I moved to Austin", "NONE", None, None, None, True),
+        (
+            "In 2015 I moved to Delhi",
+            "ABSOLUTE",
+            "2015",
+            None,
+            None,
+            False,
+        ),  # late mention stays historical
+        ("Back in 2019 I lived in Delhi", "ABSOLUTE", "2019", None, None, False),  # no onset verb
+        (
+            "I moved to Pune last month but left in a week",
+            "RELATIVE",
+            None,
+            -1,
+            "MONTH",
+            False,
+        ),  # ending cue
+        (
+            "Before that, on May 2nd we moved to Hyderabad",
+            "ABSOLUTE",
+            "2023-05-02",
+            None,
+            None,
+            False,
+        ),
+    ],
+)
+def test_recent_onset_rule(quote, kind, value, offset, unit, expected):
+    from chronos.ingestion.extractor import is_recent_onset
+    from chronos.ingestion.temporal import TimeExpr
+
+    t = TimeExpr(kind=kind, value=value, offset=offset, unit=unit, tense="PAST_ENDED")
+    assert is_recent_onset(t, quote, "2023-05-17T10:00:00") is expected
+    assert is_recent_onset(t.model_copy(update={"tense": "CURRENT"}), quote, "2023-05-17") is False
+
+
+def test_recent_onset_applied_only_to_attribute_facts():
+    texts = ["We moved to Bengaluru last week!", "I moved my desk to the window."]
+    past = {"kind": "RELATIVE", "value": None, "offset": -1, "unit": "WEEK", "tense": "PAST_ENDED"}
+    a = fact(1, "We moved to Bengaluru last week", text="Priya moved to Bengaluru.")
+    b = fact(2, "I moved my desk", text="Priya moved her desk.", key=None)
+    a["time"], b["time"] = past, dict(past)
+    facts, stats = Extractor(FakeLLM([[a, b]])).extract_session(session(texts), ["Priya", "Rahul"])
+    assert [f.time.tense for f in facts] == [
+        "CURRENT",
+        "PAST_ENDED",
+    ] and stats.tense_onset_fixed == 1
