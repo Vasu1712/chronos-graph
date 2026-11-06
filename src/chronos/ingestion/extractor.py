@@ -29,6 +29,7 @@ from typing import Any, Literal, Protocol
 from pydantic import BaseModel, ConfigDict
 from rapidfuzz import fuzz
 
+from chronos import textdates
 from chronos.config import IngestionConfig
 from chronos.ingestion.temporal import TimeExpr, session_date, span
 from chronos.ingestion.types import Session, Turn
@@ -126,6 +127,7 @@ class ExtractionStats:
     tense_onset_fixed: int = 0  # PAST_ENDED "moved to X last week" read as a current state
     attribute_key_nulled: int = 0
     pronoun_in_fact_text: int = 0
+    time_filled_by_rule: int = 0  # model left time empty; a relative date in the quote filled it
 
     @property
     def dropped_total(self) -> int:
@@ -143,6 +145,7 @@ class ExtractionStats:
             "tense_onset_fixed": self.tense_onset_fixed,
             "attribute_key_nulled": self.attribute_key_nulled,
             "pronoun_in_fact_text": self.pronoun_in_fact_text,
+            "time_filled_by_rule": self.time_filled_by_rule,
         }
 
 
@@ -547,6 +550,20 @@ class Extractor:
         if f.attribute_key and key is None:
             stats.attribute_key_nulled += 1
         time = f.time.to_expr()
+        if time.kind == "NONE" and session_ts:
+            # A 7B extractor often leaves "yesterday" / "last Friday" unnormalized; resolve the
+            # relative date words in the quote deterministically (chronos.textdates).
+            rel = textdates.time_expr(turn.text[start:end], session_ts)
+            if rel is not None:
+                time = time.model_copy(
+                    update={
+                        "kind": rel.kind,
+                        "value": rel.value,
+                        "offset": rel.offset,
+                        "unit": rel.unit,
+                    }
+                )
+                stats.time_filled_by_rule += 1
         as_past = time.model_copy(update={"tense": "PAST_ENDED"})
         onset = bool(
             key and session_ts and is_recent_onset(as_past, turn.text[start:end], session_ts)

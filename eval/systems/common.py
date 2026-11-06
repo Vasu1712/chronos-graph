@@ -7,6 +7,7 @@ import uuid
 from dataclasses import dataclass, field
 from typing import Any
 
+from chronos import textdates
 from chronos.agent.answering import generate_and_verify
 from chronos.agent.verifier import AnswerLog, Verifier
 from chronos.config import AgentConfig, RetrievalConfig
@@ -61,7 +62,9 @@ class Packed:
 def turn_line(
     uid: str, date: str, speaker: str, text: str, limit: int | None = TURN_CLIP_CHARS
 ) -> str:
-    return f"[{uid} | {date[:10]} | {speaker}] {clip(text, limit) if limit else text}"
+    body = clip(text, limit) if limit else text
+    # same relative-date annotation as ChronosGraph's packer (chronos.textdates)
+    return f"[{uid} | {date[:10]} | {speaker}] {textdates.annotate(body, date[:10])}"
 
 
 def fit_lines(lines: list[str], budget: int) -> tuple[list[str], bool]:

@@ -27,6 +27,7 @@ import sqlite3
 from collections.abc import Callable
 from dataclasses import dataclass, field
 
+from chronos import textdates
 from chronos.config import RetrievalConfig
 from chronos.ingestion.resolver import MemRow
 from chronos.ingestion.temporal import describe
@@ -81,7 +82,8 @@ class _Turn:
     turn_index: int
 
     def line(self) -> str:
-        return f"[{self.turn_uid} | {self.date} | {self.speaker}] {self.text}"
+        # relative date words resolved in code, identically for every system (chronos.textdates)
+        return f"[{self.turn_uid} | {self.date} | {self.speaker}] {textdates.annotate(self.text, self.date)}"
 
 
 @dataclass
