@@ -1,4 +1,4 @@
-.PHONY: setup data test test-live lint fmt ingest-demo eval-quick eval-full report manifests
+.PHONY: setup data test test-live lint fmt ingest-demo eval-quick eval-50 eval-full report manifests
 
 UV ?= uv
 
@@ -30,6 +30,7 @@ fmt:
 CAFFEINATE := $(shell command -v caffeinate >/dev/null 2>&1 && echo "caffeinate -i")
 QUICK := eval/manifests/quick_v1.json
 FULL := eval/manifests/test_v1.json
+Q50 := eval/manifests/quick50.json
 
 ingest-demo:
 	$(UV) run chronos ingest-demo
@@ -39,6 +40,14 @@ eval-quick:
 	$(CAFFEINATE) $(UV) run python -m eval.ingest_all --manifest $(QUICK)
 	$(CAFFEINATE) $(UV) run python -m eval.run_benchmark --manifest $(QUICK) --systems chronos,B3_chunk_rag
 	$(UV) run python -m eval.judge --manifest $(QUICK)
+	$(UV) run python -m eval.build_report
+
+# 50-question tier: the quick_v1 conversation and histories (no new ingestion), LoCoMo rebalanced to
+# 6 per category, every main system and every ablation. A few hours on an M1 Pro.
+eval-50:
+	$(CAFFEINATE) $(UV) run python -m eval.ingest_all --manifest $(Q50)
+	$(CAFFEINATE) $(UV) run python -m eval.run_benchmark --manifest $(Q50) --systems all --ablations all --state-probes scripted
+	$(UV) run python -m eval.judge --manifest $(Q50)
 	$(UV) run python -m eval.build_report
 
 # Full tier: every system, every ablation, live synthetic probes, calibration and claim re-check.

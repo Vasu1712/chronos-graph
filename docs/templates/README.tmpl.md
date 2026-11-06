@@ -42,6 +42,7 @@ uv run python -m chronos.cli stats --db artifacts/demo.sqlite
 
 ```bash
 make eval-quick    # ingest + answer (ChronosGraph and B3) + judge + report on the quick manifest
+make eval-50       # 50 questions (same ingestion as quick), every system and ablation + judge + report
 make eval-full     # all systems, all ablations, calibration and claim re-check; schedule overnight
 make report        # rebuild every table, figure and document from artifacts/; no API call
 ```
