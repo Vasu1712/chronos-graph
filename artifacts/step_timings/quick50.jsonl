@@ -1,0 +1,7 @@
+{"step": "answer:chronos", "seconds": 253.97751166601665, "started_at": "2026-11-06T19:10:21Z", "status": "ok"}
+{"step": "answer:B1_sliding_window", "seconds": 144.4610712500289, "started_at": "2026-11-06T19:14:35Z", "status": "ok"}
+{"step": "answer:B3_chunk_rag", "seconds": 114.27819966687821, "started_at": "2026-11-06T19:16:59Z", "status": "ok"}
+{"step": "answer:B4_turns_plus_notes", "seconds": 72.39364483300596, "started_at": "2026-11-06T19:18:54Z", "status": "ok"}
+{"step": "answer:B5_append_only", "seconds": 4.553758249850944, "started_at": "2026-11-06T19:20:06Z", "status": "ok"}
+{"step": "answer:chronos", "seconds": 336.7121876250021, "started_at": "2026-11-06T20:38:12Z", "status": "ok"}
+{"step": "answer:B5_append_only", "seconds": 5.944048208883032, "started_at": "2026-11-06T20:43:48Z", "status": "ok"}

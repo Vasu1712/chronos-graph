@@ -1,0 +1,5054 @@
+{
+ "generated_by": "eval/build_report.py",
+ "bootstrap_resamples": 10000,
+ "manifests": {
+  "quick50": {
+   "name": "quick50",
+   "manifest": {
+    "name": "quick50",
+    "description": "quick_v1 rebalanced: 6 LoCoMo questions per category from conv-50 + the same 20 knowledge-update questions (no new ingestion)",
+    "seed": 42
+   },
+   "questions": {
+    "total": 50,
+    "by_dataset_category": {
+     "locomo/adversarial": 6,
+     "locomo/multi-hop": 6,
+     "locomo/open-domain": 6,
+     "locomo/single-hop": 6,
+     "locomo/temporal": 6,
+     "longmemeval/knowledge-update": 20
+    },
+    "answers_scored": 568,
+    "answers": 568
+   },
+   "systems": {
+    "chronos": {
+     "n_answers": 50,
+     "accuracy": {
+      "n": 50,
+      "mean": 0.24,
+      "lo": 0.12,
+      "hi": 0.36
+     },
+     "token_f1": {
+      "n": 43,
+      "mean": 0.037209302325581395,
+      "lo": 0.005167958656330749,
+      "hi": 0.07908268733850111
+     },
+     "abstention": {
+      "precision": {
+       "n": 44,
+       "n_questions": 50,
+       "value": 0.1590909090909091,
+       "lo": 0.06382978723404255,
+       "hi": 0.2727272727272727
+      },
+      "recall": {
+       "n": 7,
+       "n_questions": 50,
+       "value": 1.0,
+       "lo": 1.0,
+       "hi": 1.0
+      },
+      "f1": {
+       "value": 0.27450980392156865,
+       "lo": 0.12,
+       "hi": 0.42857142857142855,
+       "n_questions": 50
+      },
+      "false_abstention_rate": {
+       "n": 43,
+       "n_questions": 50,
+       "value": 0.8604651162790697,
+       "lo": 0.75,
+       "hi": 0.9545454545454546
+      },
+      "n_unanswerable": 7,
+      "n_answerable": 43
+     },
+     "citation": {
+      "cit_p": {
+       "n": 42,
+       "mean": 0.11904761904761904,
+       "lo": 0.023809523809523808,
+       "hi": 0.21428571428571427
+      },
+      "cit_r": {
+       "n": 42,
+       "mean": 0.07142857142857142,
+       "lo": 0.011904761904761904,
+       "hi": 0.14285714285714285
+      },
+      "cit_f1": {
+       "n": 42,
+       "mean": 0.0873015873015873,
+       "lo": 0.015873015873015872,
+       "hi": 0.16666666666666666
+      },
+      "sess_p": {
+       "n": 42,
+       "mean": 0.11904761904761904,
+       "lo": 0.023809523809523808,
+       "hi": 0.21428571428571427
+      },
+      "sess_r": {
+       "n": 42,
+       "mean": 0.07142857142857142,
+       "lo": 0.011904761904761904,
+       "hi": 0.14285714285714285
+      },
+      "sess_f1": {
+       "n": 42,
+       "mean": 0.0873015873015873,
+       "lo": 0.015873015873015872,
+       "hi": 0.16666666666666666
+      },
+      "validity": {
+       "n": 6,
+       "n_questions": 6,
+       "value": 1.0,
+       "lo": 1.0,
+       "hi": 1.0
+      },
+      "support_rate": {
+       "n": 5,
+       "n_questions": 5,
+       "value": 0.8,
+       "lo": 0.4,
+       "hi": 1.0
+      },
+      "gold_in_context": {
+       "n": 42,
+       "mean": 0.5634920634920635,
+       "lo": 0.44047619047619047,
+       "hi": 0.6904761904761905
+      }
+     },
+     "prompt_tokens_answer": {
+      "n": 34,
+      "mean": 2215.4117647058824,
+      "p50": 2216.5,
+      "p95": 2267.35
+     },
+     "prompt_tokens_all": {
+      "n": 50,
+      "mean": 3330.04,
+      "p50": 3923.0,
+      "p95": 4029.3
+     },
+     "latency_s": {
+      "n": 50,
+      "mean": 19.589220066666602,
+      "p50": 21.78276535368059,
+      "p95": 24.848285990930158
+     },
+     "context_tokens": {
+      "n": 50,
+      "mean": 1477.24,
+      "p50": 1477.0,
+      "p95": 1499.0
+     }
+    },
+    "B1_sliding_window": {
+     "n_answers": 50,
+     "accuracy": {
+      "n": 50,
+      "mean": 0.16,
+      "lo": 0.06,
+      "hi": 0.26
+     },
+     "token_f1": {
+      "n": 43,
+      "mean": 0.009966777408637871,
+      "lo": 0.0,
+      "hi": 0.02990033222591362
+     },
+     "abstention": {
+      "precision": {
+       "n": 49,
+       "n_questions": 50,
+       "value": 0.14285714285714285,
+       "lo": 0.06,
+       "hi": 0.24489795918367346
+      },
+      "recall": {
+       "n": 7,
+       "n_questions": 50,
+       "value": 1.0,
+       "lo": 1.0,
+       "hi": 1.0
+      },
+      "f1": {
+       "value": 0.25,
+       "lo": 0.11320754716981132,
+       "hi": 0.39344262295081966,
+       "n_questions": 50
+      },
+      "false_abstention_rate": {
+       "n": 43,
+       "n_questions": 50,
+       "value": 0.9767441860465116,
+       "lo": 0.925,
+       "hi": 1.0
+      },
+      "n_unanswerable": 7,
+      "n_answerable": 43
+     },
+     "citation": {
+      "cit_p": {
+       "n": 42,
+       "mean": 0.0,
+       "lo": 0.0,
+       "hi": 0.0
+      },
+      "cit_r": {
+       "n": 42,
+       "mean": 0.0,
+       "lo": 0.0,
+       "hi": 0.0
+      },
+      "cit_f1": {
+       "n": 42,
+       "mean": 0.0,
+       "lo": 0.0,
+       "hi": 0.0
+      },
+      "sess_p": {
+       "n": 42,
+       "mean": 0.023809523809523808,
+       "lo": 0.0,
+       "hi": 0.07142857142857142
+      },
+      "sess_r": {
+       "n": 42,
+       "mean": 0.011904761904761904,
+       "lo": 0.0,
+       "hi": 0.03571428571428571
+      },
+      "sess_f1": {
+       "n": 42,
+       "mean": 0.015873015873015872,
+       "lo": 0.0,
+       "hi": 0.047619047619047616
+      },
+      "validity": {
+       "n": 1,
+       "n_questions": 1,
+       "value": 1.0,
+       "lo": 1.0,
+       "hi": 1.0
+      },
+      "support_rate": {
+       "n": 3,
+       "n_questions": 3,
+       "value": 0.3333333333333333,
+       "lo": 0.0,
+       "hi": 1.0
+      },
+      "gold_in_context": {
+       "n": 42,
+       "mean": 0.0,
+       "lo": 0.0,
+       "hi": 0.0
+      }
+     },
+     "prompt_tokens_answer": {
+      "n": 50,
+      "mean": 2173.08,
+      "p50": 2222.0,
+      "p95": 2232.1
+     },
+     "prompt_tokens_all": {
+      "n": 50,
+      "mean": 2263.2,
+      "p50": 2222.5,
+      "p95": 2248.4
+     },
+     "latency_s": {
+      "n": 50,
+      "mean": 10.7558343860507,
+      "p50": 9.34540445858147,
+      "p95": 16.514260256732793
+     },
+     "context_tokens": {
+      "n": 50,
+      "mean": 1410.68,
+      "p50": 1410.0,
+      "p95": 1475.65
+     }
+    },
+    "B3_chunk_rag": {
+     "n_answers": 50,
+     "accuracy": {
+      "n": 50,
+      "mean": 0.26,
+      "lo": 0.14,
+      "hi": 0.38
+     },
+     "token_f1": {
+      "n": 43,
+      "mean": 0.08504771522267383,
+      "lo": 0.03480632154942761,
+      "hi": 0.14277147211393734
+     },
+     "abstention": {
+      "precision": {
+       "n": 36,
+       "n_questions": 50,
+       "value": 0.16666666666666666,
+       "lo": 0.05555555555555555,
+       "hi": 0.29411764705882354
+      },
+      "recall": {
+       "n": 7,
+       "n_questions": 50,
+       "value": 0.8571428571428571,
+       "lo": 0.5,
+       "hi": 1.0
+      },
+      "f1": {
+       "value": 0.27906976744186046,
+       "lo": 0.10256410256410256,
+       "hi": 0.4489795918367347,
+       "n_questions": 50
+      },
+      "false_abstention_rate": {
+       "n": 43,
+       "n_questions": 50,
+       "value": 0.6976744186046512,
+       "lo": 0.5526315789473685,
+       "hi": 0.8292682926829268
+      },
+      "n_unanswerable": 7,
+      "n_answerable": 43
+     },
+     "citation": {
+      "cit_p": {
+       "n": 42,
+       "mean": 0.19841269841269837,
+       "lo": 0.0873015873015873,
+       "hi": 0.3174603174603175
+      },
+      "cit_r": {
+       "n": 42,
+       "mean": 0.16666666666666666,
+       "lo": 0.07142857142857142,
+       "hi": 0.27380952380952384
+      },
+      "cit_f1": {
+       "n": 42,
+       "mean": 0.17619047619047615,
+       "lo": 0.07456349206349208,
+       "hi": 0.2873015873015873
+      },
+      "sess_p": {
+       "n": 42,
+       "mean": 0.2857142857142857,
+       "lo": 0.16666666666666666,
+       "hi": 0.42857142857142855
+      },
+      "sess_r": {
+       "n": 42,
+       "mean": 0.20238095238095238,
+       "lo": 0.10714285714285714,
+       "hi": 0.30952380952380953
+      },
+      "sess_f1": {
+       "n": 42,
+       "mean": 0.23015873015873015,
+       "lo": 0.11904761904761904,
+       "hi": 0.34920634920634913
+      },
+      "validity": {
+       "n": 16,
+       "n_questions": 14,
+       "value": 1.0,
+       "lo": 1.0,
+       "hi": 1.0
+      },
+      "support_rate": {
+       "n": 27,
+       "n_questions": 22,
+       "value": 0.48148148148148145,
+       "lo": 0.32,
+       "hi": 0.6538461538461539
+      },
+      "gold_in_context": {
+       "n": 42,
+       "mean": 0.5853174603174602,
+       "lo": 0.4662698412698412,
+       "hi": 0.7003968253968254
+      }
+     },
+     "prompt_tokens_answer": {
+      "n": 50,
+      "mean": 2239.1,
+      "p50": 2283.0,
+      "p95": 2375.65
+     },
+     "prompt_tokens_all": {
+      "n": 50,
+      "mean": 2881.16,
+      "p50": 2321.0,
+      "p95": 4694.4
+     },
+     "latency_s": {
+      "n": 50,
+      "mean": 18.204559834958054,
+      "p50": 13.632730126031674,
+      "p95": 36.109818468266155
+     },
+     "context_tokens": {
+      "n": 50,
+      "mean": 1459.72,
+      "p50": 1476.0,
+      "p95": 1496.55
+     }
+    },
+    "B4_turns_plus_notes": {
+     "n_answers": 50,
+     "accuracy": {
+      "n": 50,
+      "mean": 0.24,
+      "lo": 0.12,
+      "hi": 0.36
+     },
+     "token_f1": {
+      "n": 43,
+      "mean": 0.041664849289901336,
+      "lo": 0.011928864569083448,
+      "hi": 0.07715988289484989
+     },
+     "abstention": {
+      "precision": {
+       "n": 40,
+       "n_questions": 50,
+       "value": 0.175,
+       "lo": 0.06976744186046512,
+       "hi": 0.3
+      },
+      "recall": {
+       "n": 7,
+       "n_questions": 50,
+       "value": 1.0,
+       "lo": 1.0,
+       "hi": 1.0
+      },
+      "f1": {
+       "value": 0.2978723404255319,
+       "lo": 0.13043478260869565,
+       "hi": 0.46153846153846156,
+       "n_questions": 50
+      },
+      "false_abstention_rate": {
+       "n": 43,
+       "n_questions": 50,
+       "value": 0.7674418604651163,
+       "lo": 0.6363636363636364,
+       "hi": 0.8863636363636364
+      },
+      "n_unanswerable": 7,
+      "n_answerable": 43
+     },
+     "citation": {
+      "cit_p": {
+       "n": 42,
+       "mean": 0.1468253968253968,
+       "lo": 0.05952380952380952,
+       "hi": 0.25
+      },
+      "cit_r": {
+       "n": 42,
+       "mean": 0.15476190476190477,
+       "lo": 0.05952380952380952,
+       "hi": 0.2619047619047619
+      },
+      "cit_f1": {
+       "n": 42,
+       "mean": 0.14206349206349206,
+       "lo": 0.059523809523809514,
+       "hi": 0.24047619047619045
+      },
+      "sess_p": {
+       "n": 42,
+       "mean": 0.16666666666666666,
+       "lo": 0.07142857142857142,
+       "hi": 0.2857142857142857
+      },
+      "sess_r": {
+       "n": 42,
+       "mean": 0.15476190476190477,
+       "lo": 0.05952380952380952,
+       "hi": 0.2619047619047619
+      },
+      "sess_f1": {
+       "n": 42,
+       "mean": 0.15476190476190477,
+       "lo": 0.06349206349206349,
+       "hi": 0.2619047619047619
+      },
+      "validity": {
+       "n": 18,
+       "n_questions": 10,
+       "value": 1.0,
+       "lo": 1.0,
+       "hi": 1.0
+      },
+      "support_rate": {
+       "n": 17,
+       "n_questions": 14,
+       "value": 0.7058823529411765,
+       "lo": 0.4375,
+       "hi": 0.9
+      },
+      "gold_in_context": {
+       "n": 42,
+       "mean": 0.853174603174603,
+       "lo": 0.753968253968254,
+       "hi": 0.9365079365079364
+      }
+     },
+     "prompt_tokens_answer": {
+      "n": 50,
+      "mean": 2317.1,
+      "p50": 2337.5,
+      "p95": 2460.75
+     },
+     "prompt_tokens_all": {
+      "n": 50,
+      "mean": 2564.78,
+      "p50": 2339.5,
+      "p95": 4838.049999999999
+     },
+     "latency_s": {
+      "n": 50,
+      "mean": 18.004040165846234,
+      "p50": 12.15872827055864,
+      "p95": 47.74011954634913
+     },
+     "context_tokens": {
+      "n": 50,
+      "mean": 1484.38,
+      "p50": 1489.5,
+      "p95": 1499.55
+     }
+    },
+    "B5_append_only": {
+     "n_answers": 50,
+     "accuracy": {
+      "n": 50,
+      "mean": 0.24,
+      "lo": 0.12,
+      "hi": 0.36
+     },
+     "token_f1": {
+      "n": 43,
+      "mean": 0.037209302325581395,
+      "lo": 0.005167958656330749,
+      "hi": 0.07908268733850111
+     },
+     "abstention": {
+      "precision": {
+       "n": 44,
+       "n_questions": 50,
+       "value": 0.1590909090909091,
+       "lo": 0.06382978723404255,
+       "hi": 0.2727272727272727
+      },
+      "recall": {
+       "n": 7,
+       "n_questions": 50,
+       "value": 1.0,
+       "lo": 1.0,
+       "hi": 1.0
+      },
+      "f1": {
+       "value": 0.27450980392156865,
+       "lo": 0.12,
+       "hi": 0.42857142857142855,
+       "n_questions": 50
+      },
+      "false_abstention_rate": {
+       "n": 43,
+       "n_questions": 50,
+       "value": 0.8604651162790697,
+       "lo": 0.75,
+       "hi": 0.9545454545454546
+      },
+      "n_unanswerable": 7,
+      "n_answerable": 43
+     },
+     "citation": {
+      "cit_p": {
+       "n": 42,
+       "mean": 0.11904761904761904,
+       "lo": 0.023809523809523808,
+       "hi": 0.21428571428571427
+      },
+      "cit_r": {
+       "n": 42,
+       "mean": 0.07142857142857142,
+       "lo": 0.011904761904761904,
+       "hi": 0.14285714285714285
+      },
+      "cit_f1": {
+       "n": 42,
+       "mean": 0.0873015873015873,
+       "lo": 0.015873015873015872,
+       "hi": 0.16666666666666666
+      },
+      "sess_p": {
+       "n": 42,
+       "mean": 0.11904761904761904,
+       "lo": 0.023809523809523808,
+       "hi": 0.21428571428571427
+      },
+      "sess_r": {
+       "n": 42,
+       "mean": 0.07142857142857142,
+       "lo": 0.011904761904761904,
+       "hi": 0.14285714285714285
+      },
+      "sess_f1": {
+       "n": 42,
+       "mean": 0.0873015873015873,
+       "lo": 0.015873015873015872,
+       "hi": 0.16666666666666666
+      },
+      "validity": {
+       "n": 6,
+       "n_questions": 6,
+       "value": 1.0,
+       "lo": 1.0,
+       "hi": 1.0
+      },
+      "support_rate": {
+       "n": 5,
+       "n_questions": 5,
+       "value": 0.8,
+       "lo": 0.4,
+       "hi": 1.0
+      },
+      "gold_in_context": {
+       "n": 42,
+       "mean": 0.5753968253968254,
+       "lo": 0.4523809523809524,
+       "hi": 0.7023809523809523
+      }
+     },
+     "prompt_tokens_answer": {
+      "n": 34,
+      "mean": 2215.764705882353,
+      "p50": 2216.5,
+      "p95": 2270.5
+     },
+     "prompt_tokens_all": {
+      "n": 50,
+      "mean": 3330.52,
+      "p50": 3923.0,
+      "p95": 4041.9
+     },
+     "latency_s": {
+      "n": 50,
+      "mean": 18.73867507684976,
+      "p50": 21.225275791599415,
+      "p95": 24.08937492079567
+     },
+     "context_tokens": {
+      "n": 50,
+      "mean": 1477.48,
+      "p50": 1477.0,
+      "p95": 1499.55
+     }
+    }
+   },
+   "by_category": {
+    "chronos": {
+     "locomo/adversarial": {
+      "n": 6,
+      "mean": 1.0,
+      "lo": 1.0,
+      "hi": 1.0
+     },
+     "locomo/multi-hop": {
+      "n": 6,
+      "mean": 0.16666666666666666,
+      "lo": 0.0,
+      "hi": 0.5
+     },
+     "locomo/open-domain": {
+      "n": 6,
+      "mean": 0.0,
+      "lo": 0.0,
+      "hi": 0.0
+     },
+     "locomo/single-hop": {
+      "n": 6,
+      "mean": 0.3333333333333333,
+      "lo": 0.0,
+      "hi": 0.6666666666666666
+     },
+     "locomo/temporal": {
+      "n": 6,
+      "mean": 0.0,
+      "lo": 0.0,
+      "hi": 0.0
+     },
+     "longmemeval/knowledge-update": {
+      "n": 20,
+      "mean": 0.15,
+      "lo": 0.0,
+      "hi": 0.3
+     }
+    },
+    "B1_sliding_window": {
+     "locomo/adversarial": {
+      "n": 6,
+      "mean": 1.0,
+      "lo": 1.0,
+      "hi": 1.0
+     },
+     "locomo/multi-hop": {
+      "n": 6,
+      "mean": 0.0,
+      "lo": 0.0,
+      "hi": 0.0
+     },
+     "locomo/open-domain": {
+      "n": 6,
+      "mean": 0.0,
+      "lo": 0.0,
+      "hi": 0.0
+     },
+     "locomo/single-hop": {
+      "n": 6,
+      "mean": 0.0,
+      "lo": 0.0,
+      "hi": 0.0
+     },
+     "locomo/temporal": {
+      "n": 6,
+      "mean": 0.0,
+      "lo": 0.0,
+      "hi": 0.0
+     },
+     "longmemeval/knowledge-update": {
+      "n": 20,
+      "mean": 0.1,
+      "lo": 0.0,
+      "hi": 0.25
+     }
+    },
+    "B3_chunk_rag": {
+     "locomo/adversarial": {
+      "n": 6,
+      "mean": 0.8333333333333334,
+      "lo": 0.5,
+      "hi": 1.0
+     },
+     "locomo/multi-hop": {
+      "n": 6,
+      "mean": 0.16666666666666666,
+      "lo": 0.0,
+      "hi": 0.5
+     },
+     "locomo/open-domain": {
+      "n": 6,
+      "mean": 0.0,
+      "lo": 0.0,
+      "hi": 0.0
+     },
+     "locomo/single-hop": {
+      "n": 6,
+      "mean": 0.5,
+      "lo": 0.16666666666666666,
+      "hi": 0.8333333333333334
+     },
+     "locomo/temporal": {
+      "n": 6,
+      "mean": 0.3333333333333333,
+      "lo": 0.0,
+      "hi": 0.6666666666666666
+     },
+     "longmemeval/knowledge-update": {
+      "n": 20,
+      "mean": 0.1,
+      "lo": 0.0,
+      "hi": 0.25
+     }
+    },
+    "B4_turns_plus_notes": {
+     "locomo/adversarial": {
+      "n": 6,
+      "mean": 1.0,
+      "lo": 1.0,
+      "hi": 1.0
+     },
+     "locomo/multi-hop": {
+      "n": 6,
+      "mean": 0.16666666666666666,
+      "lo": 0.0,
+      "hi": 0.5
+     },
+     "locomo/open-domain": {
+      "n": 6,
+      "mean": 0.0,
+      "lo": 0.0,
+      "hi": 0.0
+     },
+     "locomo/single-hop": {
+      "n": 6,
+      "mean": 0.3333333333333333,
+      "lo": 0.0,
+      "hi": 0.6666666666666666
+     },
+     "locomo/temporal": {
+      "n": 6,
+      "mean": 0.3333333333333333,
+      "lo": 0.0,
+      "hi": 0.6666666666666666
+     },
+     "longmemeval/knowledge-update": {
+      "n": 20,
+      "mean": 0.05,
+      "lo": 0.0,
+      "hi": 0.15
+     }
+    },
+    "B5_append_only": {
+     "locomo/adversarial": {
+      "n": 6,
+      "mean": 1.0,
+      "lo": 1.0,
+      "hi": 1.0
+     },
+     "locomo/multi-hop": {
+      "n": 6,
+      "mean": 0.16666666666666666,
+      "lo": 0.0,
+      "hi": 0.5
+     },
+     "locomo/open-domain": {
+      "n": 6,
+      "mean": 0.0,
+      "lo": 0.0,
+      "hi": 0.0
+     },
+     "locomo/single-hop": {
+      "n": 6,
+      "mean": 0.3333333333333333,
+      "lo": 0.0,
+      "hi": 0.6666666666666666
+     },
+     "locomo/temporal": {
+      "n": 6,
+      "mean": 0.0,
+      "lo": 0.0,
+      "hi": 0.0
+     },
+     "longmemeval/knowledge-update": {
+      "n": 20,
+      "mean": 0.15,
+      "lo": 0.0,
+      "hi": 0.3
+     }
+    }
+   },
+   "pairwise": [
+    {
+     "n": 50,
+     "mean_diff": 0.08,
+     "lo": 0.0,
+     "hi": 0.18,
+     "verdict": "no detectable difference",
+     "mcnemar": {
+      "only_a": 5,
+      "only_b": 1,
+      "discordant": 6,
+      "p": 0.21875
+     },
+     "a": "chronos",
+     "b": "B1_sliding_window",
+     "acc_a": 0.24,
+     "acc_b": 0.16
+    },
+    {
+     "n": 50,
+     "mean_diff": -0.02,
+     "lo": -0.14,
+     "hi": 0.1,
+     "verdict": "no detectable difference",
+     "mcnemar": {
+      "only_a": 4,
+      "only_b": 5,
+      "discordant": 9,
+      "p": 1.0
+     },
+     "a": "chronos",
+     "b": "B3_chunk_rag",
+     "acc_a": 0.24,
+     "acc_b": 0.26
+    },
+    {
+     "n": 50,
+     "mean_diff": 0.0,
+     "lo": -0.08,
+     "hi": 0.08,
+     "verdict": "no detectable difference",
+     "mcnemar": {
+      "only_a": 2,
+      "only_b": 2,
+      "discordant": 4,
+      "p": 1.0
+     },
+     "a": "chronos",
+     "b": "B4_turns_plus_notes",
+     "acc_a": 0.24,
+     "acc_b": 0.24
+    },
+    {
+     "n": 50,
+     "mean_diff": 0.0,
+     "lo": 0.0,
+     "hi": 0.0,
+     "verdict": "no detectable difference",
+     "mcnemar": {
+      "only_a": 0,
+      "only_b": 0,
+      "discordant": 0,
+      "p": 1.0
+     },
+     "a": "chronos",
+     "b": "B5_append_only",
+     "acc_a": 0.24,
+     "acc_b": 0.24
+    }
+   ],
+   "skips": {
+    "B2_full_context": {
+     "context_overflow": 30,
+     "full-context is defined for LoCoMo only": 20
+    }
+   },
+   "ablations": {
+    "budget": {
+     "id": "D_budget",
+     "title": "Context budget ablation",
+     "question": "How does accuracy scale with the context budget?",
+     "reference": "tokens_1500",
+     "reference_system": "chronos",
+     "population": "50 questions (locomo/adversarial, locomo/multi-hop, locomo/open-domain, locomo/single-hop, locomo/temporal, longmemeval/knowledge-update)",
+     "variants": [
+      {
+       "name": "tokens_500",
+       "system": "D_budget/tokens_500",
+       "is_reference": false,
+       "n": 50,
+       "budget": 500,
+       "accuracy": {
+        "n": 50,
+        "mean": 0.28,
+        "lo": 0.16,
+        "hi": 0.42
+       },
+       "gold_in_context": {
+        "n": 42,
+        "mean": 0.371031746031746,
+        "lo": 0.26587301587301587,
+        "hi": 0.48214285714285715
+       },
+       "context_tokens": {
+        "n": 50,
+        "mean": 475.74,
+        "p50": 483.0,
+        "p95": 499.55
+       },
+       "abstention": {
+        "precision": {
+         "n": 40,
+         "n_questions": 50,
+         "value": 0.15,
+         "lo": 0.05,
+         "hi": 0.26666666666666666
+        },
+        "recall": {
+         "n": 7,
+         "n_questions": 50,
+         "value": 0.8571428571428571,
+         "lo": 0.5,
+         "hi": 1.0
+        },
+        "f1": {
+         "value": 0.2553191489361702,
+         "lo": 0.09090909090909091,
+         "hi": 0.41509433962264153,
+         "n_questions": 50
+        },
+        "false_abstention_rate": {
+         "n": 43,
+         "n_questions": 50,
+         "value": 0.7906976744186046,
+         "lo": 0.6590909090909091,
+         "hi": 0.9047619047619048
+        },
+        "n_unanswerable": 7,
+        "n_answerable": 43
+       },
+       "token_f1": {
+        "n": 43,
+        "mean": 0.07773638030675974,
+        "lo": 0.02716989253096964,
+        "hi": 0.1428016597845239
+       },
+       "vs_reference": {
+        "n": 50,
+        "mean_diff": 0.04,
+        "lo": -0.06,
+        "hi": 0.14,
+        "verdict": "no detectable difference",
+        "mcnemar": {
+         "only_a": 4,
+         "only_b": 2,
+         "discordant": 6,
+         "p": 0.6875
+        },
+        "a": "D_budget/tokens_500",
+        "b": "chronos",
+        "acc_a": 0.28,
+        "acc_b": 0.24
+       },
+       "gate": {
+        "locomo_adversarial_abstained": {
+         "n": 6,
+         "mean": 0.8333333333333334,
+         "lo": 0.5,
+         "hi": 1.0
+        },
+        "longmemeval_abs_abstained": {
+         "n": 1,
+         "mean": 1.0,
+         "lo": 1.0,
+         "hi": 1.0
+        },
+        "false_abstention": {
+         "n": 43,
+         "mean": 0.7906976744186046,
+         "lo": 0.6511627906976745,
+         "hi": 0.9069767441860465
+        }
+       }
+      },
+      {
+       "name": "tokens_1000",
+       "system": "D_budget/tokens_1000",
+       "is_reference": false,
+       "n": 50,
+       "budget": 1000,
+       "accuracy": {
+        "n": 50,
+        "mean": 0.16,
+        "lo": 0.06,
+        "hi": 0.26
+       },
+       "gold_in_context": {
+        "n": 42,
+        "mean": 0.5198412698412698,
+        "lo": 0.40079365079365076,
+        "hi": 0.638888888888889
+       },
+       "context_tokens": {
+        "n": 50,
+        "mean": 967.46,
+        "p50": 972.0,
+        "p95": 995.3
+       },
+       "abstention": {
+        "precision": {
+         "n": 47,
+         "n_questions": 50,
+         "value": 0.14893617021276595,
+         "lo": 0.061224489795918366,
+         "hi": 0.2553191489361702
+        },
+        "recall": {
+         "n": 7,
+         "n_questions": 50,
+         "value": 1.0,
+         "lo": 1.0,
+         "hi": 1.0
+        },
+        "f1": {
+         "value": 0.25925925925925924,
+         "lo": 0.11538461538461539,
+         "hi": 0.4067796610169492,
+         "n_questions": 50
+        },
+        "false_abstention_rate": {
+         "n": 43,
+         "n_questions": 50,
+         "value": 0.9302325581395349,
+         "lo": 0.8444444444444444,
+         "hi": 1.0
+        },
+        "n_unanswerable": 7,
+        "n_answerable": 43
+       },
+       "token_f1": {
+        "n": 43,
+        "mean": 0.0,
+        "lo": 0.0,
+        "hi": 0.0
+       },
+       "vs_reference": {
+        "n": 50,
+        "mean_diff": -0.08,
+        "lo": -0.16,
+        "hi": -0.02,
+        "verdict": "second better",
+        "mcnemar": {
+         "only_a": 0,
+         "only_b": 4,
+         "discordant": 4,
+         "p": 0.125
+        },
+        "a": "D_budget/tokens_1000",
+        "b": "chronos",
+        "acc_a": 0.16,
+        "acc_b": 0.24
+       },
+       "gate": {
+        "locomo_adversarial_abstained": {
+         "n": 6,
+         "mean": 1.0,
+         "lo": 1.0,
+         "hi": 1.0
+        },
+        "longmemeval_abs_abstained": {
+         "n": 1,
+         "mean": 1.0,
+         "lo": 1.0,
+         "hi": 1.0
+        },
+        "false_abstention": {
+         "n": 43,
+         "mean": 0.9302325581395349,
+         "lo": 0.8372093023255814,
+         "hi": 1.0
+        }
+       }
+      },
+      {
+       "name": "tokens_1500",
+       "system": "chronos",
+       "is_reference": true,
+       "n": 50,
+       "budget": 1500,
+       "accuracy": {
+        "n": 50,
+        "mean": 0.24,
+        "lo": 0.12,
+        "hi": 0.36
+       },
+       "gold_in_context": {
+        "n": 42,
+        "mean": 0.5634920634920635,
+        "lo": 0.44047619047619047,
+        "hi": 0.6904761904761905
+       },
+       "context_tokens": {
+        "n": 50,
+        "mean": 1477.24,
+        "p50": 1477.0,
+        "p95": 1499.0
+       },
+       "abstention": {
+        "precision": {
+         "n": 44,
+         "n_questions": 50,
+         "value": 0.1590909090909091,
+         "lo": 0.06382978723404255,
+         "hi": 0.2727272727272727
+        },
+        "recall": {
+         "n": 7,
+         "n_questions": 50,
+         "value": 1.0,
+         "lo": 1.0,
+         "hi": 1.0
+        },
+        "f1": {
+         "value": 0.27450980392156865,
+         "lo": 0.12,
+         "hi": 0.42857142857142855,
+         "n_questions": 50
+        },
+        "false_abstention_rate": {
+         "n": 43,
+         "n_questions": 50,
+         "value": 0.8604651162790697,
+         "lo": 0.75,
+         "hi": 0.9545454545454546
+        },
+        "n_unanswerable": 7,
+        "n_answerable": 43
+       },
+       "token_f1": {
+        "n": 43,
+        "mean": 0.037209302325581395,
+        "lo": 0.005167958656330749,
+        "hi": 0.07908268733850111
+       },
+       "vs_reference": null,
+       "gate": {
+        "locomo_adversarial_abstained": {
+         "n": 6,
+         "mean": 1.0,
+         "lo": 1.0,
+         "hi": 1.0
+        },
+        "longmemeval_abs_abstained": {
+         "n": 1,
+         "mean": 1.0,
+         "lo": 1.0,
+         "hi": 1.0
+        },
+        "false_abstention": {
+         "n": 43,
+         "mean": 0.8604651162790697,
+         "lo": 0.7441860465116279,
+         "hi": 0.9534883720930233
+        }
+       }
+      },
+      {
+       "name": "tokens_3000",
+       "system": "D_budget/tokens_3000",
+       "is_reference": false,
+       "n": 50,
+       "budget": 3000,
+       "accuracy": {
+        "n": 50,
+        "mean": 0.16,
+        "lo": 0.06,
+        "hi": 0.26
+       },
+       "gold_in_context": {
+        "n": 42,
+        "mean": 0.6309523809523809,
+        "lo": 0.5079365079365079,
+        "hi": 0.753968253968254
+       },
+       "context_tokens": {
+        "n": 50,
+        "mean": 2977.62,
+        "p50": 2980.5,
+        "p95": 2998.0
+       },
+       "abstention": {
+        "precision": {
+         "n": 47,
+         "n_questions": 50,
+         "value": 0.14893617021276595,
+         "lo": 0.061224489795918366,
+         "hi": 0.2553191489361702
+        },
+        "recall": {
+         "n": 7,
+         "n_questions": 50,
+         "value": 1.0,
+         "lo": 1.0,
+         "hi": 1.0
+        },
+        "f1": {
+         "value": 0.25925925925925924,
+         "lo": 0.11538461538461539,
+         "hi": 0.4067796610169492,
+         "n_questions": 50
+        },
+        "false_abstention_rate": {
+         "n": 43,
+         "n_questions": 50,
+         "value": 0.9302325581395349,
+         "lo": 0.8461538461538461,
+         "hi": 1.0
+        },
+        "n_unanswerable": 7,
+        "n_answerable": 43
+       },
+       "token_f1": {
+        "n": 43,
+        "mean": 0.026532640486128856,
+        "lo": 0.0,
+        "hi": 0.058630774909844675
+       },
+       "vs_reference": {
+        "n": 50,
+        "mean_diff": -0.08,
+        "lo": -0.18,
+        "hi": 0.0,
+        "verdict": "no detectable difference",
+        "mcnemar": {
+         "only_a": 1,
+         "only_b": 5,
+         "discordant": 6,
+         "p": 0.21875
+        },
+        "a": "D_budget/tokens_3000",
+        "b": "chronos",
+        "acc_a": 0.16,
+        "acc_b": 0.24
+       },
+       "gate": {
+        "locomo_adversarial_abstained": {
+         "n": 6,
+         "mean": 1.0,
+         "lo": 1.0,
+         "hi": 1.0
+        },
+        "longmemeval_abs_abstained": {
+         "n": 1,
+         "mean": 1.0,
+         "lo": 1.0,
+         "hi": 1.0
+        },
+        "false_abstention": {
+         "n": 43,
+         "mean": 0.9302325581395349,
+         "lo": 0.8372093023255814,
+         "hi": 1.0
+        }
+       }
+      }
+     ]
+    },
+    "gate": {
+     "id": "C_gate",
+     "title": "Answerability gate ablation",
+     "question": "What does each gate level buy in abstention quality, and what does it cost in false abstentions?",
+     "reference": "full",
+     "reference_system": "chronos",
+     "population": "50 questions (locomo/adversarial, locomo/multi-hop, locomo/open-domain, locomo/single-hop, locomo/temporal, longmemeval/knowledge-update)",
+     "variants": [
+      {
+       "name": "off",
+       "system": "C_gate/off",
+       "is_reference": false,
+       "n": 50,
+       "budget": 1500,
+       "accuracy": {
+        "n": 50,
+        "mean": 0.24,
+        "lo": 0.12,
+        "hi": 0.36
+       },
+       "gold_in_context": {
+        "n": 42,
+        "mean": 0.5634920634920635,
+        "lo": 0.44047619047619047,
+        "hi": 0.6904761904761905
+       },
+       "context_tokens": {
+        "n": 50,
+        "mean": 1477.24,
+        "p50": 1477.0,
+        "p95": 1499.0
+       },
+       "abstention": {
+        "precision": {
+         "n": 44,
+         "n_questions": 50,
+         "value": 0.1590909090909091,
+         "lo": 0.06382978723404255,
+         "hi": 0.2727272727272727
+        },
+        "recall": {
+         "n": 7,
+         "n_questions": 50,
+         "value": 1.0,
+         "lo": 1.0,
+         "hi": 1.0
+        },
+        "f1": {
+         "value": 0.27450980392156865,
+         "lo": 0.12,
+         "hi": 0.42857142857142855,
+         "n_questions": 50
+        },
+        "false_abstention_rate": {
+         "n": 43,
+         "n_questions": 50,
+         "value": 0.8604651162790697,
+         "lo": 0.75,
+         "hi": 0.9545454545454546
+        },
+        "n_unanswerable": 7,
+        "n_answerable": 43
+       },
+       "token_f1": {
+        "n": 43,
+        "mean": 0.037209302325581395,
+        "lo": 0.005167958656330749,
+        "hi": 0.07908268733850111
+       },
+       "vs_reference": {
+        "n": 50,
+        "mean_diff": 0.0,
+        "lo": 0.0,
+        "hi": 0.0,
+        "verdict": "no detectable difference",
+        "mcnemar": {
+         "only_a": 0,
+         "only_b": 0,
+         "discordant": 0,
+         "p": 1.0
+        },
+        "a": "C_gate/off",
+        "b": "chronos",
+        "acc_a": 0.24,
+        "acc_b": 0.24
+       },
+       "gate": {
+        "locomo_adversarial_abstained": {
+         "n": 6,
+         "mean": 1.0,
+         "lo": 1.0,
+         "hi": 1.0
+        },
+        "longmemeval_abs_abstained": {
+         "n": 1,
+         "mean": 1.0,
+         "lo": 1.0,
+         "hi": 1.0
+        },
+        "false_abstention": {
+         "n": 43,
+         "mean": 0.8604651162790697,
+         "lo": 0.7441860465116279,
+         "hi": 0.9534883720930233
+        }
+       }
+      },
+      {
+       "name": "speaker_only",
+       "system": "C_gate/speaker_only",
+       "is_reference": false,
+       "n": 50,
+       "budget": 1500,
+       "accuracy": {
+        "n": 50,
+        "mean": 0.24,
+        "lo": 0.12,
+        "hi": 0.36
+       },
+       "gold_in_context": {
+        "n": 42,
+        "mean": 0.5634920634920635,
+        "lo": 0.44047619047619047,
+        "hi": 0.6904761904761905
+       },
+       "context_tokens": {
+        "n": 50,
+        "mean": 1477.24,
+        "p50": 1477.0,
+        "p95": 1499.0
+       },
+       "abstention": {
+        "precision": {
+         "n": 44,
+         "n_questions": 50,
+         "value": 0.1590909090909091,
+         "lo": 0.06382978723404255,
+         "hi": 0.2727272727272727
+        },
+        "recall": {
+         "n": 7,
+         "n_questions": 50,
+         "value": 1.0,
+         "lo": 1.0,
+         "hi": 1.0
+        },
+        "f1": {
+         "value": 0.27450980392156865,
+         "lo": 0.12,
+         "hi": 0.42857142857142855,
+         "n_questions": 50
+        },
+        "false_abstention_rate": {
+         "n": 43,
+         "n_questions": 50,
+         "value": 0.8604651162790697,
+         "lo": 0.75,
+         "hi": 0.9545454545454546
+        },
+        "n_unanswerable": 7,
+        "n_answerable": 43
+       },
+       "token_f1": {
+        "n": 43,
+        "mean": 0.037209302325581395,
+        "lo": 0.005167958656330749,
+        "hi": 0.07908268733850111
+       },
+       "vs_reference": {
+        "n": 50,
+        "mean_diff": 0.0,
+        "lo": 0.0,
+        "hi": 0.0,
+        "verdict": "no detectable difference",
+        "mcnemar": {
+         "only_a": 0,
+         "only_b": 0,
+         "discordant": 0,
+         "p": 1.0
+        },
+        "a": "C_gate/speaker_only",
+        "b": "chronos",
+        "acc_a": 0.24,
+        "acc_b": 0.24
+       },
+       "gate": {
+        "locomo_adversarial_abstained": {
+         "n": 6,
+         "mean": 1.0,
+         "lo": 1.0,
+         "hi": 1.0
+        },
+        "longmemeval_abs_abstained": {
+         "n": 1,
+         "mean": 1.0,
+         "lo": 1.0,
+         "hi": 1.0
+        },
+        "false_abstention": {
+         "n": 43,
+         "mean": 0.8604651162790697,
+         "lo": 0.7441860465116279,
+         "hi": 0.9534883720930233
+        }
+       }
+      },
+      {
+       "name": "full",
+       "system": "chronos",
+       "is_reference": true,
+       "n": 50,
+       "budget": 1500,
+       "accuracy": {
+        "n": 50,
+        "mean": 0.24,
+        "lo": 0.12,
+        "hi": 0.36
+       },
+       "gold_in_context": {
+        "n": 42,
+        "mean": 0.5634920634920635,
+        "lo": 0.44047619047619047,
+        "hi": 0.6904761904761905
+       },
+       "context_tokens": {
+        "n": 50,
+        "mean": 1477.24,
+        "p50": 1477.0,
+        "p95": 1499.0
+       },
+       "abstention": {
+        "precision": {
+         "n": 44,
+         "n_questions": 50,
+         "value": 0.1590909090909091,
+         "lo": 0.06382978723404255,
+         "hi": 0.2727272727272727
+        },
+        "recall": {
+         "n": 7,
+         "n_questions": 50,
+         "value": 1.0,
+         "lo": 1.0,
+         "hi": 1.0
+        },
+        "f1": {
+         "value": 0.27450980392156865,
+         "lo": 0.12,
+         "hi": 0.42857142857142855,
+         "n_questions": 50
+        },
+        "false_abstention_rate": {
+         "n": 43,
+         "n_questions": 50,
+         "value": 0.8604651162790697,
+         "lo": 0.75,
+         "hi": 0.9545454545454546
+        },
+        "n_unanswerable": 7,
+        "n_answerable": 43
+       },
+       "token_f1": {
+        "n": 43,
+        "mean": 0.037209302325581395,
+        "lo": 0.005167958656330749,
+        "hi": 0.07908268733850111
+       },
+       "vs_reference": null,
+       "gate": {
+        "locomo_adversarial_abstained": {
+         "n": 6,
+         "mean": 1.0,
+         "lo": 1.0,
+         "hi": 1.0
+        },
+        "longmemeval_abs_abstained": {
+         "n": 1,
+         "mean": 1.0,
+         "lo": 1.0,
+         "hi": 1.0
+        },
+        "false_abstention": {
+         "n": 43,
+         "mean": 0.8604651162790697,
+         "lo": 0.7441860465116279,
+         "hi": 0.9534883720930233
+        }
+       }
+      }
+     ]
+    },
+    "retrieval": {
+     "id": "A_retrieval",
+     "title": "Retrieval ablation",
+     "question": "Which retrieval stages carry the accuracy?",
+     "reference": "plus_episodic",
+     "reference_system": "chronos",
+     "population": "12 questions (locomo/multi-hop, locomo/single-hop)",
+     "variants": [
+      {
+       "name": "dense_only",
+       "system": "A_retrieval/dense_only",
+       "is_reference": false,
+       "n": 12,
+       "budget": 1500,
+       "accuracy": {
+        "n": 12,
+        "mean": 0.08333333333333333,
+        "lo": 0.0,
+        "hi": 0.25
+       },
+       "gold_in_context": {
+        "n": 12,
+        "mean": 0.5,
+        "lo": 0.25,
+        "hi": 0.75
+       },
+       "context_tokens": {
+        "n": 12,
+        "mean": 1484.0,
+        "p50": 1488.5,
+        "p95": 1495.45
+       },
+       "abstention": {
+        "precision": {
+         "n": 11,
+         "n_questions": 12,
+         "value": 0.0,
+         "lo": 0.0,
+         "hi": 0.0
+        },
+        "recall": {
+         "n": 0,
+         "n_questions": 12,
+         "value": null,
+         "lo": null,
+         "hi": null
+        },
+        "f1": {
+         "value": 0.0,
+         "lo": 0.0,
+         "hi": 0.0,
+         "n_questions": 12
+        },
+        "false_abstention_rate": {
+         "n": 12,
+         "n_questions": 12,
+         "value": 0.9166666666666666,
+         "lo": 0.75,
+         "hi": 1.0
+        },
+        "n_unanswerable": 0,
+        "n_answerable": 12
+       },
+       "token_f1": {
+        "n": 12,
+        "mean": 0.03703703703703704,
+        "lo": 0.0,
+        "hi": 0.11111111111111112
+       },
+       "vs_reference": {
+        "n": 12,
+        "mean_diff": -0.16666666666666666,
+        "lo": -0.4166666666666667,
+        "hi": 0.0,
+        "verdict": "no detectable difference",
+        "mcnemar": {
+         "only_a": 0,
+         "only_b": 2,
+         "discordant": 2,
+         "p": 0.5
+        },
+        "a": "A_retrieval/dense_only",
+        "b": "chronos",
+        "acc_a": 0.08333333333333333,
+        "acc_b": 0.25
+       },
+       "gate": {
+        "locomo_adversarial_abstained": {
+         "n": 0,
+         "mean": null,
+         "lo": null,
+         "hi": null
+        },
+        "longmemeval_abs_abstained": {
+         "n": 0,
+         "mean": null,
+         "lo": null,
+         "hi": null
+        },
+        "false_abstention": {
+         "n": 12,
+         "mean": 0.9166666666666666,
+         "lo": 0.75,
+         "hi": 1.0
+        }
+       }
+      },
+      {
+       "name": "bm25_only",
+       "system": "A_retrieval/bm25_only",
+       "is_reference": false,
+       "n": 12,
+       "budget": 1500,
+       "accuracy": {
+        "n": 12,
+        "mean": 0.08333333333333333,
+        "lo": 0.0,
+        "hi": 0.25
+       },
+       "gold_in_context": {
+        "n": 12,
+        "mean": 0.625,
+        "lo": 0.375,
+        "hi": 0.8333333333333334
+       },
+       "context_tokens": {
+        "n": 12,
+        "mean": 1482.0,
+        "p50": 1484.0,
+        "p95": 1496.15
+       },
+       "abstention": {
+        "precision": {
+         "n": 9,
+         "n_questions": 12,
+         "value": 0.0,
+         "lo": 0.0,
+         "hi": 0.0
+        },
+        "recall": {
+         "n": 0,
+         "n_questions": 12,
+         "value": null,
+         "lo": null,
+         "hi": null
+        },
+        "f1": {
+         "value": 0.0,
+         "lo": 0.0,
+         "hi": 0.0,
+         "n_questions": 12
+        },
+        "false_abstention_rate": {
+         "n": 12,
+         "n_questions": 12,
+         "value": 0.75,
+         "lo": 0.5,
+         "hi": 1.0
+        },
+        "n_unanswerable": 0,
+        "n_answerable": 12
+       },
+       "token_f1": {
+        "n": 12,
+        "mean": 0.023809523809523808,
+        "lo": 0.0,
+        "hi": 0.07142857142857142
+       },
+       "vs_reference": {
+        "n": 12,
+        "mean_diff": -0.16666666666666666,
+        "lo": -0.5,
+        "hi": 0.16666666666666666,
+        "verdict": "no detectable difference",
+        "mcnemar": {
+         "only_a": 1,
+         "only_b": 3,
+         "discordant": 4,
+         "p": 0.625
+        },
+        "a": "A_retrieval/bm25_only",
+        "b": "chronos",
+        "acc_a": 0.08333333333333333,
+        "acc_b": 0.25
+       },
+       "gate": {
+        "locomo_adversarial_abstained": {
+         "n": 0,
+         "mean": null,
+         "lo": null,
+         "hi": null
+        },
+        "longmemeval_abs_abstained": {
+         "n": 0,
+         "mean": null,
+         "lo": null,
+         "hi": null
+        },
+        "false_abstention": {
+         "n": 12,
+         "mean": 0.75,
+         "lo": 0.5,
+         "hi": 1.0
+        }
+       }
+      },
+      {
+       "name": "dense_plus_bm25",
+       "system": "A_retrieval/dense_plus_bm25",
+       "is_reference": false,
+       "n": 12,
+       "budget": 1500,
+       "accuracy": {
+        "n": 12,
+        "mean": 0.08333333333333333,
+        "lo": 0.0,
+        "hi": 0.25
+       },
+       "gold_in_context": {
+        "n": 12,
+        "mean": 0.6666666666666666,
+        "lo": 0.4166666666666667,
+        "hi": 0.9166666666666666
+       },
+       "context_tokens": {
+        "n": 12,
+        "mean": 1488.75,
+        "p50": 1493.5,
+        "p95": 1499.0
+       },
+       "abstention": {
+        "precision": {
+         "n": 11,
+         "n_questions": 12,
+         "value": 0.0,
+         "lo": 0.0,
+         "hi": 0.0
+        },
+        "recall": {
+         "n": 0,
+         "n_questions": 12,
+         "value": null,
+         "lo": null,
+         "hi": null
+        },
+        "f1": {
+         "value": 0.0,
+         "lo": 0.0,
+         "hi": 0.0,
+         "n_questions": 12
+        },
+        "false_abstention_rate": {
+         "n": 12,
+         "n_questions": 12,
+         "value": 0.9166666666666666,
+         "lo": 0.75,
+         "hi": 1.0
+        },
+        "n_unanswerable": 0,
+        "n_answerable": 12
+       },
+       "token_f1": {
+        "n": 12,
+        "mean": 0.015873015873015876,
+        "lo": 0.0,
+        "hi": 0.04761904761904762
+       },
+       "vs_reference": {
+        "n": 12,
+        "mean_diff": -0.16666666666666666,
+        "lo": -0.5,
+        "hi": 0.16666666666666666,
+        "verdict": "no detectable difference",
+        "mcnemar": {
+         "only_a": 1,
+         "only_b": 3,
+         "discordant": 4,
+         "p": 0.625
+        },
+        "a": "A_retrieval/dense_plus_bm25",
+        "b": "chronos",
+        "acc_a": 0.08333333333333333,
+        "acc_b": 0.25
+       },
+       "gate": {
+        "locomo_adversarial_abstained": {
+         "n": 0,
+         "mean": null,
+         "lo": null,
+         "hi": null
+        },
+        "longmemeval_abs_abstained": {
+         "n": 0,
+         "mean": null,
+         "lo": null,
+         "hi": null
+        },
+        "false_abstention": {
+         "n": 12,
+         "mean": 0.9166666666666666,
+         "lo": 0.75,
+         "hi": 1.0
+        }
+       }
+      },
+      {
+       "name": "plus_1hop",
+       "system": "A_retrieval/plus_1hop",
+       "is_reference": false,
+       "n": 12,
+       "budget": 1500,
+       "accuracy": {
+        "n": 12,
+        "mean": 0.25,
+        "lo": 0.0,
+        "hi": 0.5
+       },
+       "gold_in_context": {
+        "n": 12,
+        "mean": 0.6944444444444443,
+        "lo": 0.4583333333333333,
+        "hi": 0.9166666666666666
+       },
+       "context_tokens": {
+        "n": 12,
+        "mean": 1488.0,
+        "p50": 1490.5,
+        "p95": 1498.9
+       },
+       "abstention": {
+        "precision": {
+         "n": 8,
+         "n_questions": 12,
+         "value": 0.0,
+         "lo": 0.0,
+         "hi": 0.0
+        },
+        "recall": {
+         "n": 0,
+         "n_questions": 12,
+         "value": null,
+         "lo": null,
+         "hi": null
+        },
+        "f1": {
+         "value": 0.0,
+         "lo": 0.0,
+         "hi": 0.0,
+         "n_questions": 12
+        },
+        "false_abstention_rate": {
+         "n": 12,
+         "n_questions": 12,
+         "value": 0.6666666666666666,
+         "lo": 0.4166666666666667,
+         "hi": 0.9166666666666666
+        },
+        "n_unanswerable": 0,
+        "n_answerable": 12
+       },
+       "token_f1": {
+        "n": 12,
+        "mean": 0.07936507936507937,
+        "lo": 0.0,
+        "hi": 0.1626984126984127
+       },
+       "vs_reference": {
+        "n": 12,
+        "mean_diff": 0.0,
+        "lo": -0.3333333333333333,
+        "hi": 0.3333333333333333,
+        "verdict": "no detectable difference",
+        "mcnemar": {
+         "only_a": 2,
+         "only_b": 2,
+         "discordant": 4,
+         "p": 1.0
+        },
+        "a": "A_retrieval/plus_1hop",
+        "b": "chronos",
+        "acc_a": 0.25,
+        "acc_b": 0.25
+       },
+       "gate": {
+        "locomo_adversarial_abstained": {
+         "n": 0,
+         "mean": null,
+         "lo": null,
+         "hi": null
+        },
+        "longmemeval_abs_abstained": {
+         "n": 0,
+         "mean": null,
+         "lo": null,
+         "hi": null
+        },
+        "false_abstention": {
+         "n": 12,
+         "mean": 0.6666666666666666,
+         "lo": 0.4166666666666667,
+         "hi": 0.9166666666666666
+        }
+       }
+      },
+      {
+       "name": "plus_episodic",
+       "system": "chronos",
+       "is_reference": true,
+       "n": 12,
+       "budget": 1500,
+       "accuracy": {
+        "n": 12,
+        "mean": 0.25,
+        "lo": 0.0,
+        "hi": 0.5
+       },
+       "gold_in_context": {
+        "n": 12,
+        "mean": 0.2916666666666667,
+        "lo": 0.08333333333333333,
+        "hi": 0.5
+       },
+       "context_tokens": {
+        "n": 12,
+        "mean": 1476.6666666666667,
+        "p50": 1474.0,
+        "p95": 1498.35
+       },
+       "abstention": {
+        "precision": {
+         "n": 9,
+         "n_questions": 12,
+         "value": 0.0,
+         "lo": 0.0,
+         "hi": 0.0
+        },
+        "recall": {
+         "n": 0,
+         "n_questions": 12,
+         "value": null,
+         "lo": null,
+         "hi": null
+        },
+        "f1": {
+         "value": 0.0,
+         "lo": 0.0,
+         "hi": 0.0,
+         "n_questions": 12
+        },
+        "false_abstention_rate": {
+         "n": 12,
+         "n_questions": 12,
+         "value": 0.75,
+         "lo": 0.5,
+         "hi": 1.0
+        },
+        "n_unanswerable": 0,
+        "n_answerable": 12
+       },
+       "token_f1": {
+        "n": 12,
+        "mean": 0.06481481481481483,
+        "lo": 0.0,
+        "hi": 0.1574074074074074
+       },
+       "vs_reference": null,
+       "gate": {
+        "locomo_adversarial_abstained": {
+         "n": 0,
+         "mean": null,
+         "lo": null,
+         "hi": null
+        },
+        "longmemeval_abs_abstained": {
+         "n": 0,
+         "mean": null,
+         "lo": null,
+         "hi": null
+        },
+        "false_abstention": {
+         "n": 12,
+         "mean": 0.75,
+         "lo": 0.5,
+         "hi": 1.0
+        }
+       }
+      }
+     ]
+    },
+    "state": {
+     "id": "B_state",
+     "title": "State-model ablation",
+     "question": "Does bi-temporal state beat arrival-order supersession and an append-only store?",
+     "reference": "bitemporal",
+     "reference_system": "chronos",
+     "population": "20 questions (longmemeval/knowledge-update)",
+     "variants": [
+      {
+       "name": "append_only",
+       "system": "B5_append_only",
+       "is_reference": false,
+       "n": 20,
+       "budget": 1500,
+       "accuracy": {
+        "n": 20,
+        "mean": 0.15,
+        "lo": 0.0,
+        "hi": 0.3
+       },
+       "gold_in_context": {
+        "n": 19,
+        "mean": 0.7631578947368421,
+        "lo": 0.631578947368421,
+        "hi": 0.8947368421052632
+       },
+       "context_tokens": {
+        "n": 20,
+        "mean": 1479.3,
+        "p50": 1476.0,
+        "p95": 1500.0
+       },
+       "abstention": {
+        "precision": {
+         "n": 17,
+         "n_questions": 20,
+         "value": 0.058823529411764705,
+         "lo": 0.0,
+         "hi": 0.18781249999999544
+        },
+        "recall": {
+         "n": 1,
+         "n_questions": 20,
+         "value": 1.0,
+         "lo": 1.0,
+         "hi": 1.0
+        },
+        "f1": {
+         "value": 0.1111111111111111,
+         "lo": 0.0,
+         "hi": 0.3162280701754322,
+         "n_questions": 20
+        },
+        "false_abstention_rate": {
+         "n": 19,
+         "n_questions": 20,
+         "value": 0.8421052631578947,
+         "lo": 0.65,
+         "hi": 1.0
+        },
+        "n_unanswerable": 1,
+        "n_answerable": 19
+       },
+       "token_f1": {
+        "n": 19,
+        "mean": 0.04327485380116959,
+        "lo": 0.0,
+        "hi": 0.11812865497076024
+       },
+       "vs_reference": {
+        "n": 20,
+        "mean_diff": 0.0,
+        "lo": 0.0,
+        "hi": 0.0,
+        "verdict": "no detectable difference",
+        "mcnemar": {
+         "only_a": 0,
+         "only_b": 0,
+         "discordant": 0,
+         "p": 1.0
+        },
+        "a": "B5_append_only",
+        "b": "chronos",
+        "acc_a": 0.15,
+        "acc_b": 0.15
+       },
+       "gate": {
+        "locomo_adversarial_abstained": {
+         "n": 0,
+         "mean": null,
+         "lo": null,
+         "hi": null
+        },
+        "longmemeval_abs_abstained": {
+         "n": 1,
+         "mean": 1.0,
+         "lo": 1.0,
+         "hi": 1.0
+        },
+        "false_abstention": {
+         "n": 19,
+         "mean": 0.8421052631578947,
+         "lo": 0.6842105263157895,
+         "hi": 1.0
+        }
+       }
+      },
+      {
+       "name": "arrival_order",
+       "system": "B_state/arrival_order",
+       "is_reference": false,
+       "n": 20,
+       "budget": 1500,
+       "accuracy": {
+        "n": 20,
+        "mean": 0.15,
+        "lo": 0.0,
+        "hi": 0.3
+       },
+       "gold_in_context": {
+        "n": 19,
+        "mean": 0.7368421052631579,
+        "lo": 0.6052631578947368,
+        "hi": 0.868421052631579
+       },
+       "context_tokens": {
+        "n": 20,
+        "mean": 1477.25,
+        "p50": 1473.5,
+        "p95": 1499.05
+       },
+       "abstention": {
+        "precision": {
+         "n": 17,
+         "n_questions": 20,
+         "value": 0.058823529411764705,
+         "lo": 0.0,
+         "hi": 0.18781249999999544
+        },
+        "recall": {
+         "n": 1,
+         "n_questions": 20,
+         "value": 1.0,
+         "lo": 1.0,
+         "hi": 1.0
+        },
+        "f1": {
+         "value": 0.1111111111111111,
+         "lo": 0.0,
+         "hi": 0.3162280701754322,
+         "n_questions": 20
+        },
+        "false_abstention_rate": {
+         "n": 19,
+         "n_questions": 20,
+         "value": 0.8421052631578947,
+         "lo": 0.65,
+         "hi": 1.0
+        },
+        "n_unanswerable": 1,
+        "n_answerable": 19
+       },
+       "token_f1": {
+        "n": 19,
+        "mean": 0.04327485380116959,
+        "lo": 0.0,
+        "hi": 0.11812865497076024
+       },
+       "vs_reference": {
+        "n": 20,
+        "mean_diff": 0.0,
+        "lo": 0.0,
+        "hi": 0.0,
+        "verdict": "no detectable difference",
+        "mcnemar": {
+         "only_a": 0,
+         "only_b": 0,
+         "discordant": 0,
+         "p": 1.0
+        },
+        "a": "B_state/arrival_order",
+        "b": "chronos",
+        "acc_a": 0.15,
+        "acc_b": 0.15
+       },
+       "gate": {
+        "locomo_adversarial_abstained": {
+         "n": 0,
+         "mean": null,
+         "lo": null,
+         "hi": null
+        },
+        "longmemeval_abs_abstained": {
+         "n": 1,
+         "mean": 1.0,
+         "lo": 1.0,
+         "hi": 1.0
+        },
+        "false_abstention": {
+         "n": 19,
+         "mean": 0.8421052631578947,
+         "lo": 0.6842105263157895,
+         "hi": 1.0
+        }
+       }
+      },
+      {
+       "name": "bitemporal",
+       "system": "chronos",
+       "is_reference": true,
+       "n": 20,
+       "budget": 1500,
+       "accuracy": {
+        "n": 20,
+        "mean": 0.15,
+        "lo": 0.0,
+        "hi": 0.3
+       },
+       "gold_in_context": {
+        "n": 19,
+        "mean": 0.7368421052631579,
+        "lo": 0.6052631578947368,
+        "hi": 0.868421052631579
+       },
+       "context_tokens": {
+        "n": 20,
+        "mean": 1478.7,
+        "p50": 1476.0,
+        "p95": 1499.05
+       },
+       "abstention": {
+        "precision": {
+         "n": 17,
+         "n_questions": 20,
+         "value": 0.058823529411764705,
+         "lo": 0.0,
+         "hi": 0.18781249999999544
+        },
+        "recall": {
+         "n": 1,
+         "n_questions": 20,
+         "value": 1.0,
+         "lo": 1.0,
+         "hi": 1.0
+        },
+        "f1": {
+         "value": 0.1111111111111111,
+         "lo": 0.0,
+         "hi": 0.3162280701754322,
+         "n_questions": 20
+        },
+        "false_abstention_rate": {
+         "n": 19,
+         "n_questions": 20,
+         "value": 0.8421052631578947,
+         "lo": 0.65,
+         "hi": 1.0
+        },
+        "n_unanswerable": 1,
+        "n_answerable": 19
+       },
+       "token_f1": {
+        "n": 19,
+        "mean": 0.04327485380116959,
+        "lo": 0.0,
+        "hi": 0.11812865497076024
+       },
+       "vs_reference": null,
+       "gate": {
+        "locomo_adversarial_abstained": {
+         "n": 0,
+         "mean": null,
+         "lo": null,
+         "hi": null
+        },
+        "longmemeval_abs_abstained": {
+         "n": 1,
+         "mean": 1.0,
+         "lo": 1.0,
+         "hi": 1.0
+        },
+        "false_abstention": {
+         "n": 19,
+         "mean": 0.8421052631578947,
+         "lo": 0.6842105263157895,
+         "hi": 1.0
+        }
+       }
+      }
+     ]
+    }
+   },
+   "judge": {
+    "methods": {
+     "flag": 493,
+     "exact": 1,
+     "judge": 74
+    },
+    "providers": {
+     "cerebras": 40,
+     "groq": 34
+    },
+    "audit": {
+     "exists": true,
+     "rows": 74,
+     "labelled": 0
+    },
+    "calibration": {
+     "status": "measured",
+     "providers": [
+      "groq",
+      "cerebras"
+     ],
+     "n": 74,
+     "kappa": 0.9694971145919209,
+     "agreement": 0.9864864864864865,
+     "positive_rate": {
+      "groq": 0.6621621621621622,
+      "cerebras": 0.6756756756756757
+     }
+    }
+   },
+   "recheck": {
+    "n": 98,
+    "agreement": 0.8979591836734694,
+    "lo": 0.8367346938775511,
+    "hi": 0.9489795918367347,
+    "kappa": 0.5833333333333334,
+    "both_support": 79,
+    "nli_only": 5,
+    "judge_only": 5,
+    "both_reject": 9
+   },
+   "ingest": {
+    "conversations": {
+     "conv-50": {
+      "dataset": "locomo",
+      "sessions": 30,
+      "turns": 568,
+      "seconds": 84.19323087576777,
+      "prompt_tokens": 427119,
+      "completion_tokens": 49333,
+      "llm_calls": 323,
+      "llm_seconds": 2795.3645132076927
+     },
+     "6aeb4375": {
+      "dataset": "longmemeval",
+      "sessions": 11,
+      "turns": 118,
+      "seconds": 2.128876832779497,
+      "prompt_tokens": 53759,
+      "completion_tokens": 6218,
+      "llm_calls": 43,
+      "llm_seconds": 316.01940558780916
+     },
+     "852ce960": {
+      "dataset": "longmemeval",
+      "sessions": 13,
+      "turns": 116,
+      "seconds": 22.178544541122392,
+      "prompt_tokens": 51918,
+      "completion_tokens": 5505,
+      "llm_calls": 40,
+      "llm_seconds": 285.17429153597914
+     },
+     "945e3d21": {
+      "dataset": "longmemeval",
+      "sessions": 13,
+      "turns": 110,
+      "seconds": 1.9906207914464176,
+      "prompt_tokens": 63026,
+      "completion_tokens": 10096,
+      "llm_calls": 64,
+      "llm_seconds": 508.0378693351522
+     },
+     "d7c942c3": {
+      "dataset": "longmemeval",
+      "sessions": 12,
+      "turns": 120,
+      "seconds": 8.12240241584368,
+      "prompt_tokens": 58949,
+      "completion_tokens": 6622,
+      "llm_calls": 47,
+      "llm_seconds": 353.4106786265038
+     },
+     "ce6d2d27": {
+      "dataset": "longmemeval",
+      "sessions": 12,
+      "turns": 120,
+      "seconds": 2.001123916124925,
+      "prompt_tokens": 56221,
+      "completion_tokens": 6540,
+      "llm_calls": 44,
+      "llm_seconds": 336.82966837240383
+     },
+     "184da446": {
+      "dataset": "longmemeval",
+      "sessions": 8,
+      "turns": 95,
+      "seconds": 1.7743762501049787,
+      "prompt_tokens": 57500,
+      "completion_tokens": 9794,
+      "llm_calls": 61,
+      "llm_seconds": 525.8832350831944
+     },
+     "031748ae": {
+      "dataset": "longmemeval",
+      "sessions": 16,
+      "turns": 122,
+      "seconds": 2.002949708374217,
+      "prompt_tokens": 57985,
+      "completion_tokens": 5875,
+      "llm_calls": 41,
+      "llm_seconds": 301.88907283288427
+     },
+     "4d6b87c8": {
+      "dataset": "longmemeval",
+      "sessions": 15,
+      "turns": 126,
+      "seconds": 63.76955574960448,
+      "prompt_tokens": 65087,
+      "completion_tokens": 8497,
+      "llm_calls": 59,
+      "llm_seconds": 431.2359117020387
+     },
+     "f9e8c073": {
+      "dataset": "longmemeval",
+      "sessions": 13,
+      "turns": 114,
+      "seconds": 1.9683137922547758,
+      "prompt_tokens": 68757,
+      "completion_tokens": 10077,
+      "llm_calls": 66,
+      "llm_seconds": 518.0145636261441
+     },
+     "5a4f22c0": {
+      "dataset": "longmemeval",
+      "sessions": 11,
+      "turns": 99,
+      "seconds": 39.34884324995801,
+      "prompt_tokens": 53111,
+      "completion_tokens": 8264,
+      "llm_calls": 45,
+      "llm_seconds": 409.474538709037
+     },
+     "c4ea545c": {
+      "dataset": "longmemeval",
+      "sessions": 12,
+      "turns": 116,
+      "seconds": 2.254913874901831,
+      "prompt_tokens": 56912,
+      "completion_tokens": 8310,
+      "llm_calls": 53,
+      "llm_seconds": 422.43358100089245
+     },
+     "db467c8c": {
+      "dataset": "longmemeval",
+      "sessions": 15,
+      "turns": 142,
+      "seconds": 7.547480418346822,
+      "prompt_tokens": 53015,
+      "completion_tokens": 4358,
+      "llm_calls": 33,
+      "llm_seconds": 225.39034600090235
+     },
+     "1cea1afa": {
+      "dataset": "longmemeval",
+      "sessions": 21,
+      "turns": 127,
+      "seconds": 9.567191581940278,
+      "prompt_tokens": 72468,
+      "completion_tokens": 7099,
+      "llm_calls": 50,
+      "llm_seconds": 365.83988250163384
+     },
+     "50635ada": {
+      "dataset": "longmemeval",
+      "sessions": 12,
+      "turns": 112,
+      "seconds": 5.605984584661201,
+      "prompt_tokens": 81686,
+      "completion_tokens": 14044,
+      "llm_calls": 88,
+      "llm_seconds": 721.0256147123873
+     },
+     "f685340e": {
+      "dataset": "longmemeval",
+      "sessions": 13,
+      "turns": 99,
+      "seconds": 47.88868854101747,
+      "prompt_tokens": 52899,
+      "completion_tokens": 6484,
+      "llm_calls": 46,
+      "llm_seconds": 345.93700954224914
+     },
+     "dfde3500": {
+      "dataset": "longmemeval",
+      "sessions": 11,
+      "turns": 106,
+      "seconds": 14.803209748584777,
+      "prompt_tokens": 51479,
+      "completion_tokens": 5668,
+      "llm_calls": 38,
+      "llm_seconds": 295.45829583518207
+     },
+     "c7dc5443": {
+      "dataset": "longmemeval",
+      "sessions": 12,
+      "turns": 98,
+      "seconds": 83.47906224871986,
+      "prompt_tokens": 55017,
+      "completion_tokens": 8369,
+      "llm_calls": 50,
+      "llm_seconds": 417.9991470838431
+     },
+     "3ba21379": {
+      "dataset": "longmemeval",
+      "sessions": 11,
+      "turns": 87,
+      "seconds": 1.5820657508447766,
+      "prompt_tokens": 41677,
+      "completion_tokens": 4201,
+      "llm_calls": 30,
+      "llm_seconds": 220.66888833162375
+     },
+     "5c40ec5b": {
+      "dataset": "longmemeval",
+      "sessions": 14,
+      "turns": 103,
+      "seconds": 13.459054417908192,
+      "prompt_tokens": 53091,
+      "completion_tokens": 3741,
+      "llm_calls": 32,
+      "llm_seconds": 201.6371164144948
+     },
+     "2133c1b5_abs": {
+      "dataset": "longmemeval",
+      "sessions": 15,
+      "turns": 89,
+      "seconds": 5.446351500228047,
+      "prompt_tokens": 67246,
+      "completion_tokens": 8202,
+      "llm_calls": 57,
+      "llm_seconds": 421.4151456200052
+     }
+    },
+    "by_dataset": {
+     "locomo": {
+      "conversations": 1,
+      "sessions": 30,
+      "turns": 568,
+      "seconds": 84.19323087576777,
+      "prompt_tokens": 427119,
+      "completion_tokens": 49333,
+      "llm_calls": 323,
+      "per_conversation_seconds": [
+       84.19323087576777
+      ]
+     },
+     "longmemeval": {
+      "conversations": 20,
+      "sessions": 260,
+      "turns": 2219,
+      "seconds": 336.9196099147666,
+      "prompt_tokens": 1171803,
+      "completion_tokens": 147964,
+      "llm_calls": 987,
+      "per_conversation_seconds": [
+       2.128876832779497,
+       22.178544541122392,
+       1.9906207914464176,
+       8.12240241584368,
+       2.001123916124925,
+       1.7743762501049787,
+       2.002949708374217,
+       63.76955574960448,
+       1.9683137922547758,
+       39.34884324995801,
+       2.254913874901831,
+       7.547480418346822,
+       9.567191581940278,
+       5.605984584661201,
+       47.88868854101747,
+       14.803209748584777,
+       83.47906224871986,
+       1.5820657508447766,
+       13.459054417908192,
+       5.446351500228047
+      ]
+     }
+    }
+   },
+   "steps": {
+    "ingest": 421.6812047078274,
+    "replay:append_only": 48.79949641600251,
+    "replay:arrival_order": 41.14741625008173,
+    "answer:chronos": 980.8774395410437,
+    "answer:B1_sliding_window": 539.8765638750046,
+    "answer:B2_full_context": 1.8551547089591622,
+    "answer:B3_chunk_rag": 928.7724198340438,
+    "answer:B4_turns_plus_notes": 904.6118325840216,
+    "answer:B5_append_only": 43.85587049997412,
+    "answer:A_retrieval/dense_only": 235.9396605831571,
+    "answer:A_retrieval/bm25_only": 260.19232874992304,
+    "answer:A_retrieval/dense_plus_bm25": 231.83854187489487,
+    "answer:A_retrieval/plus_1hop": 241.84635879215784,
+    "answer:B_state/arrival_order": 326.50266829202883,
+    "answer:C_gate/off": 184.77447058307007,
+    "answer:C_gate/speaker_only": 18.798298165900633,
+    "answer:D_budget/tokens_500": 554.5409511660691,
+    "answer:D_budget/tokens_1000": 829.7973125840072,
+    "answer:D_budget/tokens_3000": 1647.3301674581598,
+    "state_probes:scripted": 1.2092267079278827,
+    "judge": 24.660928457975388,
+    "judge_calibration": 84.16751375002787,
+    "claim_recheck": 83.72891466598958
+   },
+   "failure_modes": {
+    "cross_attribute_contradiction": {
+     "count": 0,
+     "population": "50 contexts",
+     "examples": []
+    },
+    "attribute_mismatch": {
+     "count": 12,
+     "population": "213 distinct memories shown in contexts",
+     "examples": [
+      {
+       "system": "chronos",
+       "question_id": "031748ae",
+       "question": "How many engineers do I lead when I just started my new role as Senior Software Engineer? How many engineers do I lead now?",
+       "gold": "When you just started your new role as Senior Software Engineer, you led 4 engineers. Now, you lead 5 engineers",
+       "answer": "I don't know.",
+       "fact": "The user is currently a Senior Software Engineer.",
+       "key": "job_title"
+      },
+      {
+       "system": "chronos",
+       "question_id": "5c40ec5b",
+       "question": "How many times have I met up with Alex from Germany?",
+       "gold": "We've met up twice.",
+       "answer": "I don't know.",
+       "fact": "User has a friend Alex from Germany.",
+       "key": "relationship_status"
+      }
+     ]
+    },
+    "temporary_stay": {
+     "count": 0,
+     "population": "50 contexts",
+     "examples": []
+    },
+    "temporal_resolution": {
+     "count": 0,
+     "population": "6 answered questions",
+     "examples": []
+    },
+    "entity_split": {
+     "count": 1,
+     "population": "21 conversations",
+     "examples": [
+      {
+       "system": "ingestion",
+       "question_id": "5a4f22c0",
+       "question": "",
+       "gold": "",
+       "answer": "",
+       "name": "alex",
+       "type": "PERSON",
+       "entities": 2,
+       "descriptors": [
+        "{\"anchor\": \"user\", \"relation\": \"founder of a startup in edtech space\", \"text\": null}",
+        "{\"anchor\": \"user\", \"relation\": \"founder\", \"text\": null}"
+       ]
+      }
+     ]
+    },
+    "over_abstention": {
+     "count": 37,
+     "population": "43 answerable questions",
+     "examples": [
+      {
+       "system": "chronos",
+       "question_id": "031748ae",
+       "question": "How many engineers do I lead when I just started my new role as Senior Software Engineer? How many engineers do I lead now?",
+       "gold": "When you just started your new role as Senior Software Engineer, you led 4 engineers. Now, you lead 5 engineers",
+       "answer": "I don't know.",
+       "abstained_at": "model",
+       "reason": "The context does not provide information about the number of engineers the user leads when they just started their new role as Senior Software Engineer.",
+       "gold_in_context": false
+      },
+      {
+       "system": "chronos",
+       "question_id": "184da446",
+       "question": "How many pages of 'A Short History of Nearly Everything' have I read so far?",
+       "gold": "220",
+       "answer": "I don't know.",
+       "abstained_at": "model",
+       "reason": "The context does not provide a specific number of pages read so far.",
+       "gold_in_context": true
+      }
+     ]
+    },
+    "nli_error": {
+     "count": 10,
+     "population": "98 re-checked claims",
+     "examples": [
+      {
+       "system": "D_budget/tokens_500",
+       "question_id": "5c40ec5b",
+       "question": "",
+       "gold": "",
+       "answer": "",
+       "claim": "The user met up with Alex from Germany once.",
+       "premise": "On 2023-08-11, user said: I'm loving this list! I'm particularly interested in The Particular Sadness of Lemon Cake. I've heard great things about magical realism. Speaking of which, I met this guy Alex from Germany at a music festival a few weeks ago, and we bonded over our shared love of indie rock music. He's actually coming to my city for work soon, and we're planning to meet up. Anyway, back to the book \u2013 do you think it's a good representation of magical realism?",
+       "nli_entailment": 0.9965553848948042,
+       "kind": "NLI passed, judge disagrees"
+      },
+      {
+       "system": "D_budget/tokens_500",
+       "question_id": "6aeb4375",
+       "question": "",
+       "gold": "",
+       "answer": "",
+       "claim": "The user has tried three Korean restaurants in their city.",
+       "premise": "On 2023-08-11, user said: Sounds good! So, I tried this one place that had an amazing bibimbap, and then this other place that had a really spicy kimchi stew. And then there was this third place that had a unique take on Japchae, with a sweet potato noodle that was really tasty. Each place had its own unique flavor and style, you know?",
+       "nli_entailment": 0.008788528282889134,
+       "kind": "NLI failed, judge disagrees"
+      }
+     ]
+    }
+   }
+  },
+  "quick_v1": {
+   "name": "quick_v1",
+   "manifest": {
+    "name": "quick_v1",
+    "description": "test_v1 LoCoMo sample for conv-50 + 20 test_v1 knowledge-update questions",
+    "seed": 42
+   },
+   "questions": {
+    "total": 48,
+    "by_dataset_category": {
+     "locomo/adversarial": 4,
+     "locomo/multi-hop": 3,
+     "locomo/open-domain": 4,
+     "locomo/single-hop": 9,
+     "locomo/temporal": 8,
+     "longmemeval/knowledge-update": 20
+    },
+    "answers_scored": 96,
+    "answers": 96
+   },
+   "systems": {
+    "chronos": {
+     "n_answers": 48,
+     "accuracy": {
+      "n": 48,
+      "mean": 0.25,
+      "lo": 0.125,
+      "hi": 0.375
+     },
+     "token_f1": {
+      "n": 43,
+      "mean": 0.05868555960643225,
+      "lo": 0.024686202510379913,
+      "hi": 0.09820215583729873
+     },
+     "abstention": {
+      "precision": {
+       "n": 32,
+       "n_questions": 48,
+       "value": 0.125,
+       "lo": 0.029411764705882353,
+       "hi": 0.25
+      },
+      "recall": {
+       "n": 5,
+       "n_questions": 48,
+       "value": 0.8,
+       "lo": 0.3333333333333333,
+       "hi": 1.0
+      },
+      "f1": {
+       "value": 0.21621621621621623,
+       "lo": 0.05555555555555555,
+       "hi": 0.3902439024390244,
+       "n_questions": 48
+      },
+      "false_abstention_rate": {
+       "n": 43,
+       "n_questions": 48,
+       "value": 0.6511627906976745,
+       "lo": 0.5,
+       "hi": 0.7906976744186046
+      },
+      "n_unanswerable": 5,
+      "n_answerable": 43
+     },
+     "citation": {
+      "cit_p": {
+       "n": 43,
+       "mean": 0.2558139534883721,
+       "lo": 0.13953488372093023,
+       "hi": 0.3953488372093023
+      },
+      "cit_r": {
+       "n": 43,
+       "mean": 0.18604651162790697,
+       "lo": 0.09302325581395349,
+       "hi": 0.29069767441860467
+      },
+      "cit_f1": {
+       "n": 43,
+       "mean": 0.2093023255813953,
+       "lo": 0.10833333333333349,
+       "hi": 0.3255813953488372
+      },
+      "sess_p": {
+       "n": 43,
+       "mean": 0.27906976744186046,
+       "lo": 0.13953488372093023,
+       "hi": 0.4186046511627907
+      },
+      "sess_r": {
+       "n": 43,
+       "mean": 0.19379844961240308,
+       "lo": 0.09689922480620154,
+       "hi": 0.2984496124031008
+      },
+      "sess_f1": {
+       "n": 43,
+       "mean": 0.22093023255813948,
+       "lo": 0.11627906976744186,
+       "hi": 0.33720930232558133
+      },
+      "validity": {
+       "n": 20,
+       "n_questions": 16,
+       "value": 1.0,
+       "lo": 1.0,
+       "hi": 1.0
+      },
+      "support_rate": {
+       "n": 20,
+       "n_questions": 18,
+       "value": 0.85,
+       "lo": 0.6666666666666666,
+       "hi": 1.0
+      },
+      "gold_in_context": {
+       "n": 43,
+       "mean": 0.5503875968992248,
+       "lo": 0.4224806201550387,
+       "hi": 0.6782945736434108
+      }
+     },
+     "prompt_tokens_answer": {
+      "n": 35,
+      "mean": 2104.5714285714284,
+      "p50": 2106.0,
+      "p95": 2152.0
+     },
+     "prompt_tokens_all": {
+      "n": 48,
+      "mean": 3331.875,
+      "p50": 3745.0,
+      "p95": 5176.099999999997
+     },
+     "latency_s": {
+      "n": 48,
+      "mean": 22.398117269107995,
+      "p50": 23.192326354561374,
+      "p95": 33.24119853887241
+     },
+     "context_tokens": {
+      "n": 48,
+      "mean": 1473.6041666666667,
+      "p50": 1474.5,
+      "p95": 1499.0
+     }
+    },
+    "B3_chunk_rag": {
+     "n_answers": 48,
+     "accuracy": {
+      "n": 48,
+      "mean": 0.2708333333333333,
+      "lo": 0.14583333333333334,
+      "hi": 0.3958333333333333
+     },
+     "token_f1": {
+      "n": 43,
+      "mean": 0.07722641076014249,
+      "lo": 0.037216372269021844,
+      "hi": 0.12372911445279863
+     },
+     "abstention": {
+      "precision": {
+       "n": 28,
+       "n_questions": 48,
+       "value": 0.10714285714285714,
+       "lo": 0.0,
+       "hi": 0.23333333333333334
+      },
+      "recall": {
+       "n": 5,
+       "n_questions": 48,
+       "value": 0.6,
+       "lo": 0.0,
+       "hi": 1.0
+      },
+      "f1": {
+       "value": 0.18181818181818182,
+       "lo": 0.0,
+       "hi": 0.358974358974359,
+       "n_questions": 48
+      },
+      "false_abstention_rate": {
+       "n": 43,
+       "n_questions": 48,
+       "value": 0.5813953488372093,
+       "lo": 0.4318181818181818,
+       "hi": 0.7317073170731707
+      },
+      "n_unanswerable": 5,
+      "n_answerable": 43
+     },
+     "citation": {
+      "cit_p": {
+       "n": 43,
+       "mean": 0.37209302325581395,
+       "lo": 0.23255813953488372,
+       "hi": 0.5116279069767442
+      },
+      "cit_r": {
+       "n": 43,
+       "mean": 0.28682170542635654,
+       "lo": 0.17054263565891473,
+       "hi": 0.4147286821705426
+      },
+      "cit_f1": {
+       "n": 43,
+       "mean": 0.31395348837209297,
+       "lo": 0.19379844961240308,
+       "hi": 0.44573643410852715
+      },
+      "sess_p": {
+       "n": 43,
+       "mean": 0.4186046511627907,
+       "lo": 0.27906976744186046,
+       "hi": 0.5581395348837209
+      },
+      "sess_r": {
+       "n": 43,
+       "mean": 0.31007751937984496,
+       "lo": 0.19379844961240308,
+       "hi": 0.4341085271317829
+      },
+      "sess_f1": {
+       "n": 43,
+       "mean": 0.34496124031007747,
+       "lo": 0.22093023255813948,
+       "hi": 0.47674418604651164
+      },
+      "validity": {
+       "n": 21,
+       "n_questions": 20,
+       "value": 1.0,
+       "lo": 1.0,
+       "hi": 1.0
+      },
+      "support_rate": {
+       "n": 25,
+       "n_questions": 25,
+       "value": 0.8,
+       "lo": 0.64,
+       "hi": 0.96
+      },
+      "gold_in_context": {
+       "n": 43,
+       "mean": 0.5775193798449613,
+       "lo": 0.45736434108527124,
+       "hi": 0.6937984496124031
+      }
+     },
+     "prompt_tokens_answer": {
+      "n": 48,
+      "mean": 2124.3958333333335,
+      "p50": 2163.0,
+      "p95": 2250.55
+     },
+     "prompt_tokens_all": {
+      "n": 48,
+      "mean": 2357.6458333333335,
+      "p50": 2176.0,
+      "p95": 4464.55
+     },
+     "latency_s": {
+      "n": 48,
+      "mean": 13.295346590341069,
+      "p50": 12.70781187445391,
+      "p95": 21.299927696783556
+     },
+     "context_tokens": {
+      "n": 48,
+      "mean": 1458.5,
+      "p50": 1471.0,
+      "p95": 1499.0
+     }
+    }
+   },
+   "by_category": {
+    "chronos": {
+     "locomo/adversarial": {
+      "n": 4,
+      "mean": 0.75,
+      "lo": 0.25,
+      "hi": 1.0
+     },
+     "locomo/multi-hop": {
+      "n": 3,
+      "mean": 0.3333333333333333,
+      "lo": 0.0,
+      "hi": 1.0
+     },
+     "locomo/open-domain": {
+      "n": 4,
+      "mean": 0.75,
+      "lo": 0.25,
+      "hi": 1.0
+     },
+     "locomo/single-hop": {
+      "n": 9,
+      "mean": 0.2222222222222222,
+      "lo": 0.0,
+      "hi": 0.5555555555555556
+     },
+     "locomo/temporal": {
+      "n": 8,
+      "mean": 0.0,
+      "lo": 0.0,
+      "hi": 0.0
+     },
+     "longmemeval/knowledge-update": {
+      "n": 20,
+      "mean": 0.15,
+      "lo": 0.0,
+      "hi": 0.3
+     }
+    },
+    "B3_chunk_rag": {
+     "locomo/adversarial": {
+      "n": 4,
+      "mean": 0.5,
+      "lo": 0.0,
+      "hi": 1.0
+     },
+     "locomo/multi-hop": {
+      "n": 3,
+      "mean": 0.3333333333333333,
+      "lo": 0.0,
+      "hi": 1.0
+     },
+     "locomo/open-domain": {
+      "n": 4,
+      "mean": 0.75,
+      "lo": 0.25,
+      "hi": 1.0
+     },
+     "locomo/single-hop": {
+      "n": 9,
+      "mean": 0.1111111111111111,
+      "lo": 0.0,
+      "hi": 0.3333333333333333
+     },
+     "locomo/temporal": {
+      "n": 8,
+      "mean": 0.25,
+      "lo": 0.0,
+      "hi": 0.625
+     },
+     "longmemeval/knowledge-update": {
+      "n": 20,
+      "mean": 0.2,
+      "lo": 0.05,
+      "hi": 0.4
+     }
+    }
+   },
+   "pairwise": [
+    {
+     "n": 48,
+     "mean_diff": -0.020833333333333332,
+     "lo": -0.125,
+     "hi": 0.08333333333333333,
+     "verdict": "no detectable difference",
+     "mcnemar": {
+      "only_a": 3,
+      "only_b": 4,
+      "discordant": 7,
+      "p": 1.0
+     },
+     "a": "chronos",
+     "b": "B3_chunk_rag",
+     "acc_a": 0.25,
+     "acc_b": 0.2708333333333333
+    }
+   ],
+   "skips": {},
+   "ablations": {
+    "budget": {
+     "id": "D_budget",
+     "title": "Context budget ablation",
+     "question": "How does accuracy scale with the context budget?",
+     "reference": "tokens_1500",
+     "reference_system": "chronos",
+     "population": "48 questions (locomo/adversarial, locomo/multi-hop, locomo/open-domain, locomo/single-hop, locomo/temporal, longmemeval/knowledge-update)",
+     "variants": [
+      {
+       "name": "tokens_1500",
+       "system": "chronos",
+       "is_reference": true,
+       "n": 48,
+       "budget": 1500,
+       "accuracy": {
+        "n": 48,
+        "mean": 0.25,
+        "lo": 0.125,
+        "hi": 0.375
+       },
+       "gold_in_context": {
+        "n": 43,
+        "mean": 0.5503875968992248,
+        "lo": 0.4224806201550387,
+        "hi": 0.6782945736434108
+       },
+       "context_tokens": {
+        "n": 48,
+        "mean": 1473.6041666666667,
+        "p50": 1474.5,
+        "p95": 1499.0
+       },
+       "abstention": {
+        "precision": {
+         "n": 32,
+         "n_questions": 48,
+         "value": 0.125,
+         "lo": 0.029411764705882353,
+         "hi": 0.25
+        },
+        "recall": {
+         "n": 5,
+         "n_questions": 48,
+         "value": 0.8,
+         "lo": 0.3333333333333333,
+         "hi": 1.0
+        },
+        "f1": {
+         "value": 0.21621621621621623,
+         "lo": 0.05555555555555555,
+         "hi": 0.3902439024390244,
+         "n_questions": 48
+        },
+        "false_abstention_rate": {
+         "n": 43,
+         "n_questions": 48,
+         "value": 0.6511627906976745,
+         "lo": 0.5,
+         "hi": 0.7906976744186046
+        },
+        "n_unanswerable": 5,
+        "n_answerable": 43
+       },
+       "token_f1": {
+        "n": 43,
+        "mean": 0.05868555960643225,
+        "lo": 0.024686202510379913,
+        "hi": 0.09820215583729873
+       },
+       "vs_reference": null,
+       "gate": {
+        "locomo_adversarial_abstained": {
+         "n": 4,
+         "mean": 0.75,
+         "lo": 0.25,
+         "hi": 1.0
+        },
+        "longmemeval_abs_abstained": {
+         "n": 1,
+         "mean": 1.0,
+         "lo": 1.0,
+         "hi": 1.0
+        },
+        "false_abstention": {
+         "n": 43,
+         "mean": 0.6511627906976745,
+         "lo": 0.5116279069767442,
+         "hi": 0.7906976744186046
+        }
+       }
+      }
+     ]
+    },
+    "gate": {
+     "id": "C_gate",
+     "title": "Answerability gate ablation",
+     "question": "What does each gate level buy in abstention quality, and what does it cost in false abstentions?",
+     "reference": "full",
+     "reference_system": "chronos",
+     "population": "48 questions (locomo/adversarial, locomo/multi-hop, locomo/open-domain, locomo/single-hop, locomo/temporal, longmemeval/knowledge-update)",
+     "variants": [
+      {
+       "name": "full",
+       "system": "chronos",
+       "is_reference": true,
+       "n": 48,
+       "budget": 1500,
+       "accuracy": {
+        "n": 48,
+        "mean": 0.25,
+        "lo": 0.125,
+        "hi": 0.375
+       },
+       "gold_in_context": {
+        "n": 43,
+        "mean": 0.5503875968992248,
+        "lo": 0.4224806201550387,
+        "hi": 0.6782945736434108
+       },
+       "context_tokens": {
+        "n": 48,
+        "mean": 1473.6041666666667,
+        "p50": 1474.5,
+        "p95": 1499.0
+       },
+       "abstention": {
+        "precision": {
+         "n": 32,
+         "n_questions": 48,
+         "value": 0.125,
+         "lo": 0.029411764705882353,
+         "hi": 0.25
+        },
+        "recall": {
+         "n": 5,
+         "n_questions": 48,
+         "value": 0.8,
+         "lo": 0.3333333333333333,
+         "hi": 1.0
+        },
+        "f1": {
+         "value": 0.21621621621621623,
+         "lo": 0.05555555555555555,
+         "hi": 0.3902439024390244,
+         "n_questions": 48
+        },
+        "false_abstention_rate": {
+         "n": 43,
+         "n_questions": 48,
+         "value": 0.6511627906976745,
+         "lo": 0.5,
+         "hi": 0.7906976744186046
+        },
+        "n_unanswerable": 5,
+        "n_answerable": 43
+       },
+       "token_f1": {
+        "n": 43,
+        "mean": 0.05868555960643225,
+        "lo": 0.024686202510379913,
+        "hi": 0.09820215583729873
+       },
+       "vs_reference": null,
+       "gate": {
+        "locomo_adversarial_abstained": {
+         "n": 4,
+         "mean": 0.75,
+         "lo": 0.25,
+         "hi": 1.0
+        },
+        "longmemeval_abs_abstained": {
+         "n": 1,
+         "mean": 1.0,
+         "lo": 1.0,
+         "hi": 1.0
+        },
+        "false_abstention": {
+         "n": 43,
+         "mean": 0.6511627906976745,
+         "lo": 0.5116279069767442,
+         "hi": 0.7906976744186046
+        }
+       }
+      }
+     ]
+    },
+    "retrieval": {
+     "id": "A_retrieval",
+     "title": "Retrieval ablation",
+     "question": "Which retrieval stages carry the accuracy?",
+     "reference": "plus_episodic",
+     "reference_system": "chronos",
+     "population": "12 questions (locomo/multi-hop, locomo/single-hop)",
+     "variants": [
+      {
+       "name": "plus_episodic",
+       "system": "chronos",
+       "is_reference": true,
+       "n": 12,
+       "budget": 1500,
+       "accuracy": {
+        "n": 12,
+        "mean": 0.25,
+        "lo": 0.0,
+        "hi": 0.5
+       },
+       "gold_in_context": {
+        "n": 12,
+        "mean": 0.20833333333333334,
+        "lo": 0.0,
+        "hi": 0.4583333333333333
+       },
+       "context_tokens": {
+        "n": 12,
+        "mean": 1471.9166666666667,
+        "p50": 1473.0,
+        "p95": 1493.95
+       },
+       "abstention": {
+        "precision": {
+         "n": 7,
+         "n_questions": 12,
+         "value": 0.0,
+         "lo": 0.0,
+         "hi": 0.0
+        },
+        "recall": {
+         "n": 0,
+         "n_questions": 12,
+         "value": null,
+         "lo": null,
+         "hi": null
+        },
+        "f1": {
+         "value": 0.0,
+         "lo": 0.0,
+         "hi": 0.0,
+         "n_questions": 12
+        },
+        "false_abstention_rate": {
+         "n": 12,
+         "n_questions": 12,
+         "value": 0.5833333333333334,
+         "lo": 0.3333333333333333,
+         "hi": 0.8333333333333334
+        },
+        "n_unanswerable": 0,
+        "n_answerable": 12
+       },
+       "token_f1": {
+        "n": 12,
+        "mean": 0.06565656565656565,
+        "lo": 0.0,
+        "hi": 0.14898989898989898
+       },
+       "vs_reference": null,
+       "gate": {
+        "locomo_adversarial_abstained": {
+         "n": 0,
+         "mean": null,
+         "lo": null,
+         "hi": null
+        },
+        "longmemeval_abs_abstained": {
+         "n": 0,
+         "mean": null,
+         "lo": null,
+         "hi": null
+        },
+        "false_abstention": {
+         "n": 12,
+         "mean": 0.5833333333333334,
+         "lo": 0.3333333333333333,
+         "hi": 0.8333333333333334
+        }
+       }
+      }
+     ]
+    },
+    "state": {
+     "id": "B_state",
+     "title": "State-model ablation",
+     "question": "Does bi-temporal state beat arrival-order supersession and an append-only store?",
+     "reference": "bitemporal",
+     "reference_system": "chronos",
+     "population": "20 questions (longmemeval/knowledge-update)",
+     "variants": [
+      {
+       "name": "bitemporal",
+       "system": "chronos",
+       "is_reference": true,
+       "n": 20,
+       "budget": 1500,
+       "accuracy": {
+        "n": 20,
+        "mean": 0.15,
+        "lo": 0.0,
+        "hi": 0.3
+       },
+       "gold_in_context": {
+        "n": 19,
+        "mean": 0.7368421052631579,
+        "lo": 0.6052631578947368,
+        "hi": 0.868421052631579
+       },
+       "context_tokens": {
+        "n": 20,
+        "mean": 1476.6,
+        "p50": 1486.0,
+        "p95": 1499.05
+       },
+       "abstention": {
+        "precision": {
+         "n": 16,
+         "n_questions": 20,
+         "value": 0.0625,
+         "lo": 0.0,
+         "hi": 0.2
+        },
+        "recall": {
+         "n": 1,
+         "n_questions": 20,
+         "value": 1.0,
+         "lo": 1.0,
+         "hi": 1.0
+        },
+        "f1": {
+         "value": 0.11764705882352941,
+         "lo": 0.0,
+         "hi": 0.3333333333333333,
+         "n_questions": 20
+        },
+        "false_abstention_rate": {
+         "n": 19,
+         "n_questions": 20,
+         "value": 0.7894736842105263,
+         "lo": 0.5882352941176471,
+         "hi": 0.95
+        },
+        "n_unanswerable": 1,
+        "n_answerable": 19
+       },
+       "token_f1": {
+        "n": 19,
+        "mean": 0.04671826625386997,
+        "lo": 0.010526315789473684,
+        "hi": 0.09541795665634677
+       },
+       "vs_reference": null,
+       "gate": {
+        "locomo_adversarial_abstained": {
+         "n": 0,
+         "mean": null,
+         "lo": null,
+         "hi": null
+        },
+        "longmemeval_abs_abstained": {
+         "n": 1,
+         "mean": 1.0,
+         "lo": 1.0,
+         "hi": 1.0
+        },
+        "false_abstention": {
+         "n": 19,
+         "mean": 0.7894736842105263,
+         "lo": 0.5789473684210527,
+         "hi": 0.9473684210526315
+        }
+       }
+      }
+     ]
+    }
+   },
+   "judge": {
+    "methods": {
+     "flag": 63,
+     "judge": 33
+    },
+    "providers": {
+     "groq": 33
+    },
+    "audit": {
+     "exists": true,
+     "rows": 74,
+     "labelled": 0
+    },
+    "calibration": {
+     "status": "measured",
+     "providers": [
+      "groq",
+      "cerebras"
+     ],
+     "n": 74,
+     "kappa": 0.9694971145919209,
+     "agreement": 0.9864864864864865,
+     "positive_rate": {
+      "groq": 0.6621621621621622,
+      "cerebras": 0.6756756756756757
+     }
+    }
+   },
+   "recheck": {
+    "n": 41,
+    "agreement": 0.8536585365853658,
+    "lo": 0.7317073170731707,
+    "hi": 0.9512195121951219,
+    "kappa": -0.07894736842105267,
+    "both_support": 35,
+    "nli_only": 3,
+    "judge_only": 3,
+    "both_reject": 0
+   },
+   "ingest": {
+    "conversations": {
+     "conv-50": {
+      "dataset": "locomo",
+      "sessions": 30,
+      "turns": 568,
+      "seconds": 2911.9502405440435,
+      "prompt_tokens": 427080,
+      "completion_tokens": 49353,
+      "llm_calls": 323,
+      "llm_seconds": 2789.4959689599928
+     },
+     "6aeb4375": {
+      "dataset": "longmemeval",
+      "sessions": 11,
+      "turns": 118,
+      "seconds": 327.4190694568679,
+      "prompt_tokens": 53759,
+      "completion_tokens": 6218,
+      "llm_calls": 43,
+      "llm_seconds": 316.01940558780916
+     },
+     "852ce960": {
+      "dataset": "longmemeval",
+      "sessions": 13,
+      "turns": 116,
+      "seconds": 297.4351813746616,
+      "prompt_tokens": 51918,
+      "completion_tokens": 5506,
+      "llm_calls": 40,
+      "llm_seconds": 284.8652014120016
+     },
+     "945e3d21": {
+      "dataset": "longmemeval",
+      "sessions": 13,
+      "turns": 110,
+      "seconds": 525.2145595399197,
+      "prompt_tokens": 63026,
+      "completion_tokens": 10096,
+      "llm_calls": 64,
+      "llm_seconds": 508.0378693351522
+     },
+     "d7c942c3": {
+      "dataset": "longmemeval",
+      "sessions": 12,
+      "turns": 120,
+      "seconds": 391.76295408280566,
+      "prompt_tokens": 58949,
+      "completion_tokens": 6632,
+      "llm_calls": 47,
+      "llm_seconds": 354.6657235024031
+     },
+     "ce6d2d27": {
+      "dataset": "longmemeval",
+      "sessions": 12,
+      "turns": 120,
+      "seconds": 362.6192904994823,
+      "prompt_tokens": 56221,
+      "completion_tokens": 6540,
+      "llm_calls": 44,
+      "llm_seconds": 336.82966837240383
+     },
+     "184da446": {
+      "dataset": "longmemeval",
+      "sessions": 8,
+      "turns": 95,
+      "seconds": 549.0723642085213,
+      "prompt_tokens": 57500,
+      "completion_tokens": 9794,
+      "llm_calls": 61,
+      "llm_seconds": 525.8832350831944
+     },
+     "031748ae": {
+      "dataset": "longmemeval",
+      "sessions": 16,
+      "turns": 122,
+      "seconds": 313.80416150181554,
+      "prompt_tokens": 57985,
+      "completion_tokens": 5875,
+      "llm_calls": 41,
+      "llm_seconds": 301.88907283288427
+     },
+     "4d6b87c8": {
+      "dataset": "longmemeval",
+      "sessions": 15,
+      "turns": 126,
+      "seconds": 451.7467725027818,
+      "prompt_tokens": 65068,
+      "completion_tokens": 8502,
+      "llm_calls": 59,
+      "llm_seconds": 434.6678699112963
+     },
+     "f9e8c073": {
+      "dataset": "longmemeval",
+      "sessions": 13,
+      "turns": 114,
+      "seconds": 534.5044519158546,
+      "prompt_tokens": 68757,
+      "completion_tokens": 10077,
+      "llm_calls": 66,
+      "llm_seconds": 518.0145636261441
+     },
+     "5a4f22c0": {
+      "dataset": "longmemeval",
+      "sessions": 11,
+      "turns": 99,
+      "seconds": 422.62873320817016,
+      "prompt_tokens": 53111,
+      "completion_tokens": 8236,
+      "llm_calls": 45,
+      "llm_seconds": 408.8059206644539
+     },
+     "c4ea545c": {
+      "dataset": "longmemeval",
+      "sessions": 12,
+      "turns": 116,
+      "seconds": 436.79912187345326,
+      "prompt_tokens": 56912,
+      "completion_tokens": 8310,
+      "llm_calls": 53,
+      "llm_seconds": 422.43358100089245
+     },
+     "db467c8c": {
+      "dataset": "longmemeval",
+      "sessions": 15,
+      "turns": 142,
+      "seconds": 237.00185554055497,
+      "prompt_tokens": 53015,
+      "completion_tokens": 4367,
+      "llm_calls": 33,
+      "llm_seconds": 225.63377275085077
+     },
+     "1cea1afa": {
+      "dataset": "longmemeval",
+      "sessions": 21,
+      "turns": 127,
+      "seconds": 379.7534796660766,
+      "prompt_tokens": 72468,
+      "completion_tokens": 7094,
+      "llm_calls": 50,
+      "llm_seconds": 365.6412390845362
+     },
+     "50635ada": {
+      "dataset": "longmemeval",
+      "sessions": 12,
+      "turns": 112,
+      "seconds": 763.6611939151771,
+      "prompt_tokens": 81674,
+      "completion_tokens": 14043,
+      "llm_calls": 88,
+      "llm_seconds": 720.8386171292514
+     },
+     "f685340e": {
+      "dataset": "longmemeval",
+      "sessions": 13,
+      "turns": 99,
+      "seconds": 363.59012783225626,
+      "prompt_tokens": 52885,
+      "completion_tokens": 6497,
+      "llm_calls": 46,
+      "llm_seconds": 349.170066668652
+     },
+     "dfde3500": {
+      "dataset": "longmemeval",
+      "sessions": 11,
+      "turns": 106,
+      "seconds": 310.91187520930544,
+      "prompt_tokens": 51479,
+      "completion_tokens": 5670,
+      "llm_calls": 38,
+      "llm_seconds": 295.34248887957074
+     },
+     "c7dc5443": {
+      "dataset": "longmemeval",
+      "sessions": 12,
+      "turns": 98,
+      "seconds": 431.8128544180654,
+      "prompt_tokens": 54991,
+      "completion_tokens": 8364,
+      "llm_calls": 50,
+      "llm_seconds": 417.8195433774963
+     },
+     "3ba21379": {
+      "dataset": "longmemeval",
+      "sessions": 11,
+      "turns": 87,
+      "seconds": 232.713099085493,
+      "prompt_tokens": 41677,
+      "completion_tokens": 4201,
+      "llm_calls": 30,
+      "llm_seconds": 220.66888833162375
+     },
+     "5c40ec5b": {
+      "dataset": "longmemeval",
+      "sessions": 14,
+      "turns": 103,
+      "seconds": 214.14525637379847,
+      "prompt_tokens": 53087,
+      "completion_tokens": 3742,
+      "llm_calls": 32,
+      "llm_seconds": 201.89298583031632
+     },
+     "2133c1b5_abs": {
+      "dataset": "longmemeval",
+      "sessions": 15,
+      "turns": 89,
+      "seconds": 435.1355802495964,
+      "prompt_tokens": 67246,
+      "completion_tokens": 8202,
+      "llm_calls": 57,
+      "llm_seconds": 421.32251666206867
+     }
+    },
+    "by_dataset": {
+     "locomo": {
+      "conversations": 1,
+      "sessions": 30,
+      "turns": 568,
+      "seconds": 2911.9502405440435,
+      "prompt_tokens": 427080,
+      "completion_tokens": 49353,
+      "llm_calls": 323,
+      "per_conversation_seconds": [
+       2911.9502405440435
+      ]
+     },
+     "longmemeval": {
+      "conversations": 20,
+      "sessions": 260,
+      "turns": 2219,
+      "seconds": 7981.731982454658,
+      "prompt_tokens": 1171728,
+      "completion_tokens": 147966,
+      "llm_calls": 987,
+      "per_conversation_seconds": [
+       327.4190694568679,
+       297.4351813746616,
+       525.2145595399197,
+       391.76295408280566,
+       362.6192904994823,
+       549.0723642085213,
+       313.80416150181554,
+       451.7467725027818,
+       534.5044519158546,
+       422.62873320817016,
+       436.79912187345326,
+       237.00185554055497,
+       379.7534796660766,
+       763.6611939151771,
+       363.59012783225626,
+       310.91187520930544,
+       431.8128544180654,
+       232.713099085493,
+       214.14525637379847,
+       435.1355802495964
+      ]
+     }
+    }
+   },
+   "steps": {
+    "ingest": 10893.682222998701,
+    "answer:chronos": 1076.994151292136,
+    "answer:B3_chunk_rag": 639.6925329579972,
+    "judge": 8.55948191601783,
+    "judge_calibration": 0.00033674994483590126,
+    "claim_recheck": 97.42526712501422
+   },
+   "failure_modes": {
+    "cross_attribute_contradiction": {
+     "count": 0,
+     "population": "48 contexts",
+     "examples": []
+    },
+    "attribute_mismatch": {
+     "count": 12,
+     "population": "211 distinct memories shown in contexts",
+     "examples": [
+      {
+       "system": "chronos",
+       "question_id": "031748ae",
+       "question": "How many engineers do I lead when I just started my new role as Senior Software Engineer? How many engineers do I lead now?",
+       "gold": "When you just started your new role as Senior Software Engineer, you led 4 engineers. Now, you lead 5 engineers",
+       "answer": "You lead five engineers now.",
+       "fact": "The user is currently a Senior Software Engineer.",
+       "key": "job_title"
+      },
+      {
+       "system": "chronos",
+       "question_id": "5c40ec5b",
+       "question": "How many times have I met up with Alex from Germany?",
+       "gold": "We've met up twice.",
+       "answer": "I don't know.",
+       "fact": "User has a friend Alex from Germany.",
+       "key": "relationship_status"
+      }
+     ]
+    },
+    "temporary_stay": {
+     "count": 0,
+     "population": "48 contexts",
+     "examples": []
+    },
+    "temporal_resolution": {
+     "count": 3,
+     "population": "15 answered questions",
+     "examples": [
+      {
+       "system": "chronos",
+       "question_id": "locomo:conv-50:q0014",
+       "question": "When did Calvin meet with the creative team for his new album?",
+       "gold": "8 June, 2023",
+       "answer": "Calvin met with the creative team for his new album on 2023-06-09."
+      },
+      {
+       "system": "chronos",
+       "question_id": "locomo:conv-50:q0026",
+       "question": "When did Calvin record a podcast with his friends?",
+       "gold": "21 August, 2023",
+       "answer": "Calvin recorded a podcast with his friends on 2023-08-22."
+      }
+     ]
+    },
+    "entity_split": {
+     "count": 1,
+     "population": "21 conversations",
+     "examples": [
+      {
+       "system": "ingestion",
+       "question_id": "5a4f22c0",
+       "question": "",
+       "gold": "",
+       "answer": "",
+       "name": "alex",
+       "type": "PERSON",
+       "entities": 2,
+       "descriptors": [
+        "{\"anchor\": \"user\", \"relation\": \"founder of a startup in edtech space\", \"text\": null}",
+        "{\"anchor\": \"user\", \"relation\": \"founder\", \"text\": null}"
+       ]
+      }
+     ]
+    },
+    "over_abstention": {
+     "count": 28,
+     "population": "43 answerable questions",
+     "examples": [
+      {
+       "system": "chronos",
+       "question_id": "184da446",
+       "question": "How many pages of 'A Short History of Nearly Everything' have I read so far?",
+       "gold": "220",
+       "answer": "I don't know.",
+       "abstained_at": "model",
+       "reason": "The context does not provide information about the exact number of pages read so far.",
+       "gold_in_context": true
+      },
+      {
+       "system": "chronos",
+       "question_id": "1cea1afa",
+       "question": "How many Instagram followers do I currently have?",
+       "gold": "600",
+       "answer": "I don't know.",
+       "abstained_at": "model",
+       "reason": "The context does not provide the current number of Instagram followers.",
+       "gold_in_context": true
+      }
+     ]
+    },
+    "nli_error": {
+     "count": 6,
+     "population": "41 re-checked claims",
+     "examples": [
+      {
+       "system": "chronos",
+       "question_id": "3ba21379",
+       "question": "",
+       "gold": "",
+       "answer": "",
+       "claim": "The user is currently working on weathering effects for their Ford F-150 pickup truck model.",
+       "premise": "On 2023-05-26, assistant said: Applying decals can be a bit finicky, but with some guidance, you'll be able to achieve professional-looking results on your Ford F-150 pickup truck model. Here are some tips on how to apply decals correctly, including on curved surfaces:\n\n**Preparation is key**\n\n1. **Clean the surface**: Ensure the area where you'll be applying the decal is free of dust, oils, and dirt. Gently wipe the area with a soft brush or a lint-free cloth.\n2. **Choose the right decals**: Select decals specifically designed for model cars and suitable for your model's scale (1/25 in your case). Make sure the decals are not too thick or too thin, as this can affect their conformability.\n3. **Use a decal setting solution**: A decal setting solution (e.g., Micro Set or Mr. Mark Setter) can help the decal conform to curved surfaces and reduce the risk of bubbles or wrinkles.\n\n**Applying decals on flat surfaces**\n\n1. **Cut out the decal**: Use a sharp hobby knife or scissors to carefully cut out the decal from the sheet, leaving a small border around the design.\n2. **Soak the decal**: Soak the decal in warm water for about 30 seconds to loosen the adhesive.\n3. **Apply the decal**: Use a pair of tweezers to carefully place the decal onto the model, positioning it as desired. Use a credit card or a similar tool to gently smooth out any air bubbles or wrinkles.\n4. **Set the decal**: Apply a small amount of decal setting solution to the decal, following the manufacturer's instructions. This will help the decal conform to the surface.\n\n**Applying decals on curved surfaces**\n\n1. **Cut the decal into smaller pieces**: If the decal is large or complex, consider cutting it into smaller pieces to make it easier to apply on curved surfaces.\n2. **Use a decal application tool**: A decal application tool (e.g., a decal applicator or a curved decal scraper) can help you apply decals on curved surfaces. These tools provide extra pressure and control to conform the decal to the surface.\n3. **Apply the decal in sections**: Apply the decal in small sections, starting from the center and working your way outwards. Use a gentle, sweeping motion to smooth out the decal as you go.\n4. **Use a hair dryer or warm air**: Gently apply warm air to the decal using a hair dryer or a warm air blower to help it conform to the curved surface.\n\n**Additional tips**\n\n1. **Work patiently**: Applying decals can be a time-consuming process, especially on curved surfaces. Take your time, and work patiently to avoid mistakes.\n2. **Use a reference image**: Study reference images of the real car to ensure accurate placement and orientation of the decals.\n3. **Apply decals before clear coating**: Apply decals before clear coating your model to prevent the decals from lifting or becoming distorted.\n4. **Test the decals**: Test the decals on a scrap piece of plastic or a test model before applying them to your Ford F-150 pickup truck model.\n\nBy following these tips, you should be able to achieve professional-looking decals on your Ford F-150 pickup truck model, even on curved surfaces. Good luck, and have fun! On 2023-05-26, user said: Now that I have the airbrushing and decal application techniques down, I'd like to ask about weathering effects. I've seen some amazing weathered models that look incredibly realistic. How do I achieve that weathered look on my Ford F-150 pickup truck model? On 2023-05-26, assistant said: Weathering is an art form in itself, and it can elevate your model to a whole new level of realism. Achieving a weathered look on your Ford F-150 pickup truck model requires some practice, patience, and the right techniques. Here are some tips to help you get started:\n\n**Understanding weathering**\n\nWeathering is the process of simulating the effects of wear and tear, environmental conditions, and aging on a model. It's essential to study reference images of real vehicles to understand the types of weathering effects you want to achieve.\n\n**Basic weathering techniques**\n\n1. **Dust and dirt**: Use a small brush to apply a mixture of acrylic paint and thinner (or a weathering powder) to create a subtle, dusty appearance. Focus on areas that would naturally accumulate dirt, such as wheel wells, door handles, and the underside of the model.\n2. **Mud and grime**: Use a thicker mixture of paint and thinner to create a more pronounced, muddy appearance. Apply this mixture to areas that would be exposed to mud, such as the wheels, tires, and lower body panels.\n3. **Rust and corrosion**: Use a rust-colored paint or a rust-effect solution to simulate corrosion on metal surfaces. Apply this to areas that would be prone to rust, such as the undercarriage, suspension components, and exhaust system.\n4. **Fading and sun bleaching**: Use a lighter shade of the base color to create a faded, sun-bleached appearance on surfaces exposed to direct sunlight. Apply this effect to areas such as the hood, roof, and trunk lid.\n5. **Chipping and peeling**: Use a small brush to apply a lighter shade of paint to create a chipped or peeling effect on surfaces that would naturally wear off, such as the edges of body panels and trim.\n\n**Advanced weathering techniques**\n\n1. **Washes**: Use a thinned mixture of paint and thinner to create a subtle, translucent wash effect. Apply this to recessed areas, such as panel lines, to create depth and shading.\n2. **Drybrushing**: Use a almost-dry brush to apply a lighter shade of paint to raised surfaces, creating a textured, worn appearance.\n3. **Salt weathering**: Apply a mixture of salt and water to the model, then use a hair dryer to dry the mixture. The salt will create a textured, rough appearance when brushed off.\n4. **Oil stains and streaks**: Use a small brush to apply a dark, thinned mixture of paint to create oil stains and streaks on surfaces that would be exposed to oil, such as the engine and transmission areas.\n\n**Tips and tricks**\n\n1. **Start with a clean model**: Make sure your model is free of dust and oils before applying weathering effects.\n2. **Use reference images**: Study reference images of real vehicles to understand the types of weathering effects you want to achieve.\n3. **Work in layers**: Apply weathering effects in layers, starting with subtle, general effects and building up to more pronounced, specific effects.\n4. **Blend, blend, blend**: Use a soft brush to blend weathering effects, creating a natural, subtle appearance.\n5. **Practice, practice, practice**: Weathering is an art form that requires practice to master. Don't be discouraged if your first attempts don't turn out as expected.\n\nBy mastering these weathering techniques, you'll be able to achieve a realistically weathered look on your Ford F-150 pickup truck model. Remember to study reference images, practice patience, and work in layers to create a believable, worn appearance. Good luck, and have fun!",
+       "nli_entailment": 0.001864871349263993,
+       "kind": "NLI failed, judge disagrees"
+      },
+      {
+       "system": "B3_chunk_rag",
+       "question_id": "852ce960",
+       "question": "",
+       "gold": "",
+       "answer": "",
+       "claim": "Based on your pre-approval amount of $350,000 and the purchase price of $325,000, I'll provide you with a more detailed estimate of your closing costs.",
+       "premise": "On 2023-08-11, assistant said: Congratulations on your pre-approval!\n\nBased on your pre-approval amount of $350,000 and the purchase price of $325,000, I'll provide you with a more detailed estimate of your closing costs.\n\nAssuming you're getting a conventional loan from Wells Fargo, here's a breakdown of the estimated closing costs:\n\n1. **Title Insurance and Escrow Fees**:\n\t* Title insurance: 0.5% to 1.0% of the purchase price = $1,625 to $3,250\n\t* Escrow fees: $500 to $2,000 = $1,250 (avg.)\n\tTotal: $2,875 to $5,250\n2. **Loan Origination Fees**:\n\t* Origination fee: 0.5% to 1.0% of the loan amount = $1,750 to $3,500\n\t* Underwriting fee: $300 to $900 = $600 (avg.)\n\t* Appraisal fee: $300 to $1,000 = $650 (avg.)\n\tTotal: $2,700 to $5,050\n3. **Appraisal Fee** (already included in loan origination fees above)\n4. **Credit Report Fee**:\n\t* $15 to $30 = $22.50 (avg.)\n5. **Flood Determination Fee**:\n\t* $15 to $50 = $32.50 (avg.)\n6. **Inspection Fees** (optional):\n\t* Home inspection: $300 to $1,000 = $650 (avg.)\n\t* Pest inspection: $50 to $150 = $100 (avg.)\n\t* Septic inspection: $100 to $300 = $200 (avg.)\n\tTotal: $950 to $1,350\n7. **Attorney Fees** (optional):\n\t* $500 to $2,000 = $1,250 (avg.)\n8. **Recording Fees**:\n\t* $50 to $200 = $125 (avg.)\n9. **Transfer Taxes** (varies by state and locality):\n\t* 0.1% to 2.0% of the purchase price = $325 to $6,500 (avg. 0.5% = $1,625)\n10. **Other Fees**:\n\t* Courier fees: $20 to $100 = $60 (avg.)\n\t* Notary fees: $20 to $100 = $60 (avg.)\n\nTotal Estimated Closing Costs: $11,332 to $20,322\n\nAs a rough estimate, you can expect to pay around 3.5% to 6.2% of the purchase price in closing costs. Based on your purchase price of $325,000, that would be:\n\n* 3.5%: $11,375\n* 6.2%: $20,150\n\nKeep in mind that these are estimated ranges, and your actual closing costs may vary depending on your location, loan terms, and other factors. It's always a good idea to review your loan estimate and closing disclosure documents carefully to get a more accurate estimate of your closing costs.\n\nI hope this helps you plan your budget for your new home purchase!",
+       "nli_entailment": 0.02013882278192216,
+       "kind": "NLI failed, judge disagrees"
+      }
+     ]
+    }
+   }
+  }
+ },
+ "state_probes": {
+  "scripted": {
+   "label": "synthetic",
+   "mode": "scripted",
+   "details": [
+    {
+     "probe_id": "correction_01",
+     "case": "in_session_correction",
+     "policy": "append_only",
+     "passed": true,
+     "current_ok": true,
+     "failures": []
+    },
+    {
+     "probe_id": "correction_01",
+     "case": "in_session_correction",
+     "policy": "arrival_order",
+     "passed": true,
+     "current_ok": true,
+     "failures": []
+    },
+    {
+     "probe_id": "correction_01",
+     "case": "in_session_correction",
+     "policy": "bitemporal",
+     "passed": true,
+     "current_ok": true,
+     "failures": []
+    },
+    {
+     "probe_id": "correction_02",
+     "case": "in_session_correction",
+     "policy": "append_only",
+     "passed": true,
+     "current_ok": true,
+     "failures": []
+    },
+    {
+     "probe_id": "correction_02",
+     "case": "in_session_correction",
+     "policy": "arrival_order",
+     "passed": true,
+     "current_ok": true,
+     "failures": []
+    },
+    {
+     "probe_id": "correction_02",
+     "case": "in_session_correction",
+     "policy": "bitemporal",
+     "passed": true,
+     "current_ok": true,
+     "failures": []
+    },
+    {
+     "probe_id": "correction_03",
+     "case": "in_session_correction",
+     "policy": "append_only",
+     "passed": true,
+     "current_ok": true,
+     "failures": []
+    },
+    {
+     "probe_id": "correction_03",
+     "case": "in_session_correction",
+     "policy": "arrival_order",
+     "passed": true,
+     "current_ok": true,
+     "failures": []
+    },
+    {
+     "probe_id": "correction_03",
+     "case": "in_session_correction",
+     "policy": "bitemporal",
+     "passed": true,
+     "current_ok": true,
+     "failures": []
+    },
+    {
+     "probe_id": "correction_04",
+     "case": "in_session_correction",
+     "policy": "append_only",
+     "passed": true,
+     "current_ok": true,
+     "failures": []
+    },
+    {
+     "probe_id": "correction_04",
+     "case": "in_session_correction",
+     "policy": "arrival_order",
+     "passed": true,
+     "current_ok": true,
+     "failures": []
+    },
+    {
+     "probe_id": "correction_04",
+     "case": "in_session_correction",
+     "policy": "bitemporal",
+     "passed": true,
+     "current_ok": true,
+     "failures": []
+    },
+    {
+     "probe_id": "correction_05",
+     "case": "in_session_correction",
+     "policy": "append_only",
+     "passed": true,
+     "current_ok": true,
+     "failures": []
+    },
+    {
+     "probe_id": "correction_05",
+     "case": "in_session_correction",
+     "policy": "arrival_order",
+     "passed": true,
+     "current_ok": true,
+     "failures": []
+    },
+    {
+     "probe_id": "correction_05",
+     "case": "in_session_correction",
+     "policy": "bitemporal",
+     "passed": true,
+     "current_ok": true,
+     "failures": []
+    },
+    {
+     "probe_id": "late_mention_01",
+     "case": "late_mention",
+     "policy": "append_only",
+     "passed": true,
+     "current_ok": true,
+     "failures": []
+    },
+    {
+     "probe_id": "late_mention_01",
+     "case": "late_mention",
+     "policy": "arrival_order",
+     "passed": false,
+     "current_ok": true,
+     "failures": [
+      "memory Priya~'Delhi': valid_from=None (want '2019-01-01'); valid_from_precision='UNKNOWN' (want 'YEAR'); valid_to='2023-06-10' (want '2019-12-31'); valid_to_precision='BEFORE' (want 'YEAR')"
+     ]
+    },
+    {
+     "probe_id": "late_mention_01",
+     "case": "late_mention",
+     "policy": "bitemporal",
+     "passed": true,
+     "current_ok": true,
+     "failures": []
+    },
+    {
+     "probe_id": "late_mention_02",
+     "case": "late_mention",
+     "policy": "append_only",
+     "passed": true,
+     "current_ok": true,
+     "failures": []
+    },
+    {
+     "probe_id": "late_mention_02",
+     "case": "late_mention",
+     "policy": "arrival_order",
+     "passed": false,
+     "current_ok": true,
+     "failures": [
+      "memory Marco~'Brightline': valid_from=None (want '2018-01-01'); valid_to='2023-09-01' (want '2018-12-31'); valid_to_precision='BEFORE' (want 'YEAR')"
+     ]
+    },
+    {
+     "probe_id": "late_mention_02",
+     "case": "late_mention",
+     "policy": "bitemporal",
+     "passed": true,
+     "current_ok": true,
+     "failures": []
+    },
+    {
+     "probe_id": "late_mention_03",
+     "case": "late_mention",
+     "policy": "append_only",
+     "passed": true,
+     "current_ok": true,
+     "failures": []
+    },
+    {
+     "probe_id": "late_mention_03",
+     "case": "late_mention",
+     "policy": "arrival_order",
+     "passed": false,
+     "current_ok": true,
+     "failures": [
+      "memory Aisha~'Lakeside': valid_from=None (want '2016-01-01'); valid_to='2023-01-20' (want '2016-12-31')"
+     ]
+    },
+    {
+     "probe_id": "late_mention_03",
+     "case": "late_mention",
+     "policy": "bitemporal",
+     "passed": true,
+     "current_ok": true,
+     "failures": []
+    },
+    {
+     "probe_id": "late_mention_04",
+     "case": "late_mention",
+     "policy": "append_only",
+     "passed": true,
+     "current_ok": true,
+     "failures": []
+    },
+    {
+     "probe_id": "late_mention_04",
+     "case": "late_mention",
+     "policy": "arrival_order",
+     "passed": false,
+     "current_ok": true,
+     "failures": [
+      "memory Kenji~'barista': valid_from=None (want '2015-01-01'); valid_to='2023-07-30' (want '2015-12-31')"
+     ]
+    },
+    {
+     "probe_id": "late_mention_04",
+     "case": "late_mention",
+     "policy": "bitemporal",
+     "passed": true,
+     "current_ok": true,
+     "failures": []
+    },
+    {
+     "probe_id": "late_mention_05",
+     "case": "late_mention",
+     "policy": "append_only",
+     "passed": true,
+     "current_ok": true,
+     "failures": []
+    },
+    {
+     "probe_id": "late_mention_05",
+     "case": "late_mention",
+     "policy": "arrival_order",
+     "passed": false,
+     "current_ok": true,
+     "failures": [
+      "memory Sofia~'Montreal': valid_from=None (want '2020-03-01'); valid_from_precision='UNKNOWN' (want 'MONTH'); valid_to='2023-08-19' (want '2020-03-31')"
+     ]
+    },
+    {
+     "probe_id": "late_mention_05",
+     "case": "late_mention",
+     "policy": "bitemporal",
+     "passed": true,
+     "current_ok": true,
+     "failures": []
+    },
+    {
+     "probe_id": "neg_01",
+     "case": "neg_polarity",
+     "policy": "append_only",
+     "passed": false,
+     "current_ok": false,
+     "failures": [
+      "memory Arjun~'guitar': status='ACTIVE' (want 'SUPERSEDED'); valid_to=None (want '2023-06-18'); valid_to_precision=None (want 'SESSION')",
+      "must not be current: ['Arjun plays guitar in a band on weekends.']"
+     ]
+    },
+    {
+     "probe_id": "neg_01",
+     "case": "neg_polarity",
+     "policy": "arrival_order",
+     "passed": true,
+     "current_ok": true,
+     "failures": []
+    },
+    {
+     "probe_id": "neg_01",
+     "case": "neg_polarity",
+     "policy": "bitemporal",
+     "passed": true,
+     "current_ok": true,
+     "failures": []
+    },
+    {
+     "probe_id": "neg_02",
+     "case": "neg_polarity",
+     "policy": "append_only",
+     "passed": false,
+     "current_ok": false,
+     "failures": [
+      "memory Pedro~'smok': status='ACTIVE' (want 'SUPERSEDED'); valid_to=None (want '*')",
+      "must not be current: ['Pedro smokes about half a pack a day.']"
+     ]
+    },
+    {
+     "probe_id": "neg_02",
+     "case": "neg_polarity",
+     "policy": "arrival_order",
+     "passed": true,
+     "current_ok": true,
+     "failures": []
+    },
+    {
+     "probe_id": "neg_02",
+     "case": "neg_polarity",
+     "policy": "bitemporal",
+     "passed": true,
+     "current_ok": true,
+     "failures": []
+    },
+    {
+     "probe_id": "neg_03",
+     "case": "neg_polarity",
+     "policy": "append_only",
+     "passed": false,
+     "current_ok": false,
+     "failures": [
+      "memory Yusuf~'Delta': status='ACTIVE' (want 'SUPERSEDED'); valid_to=None (want '*')",
+      "must not be current: ['Yusuf works at Delta Print.']"
+     ]
+    },
+    {
+     "probe_id": "neg_03",
+     "case": "neg_polarity",
+     "policy": "arrival_order",
+     "passed": true,
+     "current_ok": true,
+     "failures": []
+    },
+    {
+     "probe_id": "neg_03",
+     "case": "neg_polarity",
+     "policy": "bitemporal",
+     "passed": true,
+     "current_ok": true,
+     "failures": []
+    },
+    {
+     "probe_id": "neg_04",
+     "case": "neg_polarity",
+     "policy": "append_only",
+     "passed": false,
+     "current_ok": false,
+     "failures": [
+      "memory Lily~'cat': status='ACTIVE' (want 'SUPERSEDED'); valid_to=None (want '*')",
+      "must not be current: ['Lily has a cat named Mochi.']"
+     ]
+    },
+    {
+     "probe_id": "neg_04",
+     "case": "neg_polarity",
+     "policy": "arrival_order",
+     "passed": true,
+     "current_ok": true,
+     "failures": []
+    },
+    {
+     "probe_id": "neg_04",
+     "case": "neg_polarity",
+     "policy": "bitemporal",
+     "passed": true,
+     "current_ok": true,
+     "failures": []
+    },
+    {
+     "probe_id": "neg_05",
+     "case": "neg_polarity",
+     "policy": "append_only",
+     "passed": false,
+     "current_ok": false,
+     "failures": [
+      "memory Sven~'espresso': status='ACTIVE' (want 'SUPERSEDED'); valid_to=None (want '*')",
+      "must not be current: ['Sven drinks three espressos every morning.']"
+     ]
+    },
+    {
+     "probe_id": "neg_05",
+     "case": "neg_polarity",
+     "policy": "arrival_order",
+     "passed": true,
+     "current_ok": true,
+     "failures": []
+    },
+    {
+     "probe_id": "neg_05",
+     "case": "neg_polarity",
+     "policy": "bitemporal",
+     "passed": true,
+     "current_ok": true,
+     "failures": []
+    },
+    {
+     "probe_id": "out_of_order_01",
+     "case": "out_of_order_dates",
+     "policy": "append_only",
+     "passed": false,
+     "current_ok": false,
+     "failures": [
+      "memory Ines~'Denver': valid_to=None (want '*')",
+      "current Ines.residence = ['Ines moved to Austin.', 'Ines moved to Denver.'] (want ['Austin'])"
+     ]
+    },
+    {
+     "probe_id": "out_of_order_01",
+     "case": "out_of_order_dates",
+     "policy": "arrival_order",
+     "passed": false,
+     "current_ok": false,
+     "failures": [
+      "memory Ines~'Austin': status='SUPERSEDED' (want 'ACTIVE'); valid_from='2023-07-10' (want '2022-06-01'); valid_to='2023-09-02' (want None)",
+      "memory Ines~'Denver': valid_from='2023-09-02' (want '2021-03-01'); valid_from_precision='SESSION' (want 'MONTH'); valid_to=None (want '*')",
+      "current Ines.residence = ['Ines moved to Denver.'] (want ['Austin'])"
+     ]
+    },
+    {
+     "probe_id": "out_of_order_01",
+     "case": "out_of_order_dates",
+     "policy": "bitemporal",
+     "passed": true,
+     "current_ok": true,
+     "failures": []
+    },
+    {
+     "probe_id": "out_of_order_02",
+     "case": "out_of_order_dates",
+     "policy": "append_only",
+     "passed": false,
+     "current_ok": false,
+     "failures": [
+      "memory Owen~'Summit': valid_to=None (want '*')",
+      "current Owen.employer = ['Owen works at Fairway Logistics.', 'Owen started working at Summit Foods.'] (want ['Fairway'])"
+     ]
+    },
+    {
+     "probe_id": "out_of_order_02",
+     "case": "out_of_order_dates",
+     "policy": "arrival_order",
+     "passed": false,
+     "current_ok": false,
+     "failures": [
+      "memory Owen~'Fairway': status='SUPERSEDED' (want 'ACTIVE'); valid_from='2023-04-01' (want '2023-01-01'); valid_to='2023-06-15' (want None)",
+      "memory Owen~'Summit': valid_from='2023-06-15' (want '2020-01-01'); valid_from_precision='SESSION' (want 'YEAR'); valid_to=None (want '*')",
+      "current Owen.employer = ['Owen started working at Summit Foods.'] (want ['Fairway'])"
+     ]
+    },
+    {
+     "probe_id": "out_of_order_02",
+     "case": "out_of_order_dates",
+     "policy": "bitemporal",
+     "passed": true,
+     "current_ok": true,
+     "failures": []
+    },
+    {
+     "probe_id": "out_of_order_03",
+     "case": "out_of_order_dates",
+     "policy": "append_only",
+     "passed": false,
+     "current_ok": false,
+     "failures": [
+      "memory Lucia~'software engineer': valid_to=None (want '*')",
+      "current Lucia.job_title = ['Lucia works as a team lead.', 'Lucia works as a software engineer.'] (want ['team lead'])"
+     ]
+    },
+    {
+     "probe_id": "out_of_order_03",
+     "case": "out_of_order_dates",
+     "policy": "arrival_order",
+     "passed": false,
+     "current_ok": false,
+     "failures": [
+      "memory Lucia~'team lead': status='SUPERSEDED' (want 'ACTIVE'); valid_from='2023-05-05' (want '2023-04-01'); valid_to='2023-08-08' (want None)",
+      "memory Lucia~'software engineer': valid_from='2023-08-08' (want '2019-01-01'); valid_to=None (want '*')",
+      "current Lucia.job_title = ['Lucia works as a software engineer.'] (want ['team lead'])"
+     ]
+    },
+    {
+     "probe_id": "out_of_order_03",
+     "case": "out_of_order_dates",
+     "policy": "bitemporal",
+     "passed": true,
+     "current_ok": true,
+     "failures": []
+    },
+    {
+     "probe_id": "out_of_order_04",
+     "case": "out_of_order_dates",
+     "policy": "append_only",
+     "passed": false,
+     "current_ok": false,
+     "failures": [
+      "memory Arun~'Hyderabad': valid_to=None (want '2023-10-01')",
+      "current Arun.residence = ['Arun lives in Chennai.', 'Arun moved to Hyderabad.'] (want ['Chennai'])"
+     ]
+    },
+    {
+     "probe_id": "out_of_order_04",
+     "case": "out_of_order_dates",
+     "policy": "arrival_order",
+     "passed": false,
+     "current_ok": false,
+     "failures": [
+      "memory Arun~'Chennai': status='SUPERSEDED' (want 'ACTIVE'); valid_from='2023-10-20' (want '2023-10-01'); valid_from_precision='SESSION' (want 'DAY'); valid_to='2023-11-05' (want None)",
+      "memory Arun~'Hyderabad': valid_from='2023-11-05' (want '2023-05-02'); valid_from_precision='SESSION' (want 'DAY'); valid_to=None (want '2023-10-01')",
+      "current Arun.residence = ['Arun moved to Hyderabad.'] (want ['Chennai'])"
+     ]
+    },
+    {
+     "probe_id": "out_of_order_04",
+     "case": "out_of_order_dates",
+     "policy": "bitemporal",
+     "passed": true,
+     "current_ok": true,
+     "failures": []
+    },
+    {
+     "probe_id": "out_of_order_05",
+     "case": "out_of_order_dates",
+     "policy": "append_only",
+     "passed": false,
+     "current_ok": false,
+     "failures": [
+      "memory Tara~'Elmwood': valid_to=None (want '*')",
+      "current Tara.school = ['Tara studies at Kingsbridge University.', 'Tara studied at Elmwood College.'] (want ['Kingsbridge'])"
+     ]
+    },
+    {
+     "probe_id": "out_of_order_05",
+     "case": "out_of_order_dates",
+     "policy": "arrival_order",
+     "passed": false,
+     "current_ok": false,
+     "failures": [
+      "memory Tara~'Kingsbridge': status='SUPERSEDED' (want 'ACTIVE'); valid_from='2023-09-12' (want '2023-09-01'); valid_to='2023-10-30' (want None)",
+      "memory Tara~'Elmwood': valid_from='2023-10-30' (want '2018-01-01'); valid_to=None (want '*')",
+      "current Tara.school = ['Tara studied at Elmwood College.'] (want ['Kingsbridge'])"
+     ]
+    },
+    {
+     "probe_id": "out_of_order_05",
+     "case": "out_of_order_dates",
+     "policy": "bitemporal",
+     "passed": true,
+     "current_ok": true,
+     "failures": []
+    },
+    {
+     "probe_id": "temporary_01",
+     "case": "temporary_vs_move",
+     "policy": "append_only",
+     "passed": true,
+     "current_ok": true,
+     "failures": []
+    },
+    {
+     "probe_id": "temporary_01",
+     "case": "temporary_vs_move",
+     "policy": "arrival_order",
+     "passed": true,
+     "current_ok": true,
+     "failures": []
+    },
+    {
+     "probe_id": "temporary_01",
+     "case": "temporary_vs_move",
+     "policy": "bitemporal",
+     "passed": true,
+     "current_ok": true,
+     "failures": []
+    },
+    {
+     "probe_id": "temporary_02",
+     "case": "temporary_vs_move",
+     "policy": "append_only",
+     "passed": true,
+     "current_ok": true,
+     "failures": []
+    },
+    {
+     "probe_id": "temporary_02",
+     "case": "temporary_vs_move",
+     "policy": "arrival_order",
+     "passed": true,
+     "current_ok": true,
+     "failures": []
+    },
+    {
+     "probe_id": "temporary_02",
+     "case": "temporary_vs_move",
+     "policy": "bitemporal",
+     "passed": true,
+     "current_ok": true,
+     "failures": []
+    },
+    {
+     "probe_id": "temporary_03",
+     "case": "temporary_vs_move",
+     "policy": "append_only",
+     "passed": false,
+     "current_ok": false,
+     "failures": [
+      "memory Rosa~'Madrid': status='ACTIVE' (want 'SUPERSEDED'); valid_to=None (want '2023-06-01')",
+      "current Rosa.residence = ['Rosa lives in Madrid.', 'Rosa relocated to Valencia.'] (want ['Valencia'])"
+     ]
+    },
+    {
+     "probe_id": "temporary_03",
+     "case": "temporary_vs_move",
+     "policy": "arrival_order",
+     "passed": false,
+     "current_ok": true,
+     "failures": [
+      "memory Rosa~'Madrid': valid_to='2023-07-07' (want '2023-06-01')",
+      "memory Rosa~'Valencia': valid_from='2023-07-07' (want '2023-06-01'); valid_from_precision='SESSION' (want 'MONTH')"
+     ]
+    },
+    {
+     "probe_id": "temporary_03",
+     "case": "temporary_vs_move",
+     "policy": "bitemporal",
+     "passed": true,
+     "current_ok": true,
+     "failures": []
+    },
+    {
+     "probe_id": "temporary_04",
+     "case": "temporary_vs_move",
+     "policy": "append_only",
+     "passed": true,
+     "current_ok": true,
+     "failures": []
+    },
+    {
+     "probe_id": "temporary_04",
+     "case": "temporary_vs_move",
+     "policy": "arrival_order",
+     "passed": true,
+     "current_ok": true,
+     "failures": []
+    },
+    {
+     "probe_id": "temporary_04",
+     "case": "temporary_vs_move",
+     "policy": "bitemporal",
+     "passed": true,
+     "current_ok": true,
+     "failures": []
+    },
+    {
+     "probe_id": "temporary_05",
+     "case": "temporary_vs_move",
+     "policy": "append_only",
+     "passed": false,
+     "current_ok": false,
+     "failures": [
+      "memory Mira~'Boston': status='ACTIVE' (want 'SUPERSEDED'); valid_to=None (want '2023-09-01')",
+      "current Mira.residence = ['Mira lives in Boston.', 'Mira lives in Denver.'] (want ['Denver'])"
+     ]
+    },
+    {
+     "probe_id": "temporary_05",
+     "case": "temporary_vs_move",
+     "policy": "arrival_order",
+     "passed": false,
+     "current_ok": true,
+     "failures": [
+      "memory Mira~'Boston': valid_to='2023-10-01' (want '2023-09-01')",
+      "memory Mira~'Denver': valid_from='2023-10-01' (want '2023-09-01')"
+     ]
+    },
+    {
+     "probe_id": "temporary_05",
+     "case": "temporary_vs_move",
+     "policy": "bitemporal",
+     "passed": true,
+     "current_ok": true,
+     "failures": []
+    },
+    {
+     "probe_id": "update_01",
+     "case": "update_across_sessions",
+     "policy": "append_only",
+     "passed": false,
+     "current_ok": false,
+     "failures": [
+      "memory Jordan~'Austin': status='ACTIVE' (want 'SUPERSEDED'); valid_to=None (want '2023-04-01'); valid_to_precision=None (want 'MONTH')",
+      "current Jordan.residence = ['Jordan lives in Austin.', 'Jordan moved to Seattle.'] (want ['Seattle'])"
+     ]
+    },
+    {
+     "probe_id": "update_01",
+     "case": "update_across_sessions",
+     "policy": "arrival_order",
+     "passed": false,
+     "current_ok": true,
+     "failures": [
+      "memory Jordan~'Austin': valid_to='2023-05-17' (want '2023-04-01'); valid_to_precision='SESSION' (want 'MONTH')",
+      "memory Jordan~'Seattle': valid_from='2023-05-17' (want '2023-04-01'); valid_from_precision='SESSION' (want 'MONTH')"
+     ]
+    },
+    {
+     "probe_id": "update_01",
+     "case": "update_across_sessions",
+     "policy": "bitemporal",
+     "passed": true,
+     "current_ok": true,
+     "failures": []
+    },
+    {
+     "probe_id": "update_02",
+     "case": "update_across_sessions",
+     "policy": "append_only",
+     "passed": false,
+     "current_ok": false,
+     "failures": [
+      "memory Hana~'Orbit': status='ACTIVE' (want 'SUPERSEDED'); valid_to=None (want '*')",
+      "current Hana.employer = ['Hana works at Orbit Labs.', 'Hana joined Quanta.'] (want ['Quanta'])"
+     ]
+    },
+    {
+     "probe_id": "update_02",
+     "case": "update_across_sessions",
+     "policy": "arrival_order",
+     "passed": false,
+     "current_ok": true,
+     "failures": [
+      "memory Hana~'Quanta': valid_from='2023-03-09' (want '2023-02-01'); valid_from_precision='SESSION' (want 'MONTH')"
+     ]
+    },
+    {
+     "probe_id": "update_02",
+     "case": "update_across_sessions",
+     "policy": "bitemporal",
+     "passed": true,
+     "current_ok": true,
+     "failures": []
+    },
+    {
+     "probe_id": "update_03",
+     "case": "update_across_sessions",
+     "policy": "append_only",
+     "passed": false,
+     "current_ok": false,
+     "failures": [
+      "memory Maya~'single': status='ACTIVE' (want 'SUPERSEDED'); valid_to=None (want '2023-02-04'); valid_to_precision=None (want 'WEEK')",
+      "current Maya.relationship_status = ['Maya is single.', 'Maya is engaged.'] (want ['engaged'])"
+     ]
+    },
+    {
+     "probe_id": "update_03",
+     "case": "update_across_sessions",
+     "policy": "arrival_order",
+     "passed": false,
+     "current_ok": true,
+     "failures": [
+      "memory Maya~'single': valid_to='2023-02-11' (want '2023-02-04'); valid_to_precision='SESSION' (want 'WEEK')",
+      "memory Maya~'engaged': valid_from='2023-02-11' (want '2023-02-04')"
+     ]
+    },
+    {
+     "probe_id": "update_03",
+     "case": "update_across_sessions",
+     "policy": "bitemporal",
+     "passed": true,
+     "current_ok": true,
+     "failures": []
+    },
+    {
+     "probe_id": "update_04",
+     "case": "update_across_sessions",
+     "policy": "append_only",
+     "passed": false,
+     "current_ok": false,
+     "failures": [
+      "memory Felix~'Evernote': status='ACTIVE' (want 'SUPERSEDED'); valid_to=None (want '2023-06-06'); valid_to_precision=None (want 'WEEK')",
+      "current Felix.primary_tool:note_taking = ['Felix uses Evernote for notes.', 'Felix uses Obsidian for notes.'] (want ['Obsidian'])"
+     ]
+    },
+    {
+     "probe_id": "update_04",
+     "case": "update_across_sessions",
+     "policy": "arrival_order",
+     "passed": false,
+     "current_ok": true,
+     "failures": [
+      "memory Felix~'Evernote': valid_to='2023-06-20' (want '2023-06-06'); valid_to_precision='SESSION' (want 'WEEK')",
+      "memory Felix~'Obsidian': valid_from='2023-06-20' (want '2023-06-06'); valid_from_precision='SESSION' (want 'WEEK')"
+     ]
+    },
+    {
+     "probe_id": "update_04",
+     "case": "update_across_sessions",
+     "policy": "bitemporal",
+     "passed": true,
+     "current_ok": true,
+     "failures": []
+    },
+    {
+     "probe_id": "update_05",
+     "case": "update_across_sessions",
+     "policy": "append_only",
+     "passed": false,
+     "current_ok": false,
+     "failures": [
+      "memory Zoe~'Leeds': status='ACTIVE' (want 'SUPERSEDED'); valid_to=None (want '2022-10-01')",
+      "memory Zoe~'Bristol': status='ACTIVE' (want 'SUPERSEDED'); valid_to=None (want '2023-05-01')",
+      "current Zoe.residence = ['Zoe lives in Leeds.', 'Zoe moved to Bristol.', 'Zoe lives in Cardiff.'] (want ['Cardiff'])"
+     ]
+    },
+    {
+     "probe_id": "update_05",
+     "case": "update_across_sessions",
+     "policy": "arrival_order",
+     "passed": false,
+     "current_ok": true,
+     "failures": [
+      "memory Zoe~'Leeds': valid_to='2022-12-01' (want '2022-10-01')",
+      "memory Zoe~'Bristol': valid_from='2022-12-01' (want '2022-10-01'); valid_to='2023-07-15' (want '2023-05-01')",
+      "memory Zoe~'Cardiff': valid_from='2023-07-15' (want '2023-05-01')"
+     ]
+    },
+    {
+     "probe_id": "update_05",
+     "case": "update_across_sessions",
+     "policy": "bitemporal",
+     "passed": true,
+     "current_ok": true,
+     "failures": []
+    }
+   ],
+   "per_policy_case": {
+    "append_only": {
+     "in_session_correction": {
+      "passed": 5,
+      "total": 5,
+      "current_ok": 5
+     },
+     "late_mention": {
+      "passed": 5,
+      "total": 5,
+      "current_ok": 5
+     },
+     "neg_polarity": {
+      "passed": 0,
+      "total": 5,
+      "current_ok": 0
+     },
+     "out_of_order_dates": {
+      "passed": 0,
+      "total": 5,
+      "current_ok": 0
+     },
+     "temporary_vs_move": {
+      "passed": 3,
+      "total": 5,
+      "current_ok": 3
+     },
+     "update_across_sessions": {
+      "passed": 0,
+      "total": 5,
+      "current_ok": 0
+     }
+    },
+    "arrival_order": {
+     "in_session_correction": {
+      "passed": 5,
+      "total": 5,
+      "current_ok": 5
+     },
+     "late_mention": {
+      "passed": 0,
+      "total": 5,
+      "current_ok": 5
+     },
+     "neg_polarity": {
+      "passed": 5,
+      "total": 5,
+      "current_ok": 5
+     },
+     "out_of_order_dates": {
+      "passed": 0,
+      "total": 5,
+      "current_ok": 0
+     },
+     "temporary_vs_move": {
+      "passed": 3,
+      "total": 5,
+      "current_ok": 5
+     },
+     "update_across_sessions": {
+      "passed": 0,
+      "total": 5,
+      "current_ok": 5
+     }
+    },
+    "bitemporal": {
+     "in_session_correction": {
+      "passed": 5,
+      "total": 5,
+      "current_ok": 5
+     },
+     "late_mention": {
+      "passed": 5,
+      "total": 5,
+      "current_ok": 5
+     },
+     "neg_polarity": {
+      "passed": 5,
+      "total": 5,
+      "current_ok": 5
+     },
+     "out_of_order_dates": {
+      "passed": 5,
+      "total": 5,
+      "current_ok": 5
+     },
+     "temporary_vs_move": {
+      "passed": 5,
+      "total": 5,
+      "current_ok": 5
+     },
+     "update_across_sessions": {
+      "passed": 5,
+      "total": 5,
+      "current_ok": 5
+     }
+    }
+   },
+   "summary": {
+    "append_only": "13/30",
+    "arrival_order": "13/30",
+    "bitemporal": "30/30"
+   }
+  }
+ },
+ "estimate": {
+  "base": "quick_v1",
+  "target": "test_v1",
+  "assumptions": [],
+  "steps": {
+   "ingest": {
+    "seconds": 66964.00624161298,
+    "parts": {
+     "locomo": 28007.014373401602,
+     "longmemeval": 38956.991868211386
+    },
+    "locomo_turns": 5463,
+    "longmemeval_sessions": 1269,
+    "rates": {
+     "locomo_s_per_turn": 5.126672958704302,
+     "longmemeval_s_per_session": 30.698969163287146
+    }
+   },
+   "answer_main": {
+    "by_system": {
+     "chronos": 7592.96175422761,
+     "B1_sliding_window": 4507.122494125622,
+     "B2_full_context": 247.26884310047447,
+     "B3_chunk_rag": 4507.122494125622,
+     "B4_turns_plus_notes": 4507.122494125622,
+     "B5_append_only": 7592.96175422761
+    },
+    "seconds": 28954.559833932562
+   },
+   "ablations": {
+    "seconds": 48491.92388761881,
+    "by_ablation": {
+     "D_budget": {
+      "questions": 339,
+      "runs": 3,
+      "seconds": 22778.88526268283
+     },
+     "C_gate": {
+      "questions": 339,
+      "runs": 2,
+      "seconds": 15185.92350845522
+     },
+     "A_retrieval": {
+      "questions": 100,
+      "runs": 4,
+      "seconds": 8959.246907643199
+     },
+     "B_state": {
+      "questions": 70,
+      "runs": 1,
+      "seconds": 1567.8682088375597
+     }
+    }
+   },
+   "judge": {
+    "seconds": 448.89457196115853,
+    "items": 1730.65625,
+    "judge_share_of_answers": 0.34375,
+    "tokens": 375552.40625,
+    "floor_days_from_daily_token_limit": 0.31296033854166666,
+    "providers": [
+     "groq",
+     "cerebras"
+    ]
+   }
+  },
+  "latency_model": {
+   "a": 6.279071758895303,
+   "b": 0.0005399681691927431,
+   "c": 0.04256727077180775,
+   "r2": 0.32342960323264636,
+   "n_calls": 139
+  },
+  "per_question_seconds": {
+   "chronos": 22.398117269107995,
+   "B1_sliding_window": 13.295346590341069,
+   "B2_full_context": 22.47898573640677,
+   "B3_chunk_rag": 13.295346590341069,
+   "B4_turns_plus_notes": 13.295346590341069,
+   "B5_append_only": 22.398117269107995
+  },
+  "questions_per_system": {
+   "chronos": 339,
+   "B1_sliding_window": 339,
+   "B2_full_context": 11,
+   "B3_chunk_rag": 339,
+   "B4_turns_plus_notes": 339,
+   "B5_append_only": 339
+  },
+  "locomo_conversations_fitting_32k": 1,
+  "total_seconds": 144859.38453512551,
+  "notes": []
+ }
+}

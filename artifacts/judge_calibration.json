@@ -1,0 +1,14 @@
+{
+ "status": "measured",
+ "providers": [
+  "groq",
+  "cerebras"
+ ],
+ "n": 74,
+ "kappa": 0.9694971145919209,
+ "agreement": 0.9864864864864865,
+ "positive_rate": {
+  "groq": 0.6621621621621622,
+  "cerebras": 0.6756756756756757
+ }
+}

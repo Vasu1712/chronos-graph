@@ -341,7 +341,8 @@ AS_OF (explicit time, "back when", or `as_of`) > CURRENT (cue words or present-t
 asker defaults to the conversation's first speaker; first-person questions are about the asker.
 
 **Fusion.** One RRF ranking over items keyed `(kind, id)`, so memories and episodes compete
-directly. 1-hop expansion uses the named entities plus the speaker that "I"/"you" resolves to.
+directly. The fused ranking is then interleaved by kind (memory, episode, memory, ...;
+each kind keeps its own RRF order; `RetrievalConfig.balance_kinds`, see §10). 1-hop expansion uses the named entities plus the speaker that "I"/"you" resolves to.
 
 **Temporal filter.** AS_OF uses interval *overlap* with the question's span. `valid_to` is
 exclusive (a superseding fact starts on it). A `valid_from` with SESSION / UNKNOWN / BEFORE
@@ -400,3 +401,9 @@ sentence when it has more than 150 entries (whole-history contexts).
 **Judge.** LongMemEval's released prompts (`eval/prompts/lme_judge.py`, vendored verbatim with their
 source commit) applied in batches of 8; the pool routes over the providers whose keys are set
 (`available_only`) and records the provider on every verdict; calibration needs two providers.
+
+**Kind-balanced ranking.** Three of the five lists rank memories, so in a single RRF ranking a memory
+collects up to three reciprocal-rank terms and a turn at most two: on dev_v1 (LoCoMo conv-26) the top
+ten fused items were all memories for 22 of 24 sampled answerable questions, and turns ranked first in
+both turn lists were packed out of the budget. The retriever therefore alternates memories and
+episodes after fusion and the temporal filter (`balance_kinds = True`; `False` restores plain RRF).

@@ -1,0 +1,61 @@
+quick50: 50 questions; runs: chronos, B1_sliding_window, B3_chunk_rag, B4_turns_plus_notes, B5_append_only
+W1107 00:40:25.611000 97055 .venv/lib/python3.11/site-packages/torch/distributed/elastic/multiprocessing/redirects.py:35] NOTE: Redirects are currently not supported in MacOs.
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 6128.38it/s]
+  [chronos] 1/10 open-domain  27.0s eta   4.0m  [abstained] I don't know.
+  [chronos] 2/10 open-domain  14.2s eta   2.7m  [abstained] I don't know.
+  [chronos] 3/10 open-domain  25.6s eta   2.6m  [abstained] I don't know.
+  [chronos] 4/10 open-domain  27.4s eta   2.4m  [abstained] I don't know.
+/Users/vasu/Desktop/Projects/chronos-graph/.venv/lib/python3.11/site-packages/torch/jit/_script.py:1491: FutureWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+Loading weights:   0%|          | 0/202 [00:00<?, ?it/s]Loading weights: 100%|██████████| 202/202 [00:00<00:00, 2051.05it/s]
+  [chronos] 5/10 multi-hop    35.8s eta   2.2m  Calvin wants to expand his brand worldwide and has goals of making his
+  [chronos] 6/10 temporal     25.4s eta   1.7m  [abstained] I don't know.
+  [chronos] 7/10 temporal     24.6s eta   1.3m  [abstained] I don't know.
+  [chronos] 8/10 multi-hop    24.3s eta   0.9m  [abstained] I don't know.
+  [chronos] 9/10 multi-hop    24.2s eta   0.4m  [abstained] I don't know.
+  [chronos] 10/10 open-domain  25.7s eta   0.0m  [abstained] I don't know.
+chronos: {'questions': 10, 'already_done': 0, 'answered': 10, 'skipped': 0, 'errors': 0}
+  [B1_sliding_window] 1/10 open-domain  10.2s eta   1.5m  [abstained] I don't know.
+  [B1_sliding_window] 2/10 open-domain  17.6s eta   1.8m  [abstained] I don't know.
+  [B1_sliding_window] 3/10 open-domain  24.4s eta   2.0m  Calvin is performing at a show in Boston, which might include the Holl
+  [B1_sliding_window] 4/10 open-domain  13.4s eta   1.6m  Calvin is focused on his musical performance and seems excited about i
+  [B1_sliding_window] 5/10 multi-hop    12.7s eta   1.3m  Calvin is planning to perform at an upcoming show, which suggests he w
+  [B1_sliding_window] 6/10 temporal     16.8s eta   1.1m  [abstained] I don't know.
+  [B1_sliding_window] 7/10 temporal      9.6s eta   0.7m  [abstained] I don't know.
+  [B1_sliding_window] 8/10 multi-hop    20.7s eta   0.5m  [abstained] I don't know.
+  [B1_sliding_window] 9/10 multi-hop     9.5s eta   0.2m  [abstained] I don't know.
+  [B1_sliding_window] 10/10 open-domain   9.8s eta   0.0m  [abstained] I don't know.
+B1_sliding_window: {'questions': 10, 'already_done': 0, 'answered': 10, 'skipped': 0, 'errors': 0}
+  [B3_chunk_rag] 1/10 open-domain  19.9s eta   3.0m  [abstained] I don't know.
+  [B3_chunk_rag] 2/10 open-domain  24.8s eta   3.0m  Dave's shop employs people.
+  [B3_chunk_rag] 3/10 open-domain  10.9s eta   2.2m  [abstained] I don't know.
+  [B3_chunk_rag] 4/10 open-domain  11.3s eta   1.7m  [abstained] I don't know.
+  [B3_chunk_rag] 5/10 multi-hop    11.8s eta   1.3m  [abstained] I don't know.
+  [B3_chunk_rag] 6/10 temporal      1.4s eta   0.9m  Dave hosted a card-playing night with his friends on the Friday before
+  [B3_chunk_rag] 7/10 temporal      0.6s eta   0.6m  Calvin recorded a podcast with his friends on 21 August 2023.
+  [B3_chunk_rag] 8/10 multi-hop    10.5s eta   0.4m  [abstained] I don't know.
+  [B3_chunk_rag] 9/10 multi-hop     1.3s eta   0.2m  Dave went to a car workshop in San Francisco.
+  [B3_chunk_rag] 10/10 open-domain  21.8s eta   0.0m  [abstained] I don't know.
+B3_chunk_rag: {'questions': 10, 'already_done': 0, 'answered': 10, 'skipped': 0, 'errors': 0}
+  [B4_turns_plus_notes] 1/10 open-domain   1.2s eta   0.2m  [abstained] I don't know.
+  [B4_turns_plus_notes] 2/10 open-domain  13.5s eta   1.0m  I don't know.
+  [B4_turns_plus_notes] 3/10 open-domain  11.1s eta   1.0m  [abstained] I don't know.
+  [B4_turns_plus_notes] 4/10 open-domain  11.2s eta   0.9m  [abstained] I don't know.
+  [B4_turns_plus_notes] 5/10 multi-hop     1.5s eta   0.6m  Calvin wants to expand his brand and make his music reach more people.
+  [B4_turns_plus_notes] 6/10 temporal      0.4s eta   0.4m  Dave hosted a card-playing night with his friends on 18 August 2023.
+  [B4_turns_plus_notes] 7/10 temporal      0.4s eta   0.3m  [abstained] I don't know.
+  [B4_turns_plus_notes] 8/10 multi-hop    10.8s eta   0.2m  [abstained] I don't know.
+  [B4_turns_plus_notes] 9/10 multi-hop    11.3s eta   0.1m  [abstained] I don't know.
+  [B4_turns_plus_notes] 10/10 open-domain  11.0s eta   0.0m  [abstained] I don't know.
+B4_turns_plus_notes: {'questions': 10, 'already_done': 0, 'answered': 10, 'skipped': 0, 'errors': 0}
+  [B5_append_only] 1/10 open-domain   1.0s eta   0.1m  [abstained] I don't know.
+  [B5_append_only] 2/10 open-domain   0.4s eta   0.1m  [abstained] I don't know.
+  [B5_append_only] 3/10 open-domain   0.4s eta   0.1m  [abstained] I don't know.
+  [B5_append_only] 4/10 open-domain   0.3s eta   0.1m  [abstained] I don't know.
+  [B5_append_only] 5/10 multi-hop     0.7s eta   0.0m  Calvin wants to expand his brand worldwide and has goals of making his
+  [B5_append_only] 6/10 temporal      0.4s eta   0.0m  [abstained] I don't know.
+  [B5_append_only] 7/10 temporal      0.4s eta   0.0m  [abstained] I don't know.
+  [B5_append_only] 8/10 multi-hop     0.3s eta   0.0m  [abstained] I don't know.
+  [B5_append_only] 9/10 multi-hop     0.3s eta   0.0m  [abstained] I don't know.
+  [B5_append_only] 10/10 open-domain   0.3s eta   0.0m  [abstained] I don't know.
+B5_append_only: {'questions': 10, 'already_done': 0, 'answered': 10, 'skipped': 0, 'errors': 0}

@@ -125,6 +125,9 @@ class RetrievalConfig:
     use_bm25_episodes: bool = True
     use_entity_expansion: bool = True
     use_temporal_filter: bool = True
+    balance_kinds: bool = (
+        True  # alternate memories and turns in the fused ranking (False = plain RRF)
+    )
     expand_sources: bool = True  # attach each memory's source turns (+-window); False = ablation
     max_source_turn_chars: int = 1200  # display clip for a source turn, centred on its quote
     max_neighbor_turn_chars: int = 300  # display clip for +-window neighbours

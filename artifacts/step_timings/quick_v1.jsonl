@@ -1,0 +1,6 @@
+{"step": "ingest", "seconds": 6017.796662833076, "started_at": "2026-11-06T10:26:13Z", "status": "ok"}
+{"step": "answer:chronos", "seconds": 1076.994151292136, "started_at": "2026-11-06T12:06:35Z", "status": "ok"}
+{"step": "answer:B3_chunk_rag", "seconds": 639.6925329579972, "started_at": "2026-11-06T13:46:50Z", "status": "ok"}
+{"step": "judge", "seconds": 8.55948191601783, "started_at": "2026-11-06T13:57:37Z", "status": "ok", "items": 33, "scored": {"flag": 63, "exact": 0, "judge": 33, "skipped": 0, "pending_no_judge": 0}, "judge_tokens": 7161, "judge_calls": 5}
+{"step": "judge_calibration", "seconds": 0.00033674994483590126, "started_at": "2026-11-06T13:57:45Z", "status": "ok"}
+{"step": "claim_recheck", "seconds": 97.42526712501422, "started_at": "2026-11-06T13:57:45Z", "status": "ok"}

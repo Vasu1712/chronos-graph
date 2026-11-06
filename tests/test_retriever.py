@@ -4,7 +4,7 @@ from retrieval_fixtures import CONV, QDATE, ingested_demo, mem_id
 from chronos.config import RetrievalConfig
 from chronos.llm.embed import HashingEmbedder
 from chronos.retrieval.query import analyze
-from chronos.retrieval.retriever import LISTS, Retriever, rrf
+from chronos.retrieval.retriever import LISTS, Candidate, Retriever, interleave_kinds, rrf
 
 
 @pytest.fixture
@@ -27,6 +27,26 @@ def test_rrf_formula_and_tie_break():
     assert fused[0].score == pytest.approx(1 / 62 + 1 / 61)
     assert fused[0].ranks == {"a": 2, "b": 1}
     assert fused[1].score == pytest.approx(1 / 61) and fused[2].score == pytest.approx(1 / 62)
+
+
+def test_interleave_alternates_kinds_keeping_each_kinds_order():
+    """Three of five lists rank memories, so plain RRF buries turns under memories."""
+    fused = [Candidate("memory", m) for m in "abcd"] + [Candidate("episode", e) for e in "xy"]
+    assert [c.id for c in interleave_kinds(fused)] == ["a", "x", "b", "y", "c", "d"]
+    assert interleave_kinds([]) == []
+    eps_only = [Candidate("episode", "x"), Candidate("episode", "y")]
+    assert [c.id for c in interleave_kinds(eps_only)] == ["x", "y"]
+
+
+def test_balanced_ranking_puts_a_turn_second_and_plain_rrf_is_kept_as_an_option(db):
+    q = "Where does Alice live now?"
+    balanced = run(db, q)
+    assert [c.kind for c in balanced.fused[:2]] == ["memory", "episode"]
+    plain = run(db, q, RetrievalConfig(balance_kinds=False))
+    assert sorted((c.kind, c.id) for c in plain.fused) == sorted(
+        (c.kind, c.id) for c in balanced.fused
+    )
+    assert [c.score for c in plain.fused] == sorted((c.score for c in plain.fused), reverse=True)
 
 
 def test_all_lists_present_and_bounded(db):

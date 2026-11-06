@@ -1,0 +1,24 @@
+{"step": "ingest", "seconds": 421.6812047078274, "started_at": "2026-11-06T16:02:20Z", "status": "ok"}
+{"step": "replay:append_only", "seconds": 48.79949641600251, "started_at": "2026-11-06T16:09:26Z", "status": "ok"}
+{"step": "replay:arrival_order", "seconds": 41.14741625008173, "started_at": "2026-11-06T16:10:15Z", "status": "ok"}
+{"step": "answer:chronos", "seconds": 980.8774395410437, "started_at": "2026-11-06T16:10:56Z", "status": "ok"}
+{"step": "answer:B1_sliding_window", "seconds": 539.8765638750046, "started_at": "2026-11-06T16:27:17Z", "status": "ok"}
+{"step": "answer:B2_full_context", "seconds": 1.8551547089591622, "started_at": "2026-11-06T16:36:17Z", "status": "ok"}
+{"step": "answer:B3_chunk_rag", "seconds": 908.0451597920619, "started_at": "2026-11-06T16:36:19Z", "status": "ok"}
+{"step": "answer:B4_turns_plus_notes", "seconds": 904.6118325840216, "started_at": "2026-11-06T16:51:27Z", "status": "ok"}
+{"step": "answer:B5_append_only", "seconds": 43.85587049997412, "started_at": "2026-11-06T17:06:31Z", "status": "ok"}
+{"step": "answer:A_retrieval/dense_only", "seconds": 235.9396605831571, "started_at": "2026-11-06T17:07:15Z", "status": "ok"}
+{"step": "answer:A_retrieval/bm25_only", "seconds": 260.19232874992304, "started_at": "2026-11-06T17:11:11Z", "status": "ok"}
+{"step": "answer:A_retrieval/dense_plus_bm25", "seconds": 231.83854187489487, "started_at": "2026-11-06T17:15:31Z", "status": "ok"}
+{"step": "answer:A_retrieval/plus_1hop", "seconds": 241.84635879215784, "started_at": "2026-11-06T17:19:23Z", "status": "ok"}
+{"step": "answer:B_state/arrival_order", "seconds": 326.50266829202883, "started_at": "2026-11-06T17:23:25Z", "status": "ok"}
+{"step": "answer:C_gate/off", "seconds": 184.77447058307007, "started_at": "2026-11-06T17:28:52Z", "status": "ok"}
+{"step": "answer:C_gate/speaker_only", "seconds": 18.798298165900633, "started_at": "2026-11-06T17:31:56Z", "status": "ok"}
+{"step": "answer:D_budget/tokens_500", "seconds": 554.5409511660691, "started_at": "2026-11-06T17:32:15Z", "status": "ok"}
+{"step": "answer:D_budget/tokens_1000", "seconds": 829.7973125840072, "started_at": "2026-11-06T17:41:30Z", "status": "ok"}
+{"step": "answer:D_budget/tokens_3000", "seconds": 1647.3301674581598, "started_at": "2026-11-06T17:55:20Z", "status": "ok"}
+{"step": "state_probes:scripted", "seconds": 1.2092267079278827, "started_at": "2026-11-06T18:22:47Z", "status": "ok"}
+{"step": "answer:B3_chunk_rag", "seconds": 20.727260041981936, "started_at": "2026-11-06T18:25:49Z", "status": "ok"}
+{"step": "judge", "seconds": 24.660928457975388, "started_at": "2026-11-06T18:26:25Z", "status": "ok", "items": 74, "scored": {"flag": 493, "exact": 1, "judge": 74, "skipped": 50, "pending_no_judge": 0}, "judge_tokens": 14597, "judge_calls": 13}
+{"step": "judge_calibration", "seconds": 84.16751375002787, "started_at": "2026-11-06T18:26:50Z", "status": "ok"}
+{"step": "claim_recheck", "seconds": 83.72891466598958, "started_at": "2026-11-06T18:28:14Z", "status": "ok"}
