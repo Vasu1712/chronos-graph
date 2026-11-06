@@ -32,6 +32,33 @@ def test_cli_ingest_scripted_probe(tmp_path):
     delhi = next(ln for ln in res.output.splitlines() if "Priya lived in Delhi in 2019." in ln)
     assert "from 2019-01-01 (YEAR) to 2019-12-31 (YEAR)" in delhi
     again = CliRunner().invoke(app, args, env={"COLUMNS": "250"})
+    res = CliRunner().invoke(
+        app,
+        [
+            "ingest",
+            str(probe),
+            "--db",
+            str(tmp_path / "x.sqlite"),
+            "--scripted",
+            "--embedder",
+            "hash",
+        ],
+    )
+    assert res.exit_code == 0, res.output
+    assert "ACTIVE     POS residence        Priya lives in Bengaluru." in res.output
+    assert "Priya lived in Delhi in 2019.  [2019-01-01 (YEAR) -> 2019-12-31 (YEAR)]" in res.output
+    again = CliRunner().invoke(
+        app,
+        [
+            "ingest",
+            str(probe),
+            "--db",
+            str(tmp_path / "x.sqlite"),
+            "--scripted",
+            "--embedder",
+            "hash",
+        ],
+    )
     assert "already ingested (no-op)" in again.output
 
 

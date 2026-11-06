@@ -132,6 +132,9 @@ class AgentConfig:
     answerability: str = "full"  # off | speaker | full
     nli_threshold: float = 0.5  # entailment probability needed per claim; tune on dev
     regenerate_once: bool = True
+    candidate_top_k: int = 5
+    token_budget: int = 1500
+    episode_window: int = 1
 
 
 @dataclass(frozen=True)
