@@ -62,6 +62,10 @@ ANSWERABLE      the evidence states the answer for the exact person or thing ask
 PARTIAL         the evidence is related and gives part of the answer, but a key detail is missing.
 NOT_ANSWERABLE  nothing in the evidence answers it, or the evidence is about someone else
                 (for example the question asks about a sister and no sister is ever mentioned).
+A question whose answer needs counting, adding, comparing dates, picking the latest value or
+combining several turns is ANSWERABLE when the facts it needs are in the evidence. A turn that
+shows "[= ...]" after a date phrase gives the resolved date. When unsure between PARTIAL and
+NOT_ANSWERABLE, choose PARTIAL.
 Give a one-sentence reason, the verdict, the missing detail (or null), and the turn ids
 (the first field inside [ ... | ... | ... ]) that support the answer."""
 

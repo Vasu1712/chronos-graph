@@ -9,12 +9,15 @@ Per claim, per cited turn:
   1. the turn_uid exists in episodes                     else dropped: "not_found"
   2. it is in this query's allowed list (answer_log)     else dropped: "not_in_context"
 Then NLI: premise = the surviving cited turns ("On <date>, <speaker> said: <text>"), hypothesis =
-the claim; supported iff P(entailment) >= threshold. A claim with no surviving citation, or whose
+the claim; supported iff P(entailment) >= threshold. Relative dates in the premise are resolved
+as in the context ("yesterday [= 8 June 2023]"), and a premise longer than the NLI model reads is
+also scored as overlapping sentence windows; a claim takes its best-scoring premise. A claim with no surviving citation, or whose
 entailment is below threshold, is unsupported.
 
 Repair: if any claim is unsupported (or a non-abstained answer has no claims), regenerate once
 with feedback naming the unsupported claims; after that, unsupported claims are removed. No claims
-left means abstain with reason "unsupported". If claims were removed, final_answer becomes the
+left means abstain with reason "unsupported". If the repair round abstains but round one had
+supported claims, round one's supported claims are kept. If claims were removed, final_answer becomes the
 concatenation of the surviving claims so no unsupported text reaches the user.
 """
 
@@ -26,7 +29,28 @@ import sqlite3
 from dataclasses import asdict, dataclass, field
 from typing import Any
 
+from chronos import textdates
 from chronos.agent.generator import Claim, GenerationOut, Generator
+
+# Premise windows for NLI: the cross-encoder reads at most 512 tokens (~2,000 characters).
+WINDOW_CHARS = 1500
+_SENT = re.compile(r"(?<=[.!?])\s+|\n+")
+
+
+def sentence_windows(text: str, max_chars: int = 600) -> list[str]:
+    """Overlapping windows of consecutive sentences, each at most ~max_chars long."""
+    sents = [x.strip() for x in _SENT.split(text) if x and x.strip()]
+    out: list[str] = []
+    for i in range(len(sents)):
+        w = sents[i]
+        j = i + 1
+        while j < len(sents) and len(w) + 1 + len(sents[j]) <= max_chars:
+            w += " " + sents[j]
+            j += 1
+        out.append(w[: max_chars * 2])
+        if j >= len(sents):
+            break
+    return out
 
 
 @dataclass
@@ -107,7 +131,10 @@ class Verifier:
         self.threshold = threshold
         self.log = AnswerLog(conn)
 
-    def premise(self, turn_uids: list[str]) -> str:
+    def _parts(self, turn_uids: list[str]) -> list[tuple[str, str]]:
+        """(header, text) per cited turn; relative dates resolved as in the context (textdates)."""
+        if not turn_uids:
+            return []
         rows = {
             r[0]: r
             for r in self.conn.execute(
@@ -115,11 +142,28 @@ class Verifier:
                 turn_uids,
             )
         }
-        return " ".join(
-            f"On {(rows[u][1] or '')[:10]}, {rows[u][2]} said: {rows[u][3]}"
-            for u in turn_uids
-            if u in rows
-        )
+        out = []
+        for u in turn_uids:
+            if u in rows:
+                day = (rows[u][1] or "")[:10]
+                out.append((f"On {day}, {rows[u][2]} said:", textdates.annotate(rows[u][3], day)))
+        return out
+
+    def premise(self, turn_uids: list[str]) -> str:
+        return " ".join(f"{h} {t}" for h, t in self._parts(turn_uids))
+
+    def premises(self, turn_uids: list[str]) -> list[str]:
+        """Candidate premises for one claim: the whole concatenation and, when that is longer than
+        the NLI model reads (512 tokens), overlapping sentence windows of each cited turn. A claim is
+        scored by its best premise, so a supporting sentence deep in a long turn is not cut off."""
+        parts = self._parts(turn_uids)
+        full = " ".join(f"{h} {t}" for h, t in parts)
+        if len(full) <= WINDOW_CHARS:
+            return [full]
+        out = [full]
+        for header, text in parts:
+            out += [f"{header} {w}" for w in sentence_windows(text)]
+        return list(dict.fromkeys(out))
 
     def _exists(self, uids: list[str]) -> set[str]:
         if not uids:
@@ -157,7 +201,7 @@ class Verifier:
         if tok in allowed_m:
             return "memory", tok, "memory id cited as a turn"
         if "] " in s:
-            uids = by_text.get(s.split("] ", 1)[1].strip(), [])
+            uids = by_text.get(textdates.strip(s.split("] ", 1)[1]).strip(), [])
             if len(uids) == 1:
                 return "turn", uids[0], "matched turn by its exact text"
         return "turn", s, None
@@ -187,8 +231,15 @@ class Verifier:
             ch.kept_memory_ids = [m for m in dict.fromkeys(mems) if m in allowed_m]
             checks.append(ch)
 
-        pairs = [(self.premise(ch.kept_turn_uids), ch.text) for ch in checks if ch.kept_turn_uids]
-        scores = iter(self.nli.score(pairs) if pairs else [])
+        pairs: list[tuple[str, str]] = []
+        spans: list[tuple[int, int]] = []
+        for ch in checks:
+            if ch.kept_turn_uids:
+                cands = self.premises(ch.kept_turn_uids)
+                spans.append((len(pairs), len(pairs) + len(cands)))
+                pairs += [(p, ch.text) for p in cands]
+        all_scores = self.nli.score(pairs) if pairs else []
+        scores = iter(max(all_scores[a:b], key=lambda sc: sc.entailment) for a, b in spans)
         for ch in checks:
             if not ch.kept_turn_uids:
                 continue
@@ -207,13 +258,14 @@ class Verifier:
 def _feedback(report: VerifyReport, no_claims: bool) -> str:
     if no_claims:
         return ("Your answer had no claims. Every factual statement must be a claim citing turn ids from "
-                "ALLOWED TURN IDS, or abstain if the context does not answer the question.")  # fmt: skip
+                "ALLOWED TURN IDS. Write the claims that the context supports.")  # fmt: skip
     lines = ["These claims were not supported by the turns they cite:"]
     for c in report.unsupported:
         why = ", ".join(sorted({d["reason"] for d in c.dropped})) or "no citations"
         lines.append(f'- "{c.text}" ({why})')
-    lines.append("Cite only turns from ALLOWED TURN IDS whose text states the claim, rephrase claims to say only "
-                 "what those turns say, or drop them. Abstain if nothing in the context supports an answer.")  # fmt: skip
+    lines.append("Cite the turns from ALLOWED TURN IDS whose text states each claim, and rephrase claims to say "
+                 "only what those turns say. Keep the claims that were supported. Do not abstain because of "
+                 "this feedback if the context still answers the question.")  # fmt: skip
     return "\n".join(lines)
 
 
@@ -252,9 +304,14 @@ def verify_and_repair(
     """Verify `first`, regenerate once if needed, and return (final answer, verifier record)."""
     record: dict[str, Any] = {"threshold": verifier.threshold, "rounds": []}
     gen = first
+    first_report: VerifyReport | None = None
     for round_no in (1, 2):
         if gen.abstained:
             record["rounds"].append({"round": round_no, "abstained_by_model": True, "claims": []})
+            if first_report is not None and any(c.supported for c in first_report.claims):
+                # the repair round gave up, but round one had verified claims: keep those
+                record["kept_round1_after_abstention"] = True
+                return _finalize(first, first_report), record
             return GenerationOut(final_answer="I don't know.", claims=[], abstained=True,
                                  abstention_reason=gen.abstention_reason or "model abstained"), record  # fmt: skip
         report = verifier.check(query_id, gen)
@@ -268,6 +325,8 @@ def verify_and_repair(
         )
         if report.claims and not report.unsupported:
             return _finalize(gen, report), record
+        if round_no == 1:
+            first_report = report
         if round_no == 1 and regenerate_once:
             feedback = _feedback(report, no_claims)
             record["feedback"] = feedback

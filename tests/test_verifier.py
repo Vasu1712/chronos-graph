@@ -204,3 +204,45 @@ def test_generator_prompt_carries_hints_and_allowed_ids():
         and "ASKED BY" not in bare
         and "ALLOWED TURN IDS: (none)" in bare
     )
+
+
+def test_repair_round_abstention_keeps_round_one_supported_claims(env):
+    """quick_v1: the repair round often answered "I don't know" after one claim failed NLI, which
+    threw away claims that had already been verified."""
+    db, ver = env
+    first = gen(
+        ("Alice moved to Milwaukee.", [MILWAUKEE_TURN]),
+        ("Alice works at Lumen Health.", [MILWAUKEE_TURN]),
+    )
+    g = ScriptedGenerator(gen(abstained=True))
+    final, record = verify_and_repair(
+        query_id="q1", question="Where does Alice live?", context="", generator=g, verifier=ver,
+        allowed_turn_uids=[MILWAUKEE_TURN, BOB_TURN], first=first,
+    )  # fmt: skip
+    assert not final.abstained
+    assert [c.text for c in final.claims] == ["Alice moved to Milwaukee."]
+    assert record["kept_round1_after_abstention"]
+
+
+def test_long_turn_is_scored_in_windows(env, monkeypatch):
+    """A supporting sentence past the NLI model's 512 tokens still counts."""
+    db, ver = env
+    filler = " ".join(f"Sentence number {i} is about something unrelated." for i in range(60))
+    long_text = filler + " We moved to Milwaukee last month."
+    monkeypatch.setattr(ver, "_parts", lambda uids: [("On 2024-03-01, Alice said:", long_text)])
+    premises = ver.premises([MILWAUKEE_TURN])
+    assert len(premises) > 1
+    assert any("Milwaukee" in p and len(p) < 1500 for p in premises[1:])
+
+    class FirstCharsNLI(OverlapNLI):  # reads only the first ~2,000 characters, like the real model
+        def score(self, pairs):
+            return super().score([(p[:2000], h) for p, h in pairs])
+
+    ver.nli = FirstCharsNLI()
+    [c] = check(env, ("Alice moved to Milwaukee.", [MILWAUKEE_TURN]))
+    assert c.supported
+
+
+def test_premise_resolves_relative_dates(env):
+    db, ver = env
+    assert "last month [= " in ver.premise([MILWAUKEE_TURN])

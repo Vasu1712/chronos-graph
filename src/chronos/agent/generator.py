@@ -24,10 +24,13 @@ class Claim(BaseModel):
 
 
 class GenerationOut(BaseModel):
+    # Field order is the order a constrained decoder writes them: claims (with their cited turns)
+    # come before final_answer, so the 7B model looks for evidence before committing to an
+    # answer. With final_answer first it wrote "I don't know." before reading the context.
     model_config = ConfigDict(extra="forbid")
 
-    final_answer: str
     claims: list[Claim]
+    final_answer: str
     abstained: bool
     abstention_reason: str | None
 
@@ -50,9 +53,14 @@ Rules:
   OPEN            use whatever in the context answers the question.
   Without a QUESTION TYPE line, treat present-tense questions as CURRENT.
 - RETRACTED facts were never true; never state them as facts.
-- Resolve relative dates ("last week") against the date of the turn that says them.
-- If the CONTEXT does not answer the question, set abstained to true, final_answer to
-  "I don't know.", claims to [], and give abstention_reason.
+- Resolve relative dates ("last week") against the date of the turn that says them. When a turn
+  shows "[= ...]" after a date phrase, that is the resolved date: use it in your answer.
+- Answer whenever the CONTEXT contains the information, even if you must count, add up, compare
+  dates, pick the most recent value, or combine two turns. A short answer from the evidence is
+  better than abstaining. If the context gives only part of the answer, answer with that part.
+- Abstain only if no line of the CONTEXT is about what the question asks, or the context is about
+  a different person than the one asked about. Then set claims to [], final_answer to
+  "I don't know.", abstained to true, and give abstention_reason.
 - final_answer is a short direct answer that only combines your claims."""
 
 
