@@ -45,19 +45,21 @@ make eval-quick    # ingest + answer (ChronosGraph and B3) + judge + report on t
 make eval-50       # 50 questions (same ingestion as quick), every system and ablation + judge + report
 make eval-full     # all systems, all ablations, calibration and claim re-check; schedule overnight
 make report        # rebuild every table, figure and document from artifacts/; no API call
+uv run python -m eval.diagnose --manifest quick50   # seconds: where answerable questions are lost
 ```
 
 Every step is resumable: ingestion skips sessions already ingested (one transaction per session, so a kill
 leaves no partial session), answering skips answered questions, and every model call is cached. Long runs
 are wrapped in `caffeinate -i` by the Makefile.
 
-### Rebuilding every table from the committed cache
+### Rebuilding every table from the committed outputs
 
 `make report` needs only `artifacts/`: the raw outputs, judgments, ingest logs, step timings, calibration and
 claim re-check files, and the synthetic probe results. It makes no model call and no API call, and rewrites
 `artifacts/summary_metrics.json`, `docs/figures/`, `README.md`, `EVAL.md` and `DESIGN.md`. To re-answer
 questions from the cached model calls instead, rerun the `eval-` targets: with a warm cache they do no
-generation.
+generation. The cache itself (`artifacts/llm_cache.sqlite`) is too large for git and stays on the machine
+that ran the evaluation; `make report` does not need it.
 
 ## Measured runtimes
 

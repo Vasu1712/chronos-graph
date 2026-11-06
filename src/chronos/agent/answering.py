@@ -66,6 +66,7 @@ def generate_and_verify(
     regenerate = sum(gen.durations[1:])
     timings = {"generate": gen.durations[0], "regenerate": regenerate,
                "verify": time.perf_counter() - t - regenerate}  # fmt: skip
+    record["forced_answer_retries"] = gen.forced_retries
     stage = None
     if final.abstained:
         by_model = first.abstained or bool(
