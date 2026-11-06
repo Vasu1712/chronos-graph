@@ -322,6 +322,56 @@ not been compared with Zep or Mem0 end to end except where the evaluation says s
 Mined from the evaluation outputs by fixed rules; each count is a population of candidates to read, and the
 examples are the first two by question id.
 
+#### quick50
+
+#### cross attribute contradiction
+
+Rule: two current (ACTIVE, open) memories of one subject in the same context assert different places, under different attribute keys. Found **0** among 50 contexts.
+
+_No instance in the evaluated sample._
+
+#### attribute mismatch
+
+Rule: a memory's attribute key has no lexical support in its own fact text (a key chosen for the wrong reason). Found **12** among 213 distinct memories shown in contexts.
+
+- question `031748ae`: 'How many engineers do I lead when I just started my new role as Senior Software Engineer? How many engineers do I lead now?'; fact: 'The user is currently a Senior Software Engineer.'; key: 'job_title'; gold 'When you just started your new role as Senior Software Engineer, you led 4 engineers. Now, you lead 5 engineers', answered "I don't know."
+
+- question `5c40ec5b`: 'How many times have I met up with Alex from Germany?'; fact: 'User has a friend Alex from Germany.'; key: 'relationship_status'; gold "We've met up twice.", answered "I don't know."
+
+#### temporary stay
+
+Rule: a current residence memory whose text is a trip, visit or short stay. Found **0** among 50 contexts.
+
+_No instance in the evaluated sample._
+
+#### temporal resolution
+
+Rule: answerable, answered, judged wrong, with all gold evidence turns in the context, on a question about time. Found **0** among 6 answered questions.
+
+_No instance in the evaluated sample._
+
+#### entity split
+
+Rule: one name, several non-speaker entities in one conversation (under-merging). Found **1** among 21 conversations.
+
+- name: 'alex'; entities: 2; descriptors: ['{"anchor": "user", "relation": "founder of a startup in edtech space", "text": null}', '{"anchor": "user", "relation": "founder", "text": null}']
+
+#### over abstention
+
+Rule: an answerable question the system declined. Found **37** among 43 answerable questions.
+
+- question `031748ae`: 'How many engineers do I lead when I just started my new role as Senior Software Engineer? How many engineers do I lead now?'; abstained_at: 'model'; reason: 'The context does not provide information about the number of engineers the user leads when they just started their new role as Senior Software Engineer.'; gold_in_context: False; gold 'When you just started your new role as Senior Software Engineer, you led 4 engineers. Now, you lead 5 engineers', answered "I don't know."
+
+- question `184da446`: "How many pages of 'A Short History of Nearly Everything' have I read so far?"; abstained_at: 'model'; reason: 'The context does not provide a specific number of pages read so far.'; gold_in_context: True; gold '220', answered "I don't know."
+
+#### nli error
+
+Rule: the NLI verdict on a sampled claim disagrees with the gpt-oss-120b re-check. Found **10** among 98 re-checked claims.
+
+- claim: 'The user met up with Alex from Germany once.'; premise: "On 2023-08-11, user said: I'm loving this list! I'm particularly interested in The Particular Sadness of Lemon Cake. I've heard great things about magical realism. Speaking of which, I met this guy Alex from Germany at a music festival a few weeks ago, and we bonded over our shared love of indie rock music. He's actually coming to my city for work soon, and we're planning to meet up. Anyway, back to the book – do you think it's a good representation of magical realism?"; kind: 'NLI passed, judge disagrees'; nli_entailment: 0.9965553848948042
+
+- claim: 'The user has tried three Korean restaurants in their city.'; premise: 'On 2023-08-11, user said: Sounds good! So, I tried this one place that had an amazing bibimbap, and then this other place that had a really spicy kimchi stew. And then there was this third place that had a unique take on Japchae, with a sweet potato noodle that was really tasty. Each place had its own unique flavor and style, you know?'; kind: 'NLI failed, judge disagrees'; nli_entailment: 0.008788528282889134
+
 #### quick_v1
 
 #### cross attribute contradiction
